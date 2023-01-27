@@ -11,7 +11,7 @@ Please referance to this code!
 ```dart
 TouchRipple(
     onTap: () => print('Hello World!'),
-    child: ... // <- this your widget!
+    child: ... // <- This your widget!
 ),
 ```
 
@@ -22,7 +22,7 @@ TouchRipple(
     // Until the ripple effect end hold the call of the [Ripple.onTap],
     // Prevents the ripple effect from being invisible and page shifting.
     startOnTap: StartOnTap(isWait: true)
-    child: ... // <- this your widget!
+    child: ... // <- This your widget!
 );
 ```
 
