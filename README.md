@@ -4,6 +4,9 @@
 The package is develop similar to Android Touch Ripple.
 also defines it easy and customize animations and features or behaviors.
 
+### flutter pub
+https://pub.dev/packages/flutter_touch_ripple
+
 ## How to apply ripple widget
 
 Please referance to this code!
