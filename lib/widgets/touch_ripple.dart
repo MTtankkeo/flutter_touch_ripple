@@ -32,6 +32,7 @@ typedef OnLongPress = bool Function();
 ///     // Until the ripple effect end hold the call of the [Ripple.onTap],
 ///     // Prevents the ripple effect from being invisible and page shifting.
 ///     startOnTap: StartOnTap(isWait: true)
+///     child: ... // <- this your widget!
 ///   );
 /// ```
 class TouchRipple extends StatefulWidget {
@@ -54,7 +55,7 @@ class TouchRipple extends StatefulWidget {
     this.startOnDoubleTap = const StartOnEvent(isWait: false),
     this.durationScale = 1,
 
-    this.rippleColor = const Color.fromRGBO(255, 255, 255, 0.4),
+    this.rippleColor = const Color.fromRGBO(0, 0, 0, 0.4),
     this.rippleColorTween,
     this.foregroundColor,
     this.foregroundColorTween,
@@ -87,9 +88,9 @@ class TouchRipple extends StatefulWidget {
     this.rippleDuration = const Duration(milliseconds: 150),
     this.rippleCurve = Curves.easeOut,
     this.rippleFadeInDuration = const Duration(milliseconds: 25),
-    this.rippleFadeInCurve = Curves.easeIn,
+    this.rippleFadeInCurve = Curves.easeOut,
     this.rippleFadeOutDuration = const Duration(milliseconds: 150),
-    this.rippleFadeOutCurve = Curves.ease,
+    this.rippleFadeOutCurve = Curves.easeIn,
     this.canceledRippleDuration = Duration.zero,
     this.canceledRippleCurve = Curves.ease,
     this.longPressDuration = const Duration(seconds: 1),
@@ -409,13 +410,25 @@ class TouchRipple extends StatefulWidget {
   /// Curved animation of [canceledLongPressDuration].
   final Curve canceledLongPressCurve;
 
+  /// Fade-in animation duration of foreground.
   final Duration foregroundFadeInDuration;
+
+  /// Animation curve of foreground fade in(forward),
+  /// Curved animation of [foregroundFadeInDuration].
   final Curve foregroundFadeInCurve;
 
+  /// Fade-out animation duration of foreground.
   final Duration foregroundFadeOutDuration;
+
+  /// Animation curve of foreground fade out(reverse),
+  /// Curved animation of [foregroundFadeOutDuration].
   final Curve foregroundFadeOutCurve;
 
+  /// Fade-out animation duration of canceled foreground.
   final Duration canceledForegroundDuration;
+
+  /// Animation curve of canceled foreground fade out(reverse),
+  /// Curved animation of [foregroundFadeOutDuration].
   final Curve canceledForegroundCurve;
 
 
@@ -441,11 +454,11 @@ class TouchRipple extends StatefulWidget {
   /// If the double tap state is canceled.
   /// 
   /// * Called if no event occurs after
-  /// [doubleTapStateCancellationDuration] after the double tap is called.
+  ///   [doubleTapStateCancellationDuration] after the double tap is called.
   /// 
   final Function? onDoubleTapEnd;
 
-  /// If the user continues to press for a certain period of time without lifting their hand
+  /// If the user continues to press for a certain period of time without lifting their hand.
   /// 
   /// * Change [longPressDuration] to define
   ///   the minimum duration needed to define if it is a long press.
@@ -472,7 +485,6 @@ class TouchRipple extends StatefulWidget {
   /// Same as [Listener.onPointerCancel]
   final OnPointer? onPointerCancel;
 
-  /// Same as [Listener.onPointerCancel]
   final Function? onCancel;
 
 
@@ -856,6 +868,7 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
       if(widget.longPressBehavior != LongPressBehavior.cancel
       && longPressFadePercent == 0
       && longPressController.isCompleted) {
+        longPressController.value = 0;
 
         longPressController.forward();
         longPressFadeController.forward();
