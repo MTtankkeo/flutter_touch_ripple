@@ -93,6 +93,7 @@ class RippleStackState extends State<RippleStack> {
     required Function onClick,
     required bool isNotDecided,
     int? count,
+    void Function(dynamic value)? onReturn,
   }) {
     final GlobalKey key = GlobalKey();
 
@@ -106,6 +107,7 @@ class RippleStackState extends State<RippleStack> {
           centerToRatio: centerToRatio,
           size: widget.size,
           onClick: onClick,
+          onReturn: onReturn,
           isNotDecided: isNotDecided,
           startOnEvent: startOnEvent,
           duration: widget.rippleDuration,

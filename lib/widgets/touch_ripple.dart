@@ -16,9 +16,9 @@ typedef OnPointer = void Function(PointerEvent event);
 
 typedef OnPointerHover = void Function(PointerHoverEvent event);
 
-typedef OnDoubleTap = bool Function(int count);
+typedef OnDoubleTap = bool? Function(int count);
 
-typedef OnLongPress = bool Function();
+typedef OnLongPress = bool? Function();
 
 
 
@@ -571,6 +571,8 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
 
   Offset get distancePointerOffset => pointerDownOffset - pointerMoveOffset;
 
+  bool isPointerDown = false;
+
 
 
   Timer? tapableTimer;
@@ -578,6 +580,8 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
   bool isCanceled = false;
   
   bool isTapable = true;
+
+  bool isLongPressRepeatable = true;
   
   /// Touch slop에 의해 모든 이벤트를 취소해야 하는 여부
   bool get isMustCancel => distancePointerOffset.dx.abs() > widget.touchSlop ||
@@ -633,8 +637,10 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
     if(!widget.isActive) return;
     
     if(event is PointerDownEvent) {
+      isPointerDown = true;
       isCanceled = false;
       isVisibleEffect = false;
+      isLongPressRepeatable = true;
 
       // 포인터 위치를 초기화합니다.
       // 이때 touchSlop으로 인해 동작이 취소되지 않도록
@@ -682,6 +688,8 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
         rippleStackState.cancel();
       }
     } else if(event is PointerUpEvent) {
+      isPointerDown = false;
+      
       tapableTimer?.cancel();
       startTapEffectTimer?.cancel();
 
@@ -741,6 +749,7 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
   void cancel() {
     startTapEffectTimer?.cancel();
 
+    isPointerDown = false;
     isTapable = true;
     isCanceled = true;
 
@@ -765,8 +774,6 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
 
 
   void onTap({bool notDecided = false}) {
-    if(!widget.useTapEffect) return;
-
     if(widget.useTapEffect) {
       double lowerPercent =
              widget.tapLowerPercent < longPressPercent
@@ -783,6 +790,8 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
       );
 
       if(widget.useTapForeground) rippleStackState.forwardForeground(widget.rippleDuration);
+    } else {
+      widget.onTap();
     }
   }
 
@@ -798,6 +807,12 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
         onClick: widget.onDoubleTap!,
         isNotDecided: false,
         count: doubleTapCount,
+        onReturn: (value) {
+          if(value || value == null) return;
+
+          initAllCount();
+          doubleTapTimer?.cancel();
+        },
       );
 
       if(widget.useDoubleTapForeground) {
@@ -805,16 +820,8 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
           widget.rippleDuration + widget.doubleTapStateCancellationDuration
         );
       }
-    }
-
-    if(widget.onDoubleTap != null) {
-      bool isRepeatable = widget.onDoubleTap!(doubleTapCount);
-
-      if(!isRepeatable) {
-        initAllCount();
-
-        doubleTapTimer?.cancel();
-      }
+    } else {
+      widget.onDoubleTap!(doubleTapCount);
     }
   }
 
@@ -826,6 +833,7 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
     required Function onClick,
     required bool isNotDecided,
     int? count,
+    void Function(dynamic value)? onReturn,
   }) {
     if(overlapBehavior == RippleOverlapBehavior.cancel) rippleStackState.cancel();
       
@@ -837,6 +845,7 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
       onClick: onClick,
       isNotDecided: isNotDecided,
       count: count,
+      onReturn: onReturn,
     );
   }
 
@@ -860,14 +869,18 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
         isCanceled = true;
         longPressFadeController.reverse();
 
-        if(widget.onLongPress != null) widget.onLongPress!();
+        bool? isRepeatable = widget.onLongPress!();
+
+        if(isRepeatable != null) isLongPressRepeatable = isRepeatable;
       }
     }));
 
     longPressFadeController.addListener(() => setState(() {
       if(widget.longPressBehavior != LongPressBehavior.cancel
       && longPressFadePercent == 0
-      && longPressController.isCompleted) {
+      && longPressController.isCompleted
+      && isPointerDown
+      && isLongPressRepeatable) {
         longPressController.value = 0;
 
         longPressController.forward();

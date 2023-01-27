@@ -10,6 +10,7 @@ class RippleEffect extends StatefulWidget {
     required this.count,
     required this.startOnEvent,
     required this.onClick,
+    this.onReturn,
     required this.isNotDecided,
     required this.centerToRatio,
     required this.size,
@@ -36,6 +37,7 @@ class RippleEffect extends StatefulWidget {
 
   final StartOnEvent startOnEvent;
   final Function onClick;
+  final void Function(dynamic value)? onReturn;
 
   final bool isNotDecided;
 
@@ -125,9 +127,13 @@ class RippleEffectState extends State<RippleEffect> with TickerProviderStateMixi
 
   void onClick() {
     if(widget.count != null) {
-      widget.onClick(widget.count);
+      dynamic value = widget.onClick(widget.count);
+
+      if(widget.onReturn != null) widget.onReturn!(value);
     } else {
-      widget.onClick();
+      dynamic value = widget.onClick();
+      
+      if(widget.onReturn != null) widget.onReturn!(value);
     }
 
     isCalled = true;
