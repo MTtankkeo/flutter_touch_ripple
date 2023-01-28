@@ -53,6 +53,19 @@ class RipplePainter extends CustomPainter {
 
 
 
+    canvas.clipRRect(
+      RRect.fromLTRBAndCorners(
+        0,            // left
+        0,            // top
+        size.width,   // right
+        size.height,  // bottom
+        topLeft: radius.topLeft,
+        topRight: radius.topRight,
+        bottomLeft: radius.bottomLeft,
+        bottomRight: radius.bottomRight,
+      ),
+    );
+
     canvas.drawCircle(
       Offset(
         size.width * (centerToRatio.dx + 0.5),

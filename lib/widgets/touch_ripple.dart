@@ -994,6 +994,7 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
                 colorTween: widget.rippleColorTween,
                 foregroundColor: activeForegroundColor,
                 foregroundColorTween: widget.foregroundColorTween,
+                rippleRadius: widget.rippleRadius,
               ),
               Stack(
                 children: [
@@ -1007,6 +1008,7 @@ class _TouchRippleState extends State<TouchRipple> with TickerProviderStateMixin
                     fadeInCurve: widget.foregroundFadeInCurve,
                     fadeOutDuration: widget.foregroundFadeOutDuration,
                     fadeOutCurve: widget.foregroundFadeOutCurve,
+                    borderRadius: widget.rippleRadius,
                   ),
                   SizeChangedLayoutNotifier(
                     child: CustomPaint(

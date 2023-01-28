@@ -28,6 +28,7 @@ class RippleStack extends StatefulWidget {
     required this.colorTween,
     required this.foregroundColor,
     required this.foregroundColorTween,
+    required this.rippleRadius,
   });
 
   /// The [size] is size of [Ripple.child]
@@ -64,6 +65,8 @@ class RippleStack extends StatefulWidget {
 
   /// The [foregroundColor] is ripple foreground background color tween
   final ColorTween? foregroundColorTween;
+
+  final BorderRadius rippleRadius;
 
   @override
   State<RippleStack> createState() => RippleStackState();
@@ -122,6 +125,7 @@ class RippleStackState extends State<RippleStack> {
           colorTween: widget.colorTween,
           lowerPercent: lowerPercent,
           upperPercent: upperPercent,
+          radius: widget.rippleRadius,
         ),
       ),
     );
@@ -187,6 +191,7 @@ class RippleStackState extends State<RippleStack> {
             fadeInCurve: widget.rippleFadeInCurve,
             fadeOutDuration: widget.foregroundFadeOutDuration,
             fadeOutCurve: widget.foregroundFadeOutCurve,
+            borderRadius: widget.rippleRadius,
           ),
           Stack(children: children),
         ],

@@ -27,6 +27,7 @@ class RippleEffect extends StatefulWidget {
     required this.colorTween,
     required this.lowerPercent,
     required this.upperPercent,
+    required this.radius,
   });
 
   final int? count;
@@ -66,6 +67,8 @@ class RippleEffect extends StatefulWidget {
 
   /// Same as [Ripple.upperPercent]
   final double upperPercent;
+
+  final BorderRadius radius;
 
   @override
   State<RippleEffect> createState() => RippleEffectState();
@@ -210,7 +213,7 @@ class RippleEffectState extends State<RippleEffect> with TickerProviderStateMixi
       size: Size(widget.size.width, widget.size.height),
       painter: RipplePainter(
         centerToRatio: widget.centerToRatio,
-        radius: BorderRadius.zero,
+        radius: widget.radius,
         color: activeColor.withAlpha((activeColor.alpha * fadePercent).toInt()),
         percent: formPercent,
       ),

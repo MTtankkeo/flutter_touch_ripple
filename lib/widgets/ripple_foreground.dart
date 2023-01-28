@@ -12,6 +12,7 @@ class RippleForeground extends StatefulWidget {
     required this.fadeInCurve,
     required this.fadeOutDuration,
     required this.fadeOutCurve,
+    required this.borderRadius,
   });
 
   final bool isVisiable;
@@ -24,6 +25,8 @@ class RippleForeground extends StatefulWidget {
 
   final Duration fadeOutDuration;
   final Curve fadeOutCurve;
+
+  final BorderRadius borderRadius;
 
   @override
   State<RippleForeground> createState() => RippleForegroundState();
@@ -92,8 +95,11 @@ class RippleForegroundState extends State<RippleForeground> with TickerProviderS
     return Container(
       width: widget.size.width,
       height: widget.size.height,
-      color: widget.color.withAlpha(
-        (widget.color.alpha * foregroundFadePercent).toInt()
+      decoration: BoxDecoration(
+        color: widget.color.withAlpha(
+          (widget.color.alpha * foregroundFadePercent).toInt()
+        ),
+        borderRadius: widget.borderRadius,
       ),
     );
   }
