@@ -64,27 +64,13 @@ TouchRipple(
 | hoverFadeOutDuration | Defines fade-out duration of hover animatin. | null | Duration
 | hoverFadeOutCurve | Defines fade-out curve of hover curved animatin. | null | Curve
 | rippleScale | Defines scale of touch ripple effect size. | 1 | double (1~max)
-| tapableDuration | [tapableDuration] defines the duration after which the tap event is canceled after the pointerDown event occurs,
-
-In other words, in order to detect the point and have the tap event occur, the tap event must occur before the [tapableDuration]. | null | Duration
+| tapableDuration | [tapableDuration] defines the duration after which the tap event is canceled after the pointerDown event occurs, In other words, in order to detect the point and have the tap event occur, the tap event must occur before the [tapableDuration]. | null | Duration
 | renderOrder | Defines the order in which the touch ripple effect is drawn. | TouchRippleRenderOrderType.foreground | TouchRippleRenderOrderType
 | hitTestBehavior | Same as [HitTestBehavior] of [RawGestureDetector]. | HitTestBehavior.translucent | HitTestBehavior
 | doubleTappableDuration | The duration between two taps that is considered a double tap, This refers to the time interval used to recognize double taps, If a tap occurs and a tap occurs again before [doubleTappableDuration], it is considered a double tap. | const Duration(milliseconds: 250) | Duration
-| doubleTapHoldDuration | Defines the minimum duration to end the double tap state.
-
-If a double tap state starts and no tap events occur during that duration, the double tap state ends. | null | Duration
-| longTappableDuration | Defines the minimum duration define as a long tap.
-
-See also:
-
-A pointer down event is defined as a long tap when it occurs and a duration of [longTappableDuration] or more has elapsed.
-
-If the value is not defined, it is replaced by the spread duration of the long tap behavior. | const Duration(milliseconds: 750) | Duration
-| longTapStartDeleyDuration | Defines the amount of duration that must elapse before a long press gesture is considered initiated.
-
-See also:
-
-For example if that value is defined as 500 milliseconds, the long press action is not considered to have started until the user has held down the widget for at least 500 milliseconds. | const Duration(milliseconds: 150) | Duration
+| doubleTapHoldDuration | Defines the minimum duration to end the double tap state. If a double tap state starts and no tap events occur during that duration, the double tap state ends. | null | Duration
+| longTappableDuration | Defines the minimum duration define as a long tap. See also: A pointer down event is defined as a long tap when it occurs and a duration of [longTappableDuration] or more has elapsed. If the value is not defined, it is replaced by the spread duration of the long tap behavior. | const Duration(milliseconds: 750) | Duration
+| longTapStartDeleyDuration | Defines the amount of duration that must elapse before a long press gesture is considered initiated. See also: For example if that value is defined as 500 milliseconds, the long press action is not considered to have started until the user has held down the widget for at least 500 milliseconds. | const Duration(milliseconds: 150) | Duration
 | tapPreviewMinDuration | The minimum duration to wait before showing the preview tap effect, if no other events need to be considered. | const Duration(milliseconds: 150) | Duration
 | controller | This is the controller you define when you need to manage touch ripple effects externally. | null | TouchRippleController
 | borderRadius | Same as [BorderRadius] of [ClipRRect]. | BorderRadius.zero | TouchRippleController
