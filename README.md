@@ -145,3 +145,12 @@ This enum is defines the task when the gesture is cancelled.
 | ------ | ------
 | onContinueStart | The considered to be in focus when it is in a continuable state.
 | onRejectable | The situation that defines whether it is a long tap is considered the focus state.
+
+## values of TouchRippleLongTapFocusStartEvent 
+
+This enum is used to defines the render order of a touch ripple effects.
+
+| Value | Description
+| ------ | ------
+| foreground | This value Defines that the touch ripple should be rendered in front of other elements
+| background | This value Defines that the touch ripple should be rendered behind other elements.
