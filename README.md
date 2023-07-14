@@ -33,7 +33,7 @@ TouchRipple(
 
 ## properties of TouchRipple Widget
 
-| Properies | Description | Default value | Type
+| Properie | Description | Default value | Type
 | ------ | ------ | ------ | ------
 | child | The [child] widget contained by the [TouchRipple] widget. | required | Widget
 | onTap | Defines a function that is called when the user taps on that widget. | null | TouchRippleEventCallBack
@@ -92,7 +92,7 @@ TouchRipple(
 
 See also: Because this values is flexible and interacts with multiple values, we were unable to document a default value.
 
-| Properies | Description | Type
+| Properie | Description | Type
 | ------ | ------ | ------
 | overlap | Defines the behavior when the effect is overlapped. | TouchRippleOverlapBehavior
 | lowerPercent | Defines in decimal form ranging from 0 to 1, at what point the spread animation of the touch ripple effect will be started. | double (0~1)
@@ -114,7 +114,7 @@ See also: Because this values is flexible and interacts with multiple values, we
 
 This enum is used to defines the behavior of a touch ripple when it overlaps.
 
-| Properies | Description
+| Properie | Description
 | ------ | ------
 | overlappable | Defines that the touch ripples should overlap.
 | cancel | If the effects overlap, the previous touch effect will be canceled and the should be added to the stack will be added.
@@ -124,14 +124,24 @@ This enum is used to defines the behavior of a touch ripple when it overlaps.
 
 This enum is defines behavior for which the gesture is rejected.
 
-| Properies | Description
+| Properie | Description
 | ------ | ------
 | touchSlop | Once the pointer is detected, the event is canceled if the pointer movement distance is greater than or equal to [kTouchSlop].
 | leave | Once the pointer is detected, the event is canceled if the pointer position is outside the position occupied by the widget.
 
+## values of TouchRippleCancelBehavior 
+
+This enum is defines the task when the gesture is cancelled.
+
+| Value | Description
+| ------ | ------
+| none | No specific task is performed when the gesture is canceled.
+| stopSpread | The spread animation of the touch ripple effect is stopped when the gesture is canceled.
+| reverseSpread | The spread animation of the touch ripple effect is reversed when the gesture is canceled.
+
 ## values of TouchRippleLongTapFocusStartEvent 
 
-| Properies | Description
+| Value | Description
 | ------ | ------
 | onContinueStart | The considered to be in focus when it is in a continuable state.
 | onRejectable | The situation that defines whether it is a long tap is considered the focus state.
