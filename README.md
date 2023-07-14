@@ -99,9 +99,7 @@ See also: Because this values is flexible and interacts with multiple values, we
 | upperPercent | Defines in decimal form ranging from 0 to 1, at what point the spread animation of the touch ripple effect will be ended. | double (0~1)
 | fadeLowerPercent | Defines in decimal form ranging from 0 to 1, at what point the fade animation of the touch ripple effect will be started. | double (0~1)
 | fadeUpperPercent | Defines in decimal form ranging from 0 to 1, at what point the fade animation of the touch ripple effect will be ended. | double (0~1)
-| eventCallBackableMinPercent | Defines the point in the spread animation of the touch ripple effect when the registered event callback function can be called.
-
-For example, if the user is about to click to move the page, you don't want the event callback function to be called before the effect has fully spread, causing the page to move. | double
+| eventCallBackableMinPercent | Defines the point in the spread animation of the touch ripple effect when the registered event callback function can be called. For example, if the user is about to click to move the page, you don't want the event callback function to be called before the effect has fully spread, causing the page to move. | double
 | spreadDuration | Defines the duration of the touch ripple spread animation. | Duration
 | spreadCurve | Defines the curve of the touch ripple spread curved animation. | Curve
 | fadeInDuration | Defines the duration of the touch ripple fade-in of fade animation. | Duration
