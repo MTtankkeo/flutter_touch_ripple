@@ -110,7 +110,9 @@ See also: Because this values is flexible and interacts with multiple values, we
 | canceledDuration | Defines the duration for the touch ripple effect to fade out when it is interrupted by a touch ripple overlap behavior. | Duration
 | canceledCurve | Defines the curve of the fade out curve animation when the touch ripple effect is cancelled midway by the touch ripple overlap behavior. | Curve
 
-## values of TouchRippleOverlapBehavior
+
+
+## Values of TouchRippleOverlapBehavior
 
 This enum is used to defines the behavior of a touch ripple when it overlaps.
 
@@ -120,7 +122,9 @@ This enum is used to defines the behavior of a touch ripple when it overlaps.
 | cancel | If the effects overlap, the previous touch effect will be canceled and the should be added to the stack will be added.
 | ignoring | If the effects overlap, ignore and cancel the event until the previous touch effect disappears.
 
-## values of TouchRippleRejectBehavior
+
+
+## Values of TouchRippleRejectBehavior
 
 This enum is defines behavior for which the gesture is rejected.
 
@@ -129,7 +133,9 @@ This enum is defines behavior for which the gesture is rejected.
 | touchSlop | Once the pointer is detected, the event is canceled if the pointer movement distance is greater than or equal to [kTouchSlop].
 | leave | Once the pointer is detected, the event is canceled if the pointer position is outside the position occupied by the widget.
 
-## values of TouchRippleCancelBehavior 
+
+
+## Values of TouchRippleCancelBehavior 
 
 This enum is defines the task when the gesture is cancelled.
 
@@ -139,14 +145,18 @@ This enum is defines the task when the gesture is cancelled.
 | stopSpread | The spread animation of the touch ripple effect is stopped when the gesture is canceled.
 | reverseSpread | The spread animation of the touch ripple effect is reversed when the gesture is canceled.
 
-## values of TouchRippleLongTapFocusStartEvent 
+
+
+## Values of TouchRippleLongTapFocusStartEvent 
 
 | Value | Description
 | ------ | ------
 | onContinueStart | The considered to be in focus when it is in a continuable state.
 | onRejectable | The situation that defines whether it is a long tap is considered the focus state.
 
-## values of TouchRippleLongTapFocusStartEvent 
+
+
+## Values of TouchRippleLongTapFocusStartEvent 
 
 This enum is used to defines the render order of a touch ripple effects.
 
