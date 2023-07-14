@@ -34,7 +34,7 @@ TouchRipple(
 ## properties of TouchRipple Widget
 
 | Properies | Description | Default value | Type
-| ------ | ------ | ------ | ------ | ------
+| ------ | ------ | ------ | ------
 | child | The [child] widget contained by the [TouchRipple] widget. | required | Widget
 | onTap | Defines a function that is called when the user taps on that widget. | null | TouchRippleEventCallBack
 | onDoubleTap | Defines a function that is called when the user double taps on that widget. | null | TouchRippleEventCallBack
@@ -107,7 +107,7 @@ For example if that value is defined as 500 milliseconds, the long press action 
 See also: Because this values is flexible and interacts with multiple values, we were unable to document a default value.
 
 | Properies | Description | Type
-| ------ | ------ | ------ | ------ | ------
+| ------ | ------ | ------
 | overlap | Defines the behavior when the effect is overlapped. | TouchRippleOverlapBehavior
 | lowerPercent | Defines in decimal form ranging from 0 to 1, at what point the spread animation of the touch ripple effect will be started. | double (0~1)
 | upperPercent | Defines in decimal form ranging from 0 to 1, at what point the spread animation of the touch ripple effect will be ended. | double (0~1)
