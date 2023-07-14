@@ -6,7 +6,7 @@ import 'package:flutter_touch_ripple/components/interfaces/copy_pasteable.dart';
 
 
 
-/// This enum is used to defines the behavior of a touch ripple when it overlaps.
+/// Defines the behavior of a touch ripple when it overlaps.
 enum TouchRippleOverlapBehavior {
   /// This value defines that the touch ripples should overlap.
   overlappable,

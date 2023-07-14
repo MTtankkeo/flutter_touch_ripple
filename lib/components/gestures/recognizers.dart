@@ -309,6 +309,13 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
   void onPointerUp(PointerUpEvent event) {
     super.onPointerUp(event);
 
+    if(_longTapCount == 0) {
+      reject();
+      onContinueEnd();
+    } else {
+      accept();
+    }
+
     _longTapCount == 0 ? reject() : accept();
   }
 

@@ -1,9 +1,15 @@
 # Touch Ripple For Flutter
-### Customizable touch ripple for flutter widget
+### 👁 Customizable touch ripple for flutter widget
 
 This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally with randomness.
 
 In conclusion, using this package enables easy definition of flexible touch behaviors or touch animation.
+
+## View
+![ezgif-3-055c1741ca](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/cf41cccc-3ba0-4713-b4b5-83b407fbee17)
+
+
+
 
 ## How to apply ripple widget
 
@@ -21,7 +27,7 @@ Referance to the appropriate code to implement page movement with this code
 ```dart
 TouchRipple(
     onTap: () {
-    HapticFeedback.selectionClick();
+        HapticFeedback.selectionClick();
         onTap?.call();
     },
     // or behavior
@@ -33,8 +39,8 @@ TouchRipple(
 
 ## properties of TouchRipple Widget
 
-| Properies | Description | Default value | Type
-| ------ | ------ | ------ | ------ | ------
+| Properie | Description | Default value | Type
+| ------ | ------ | ------ | ------
 | child | The [child] widget contained by the [TouchRipple] widget. | required | Widget
 | onTap | Defines a function that is called when the user taps on that widget. | null | TouchRippleEventCallBack
 | onDoubleTap | Defines a function that is called when the user double taps on that widget. | null | TouchRippleEventCallBack
@@ -64,27 +70,13 @@ TouchRipple(
 | hoverFadeOutDuration | Defines fade-out duration of hover animatin. | null | Duration
 | hoverFadeOutCurve | Defines fade-out curve of hover curved animatin. | null | Curve
 | rippleScale | Defines scale of touch ripple effect size. | 1 | double (1~max)
-| tapableDuration | [tapableDuration] defines the duration after which the tap event is canceled after the pointerDown event occurs,
-
-In other words, in order to detect the point and have the tap event occur, the tap event must occur before the [tapableDuration]. | null | Duration
+| tapableDuration | [tapableDuration] defines the duration after which the tap event is canceled after the pointerDown event occurs, In other words, in order to detect the point and have the tap event occur, the tap event must occur before the [tapableDuration]. | null | Duration
 | renderOrder | Defines the order in which the touch ripple effect is drawn. | TouchRippleRenderOrderType.foreground | TouchRippleRenderOrderType
 | hitTestBehavior | Same as [HitTestBehavior] of [RawGestureDetector]. | HitTestBehavior.translucent | HitTestBehavior
 | doubleTappableDuration | The duration between two taps that is considered a double tap, This refers to the time interval used to recognize double taps, If a tap occurs and a tap occurs again before [doubleTappableDuration], it is considered a double tap. | const Duration(milliseconds: 250) | Duration
-| doubleTapHoldDuration | Defines the minimum duration to end the double tap state.
-
-If a double tap state starts and no tap events occur during that duration, the double tap state ends. | null | Duration
-| longTappableDuration | Defines the minimum duration define as a long tap.
-
-See also:
-
-A pointer down event is defined as a long tap when it occurs and a duration of [longTappableDuration] or more has elapsed.
-
-If the value is not defined, it is replaced by the spread duration of the long tap behavior. | const Duration(milliseconds: 750) | Duration
-| longTapStartDeleyDuration | Defines the amount of duration that must elapse before a long press gesture is considered initiated.
-
-See also:
-
-For example if that value is defined as 500 milliseconds, the long press action is not considered to have started until the user has held down the widget for at least 500 milliseconds. | const Duration(milliseconds: 150) | Duration
+| doubleTapHoldDuration | Defines the minimum duration to end the double tap state. If a double tap state starts and no tap events occur during that duration, the double tap state ends. | null | Duration
+| longTappableDuration | Defines the minimum duration define as a long tap. See also: A pointer down event is defined as a long tap when it occurs and a duration of [longTappableDuration] or more has elapsed. If the value is not defined, it is replaced by the spread duration of the long tap behavior. | const Duration(milliseconds: 750) | Duration
+| longTapStartDeleyDuration | Defines the amount of duration that must elapse before a long press gesture is considered initiated. See also: For example if that value is defined as 500 milliseconds, the long press action is not considered to have started until the user has held down the widget for at least 500 milliseconds. | const Duration(milliseconds: 150) | Duration
 | tapPreviewMinDuration | The minimum duration to wait before showing the preview tap effect, if no other events need to be considered. | const Duration(milliseconds: 150) | Duration
 | controller | This is the controller you define when you need to manage touch ripple effects externally. | null | TouchRippleController
 | borderRadius | Same as [BorderRadius] of [ClipRRect]. | BorderRadius.zero | TouchRippleController
@@ -106,16 +98,14 @@ For example if that value is defined as 500 milliseconds, the long press action 
 
 See also: Because this values is flexible and interacts with multiple values, we were unable to document a default value.
 
-| Properies | Description | Type
-| ------ | ------ | ------ | ------ | ------
+| Properie | Description | Type
+| ------ | ------ | ------
 | overlap | Defines the behavior when the effect is overlapped. | TouchRippleOverlapBehavior
 | lowerPercent | Defines in decimal form ranging from 0 to 1, at what point the spread animation of the touch ripple effect will be started. | double (0~1)
 | upperPercent | Defines in decimal form ranging from 0 to 1, at what point the spread animation of the touch ripple effect will be ended. | double (0~1)
 | fadeLowerPercent | Defines in decimal form ranging from 0 to 1, at what point the fade animation of the touch ripple effect will be started. | double (0~1)
 | fadeUpperPercent | Defines in decimal form ranging from 0 to 1, at what point the fade animation of the touch ripple effect will be ended. | double (0~1)
-| eventCallBackableMinPercent | Defines the point in the spread animation of the touch ripple effect when the registered event callback function can be called.
-
-For example, if the user is about to click to move the page, you don't want the event callback function to be called before the effect has fully spread, causing the page to move. | double
+| eventCallBackableMinPercent | Defines the point in the spread animation of the touch ripple effect when the registered event callback function can be called. For example, if the user is about to click to move the page, you don't want the event callback function to be called before the effect has fully spread, causing the page to move. | double
 | spreadDuration | Defines the duration of the touch ripple spread animation. | Duration
 | spreadCurve | Defines the curve of the touch ripple spread curved animation. | Curve
 | fadeInDuration | Defines the duration of the touch ripple fade-in of fade animation. | Duration
@@ -125,3 +115,58 @@ For example, if the user is about to click to move the page, you don't want the 
 | canceledDuration | Defines the duration for the touch ripple effect to fade out when it is interrupted by a touch ripple overlap behavior. | Duration
 | canceledDuration | Defines the duration for the touch ripple effect to fade out when it is interrupted by a touch ripple overlap behavior. | Duration
 | canceledCurve | Defines the curve of the fade out curve animation when the touch ripple effect is cancelled midway by the touch ripple overlap behavior. | Curve
+
+
+
+## Values of TouchRippleOverlapBehavior
+
+This enum is used to defines the behavior of a touch ripple when it overlaps.
+
+| Properie | Description
+| ------ | ------
+| overlappable | Defines that the touch ripples should overlap.
+| cancel | If the effects overlap, the previous touch effect will be canceled and the should be added to the stack will be added.
+| ignoring | If the effects overlap, ignore and cancel the event until the previous touch effect disappears.
+
+
+
+## Values of TouchRippleRejectBehavior
+
+This enum is defines behavior for which the gesture is rejected.
+
+| Properie | Description
+| ------ | ------
+| touchSlop | Once the pointer is detected, the event is canceled if the pointer movement distance is greater than or equal to [kTouchSlop].
+| leave | Once the pointer is detected, the event is canceled if the pointer position is outside the position occupied by the widget.
+
+
+
+## Values of TouchRippleCancelBehavior 
+
+This enum is defines the task when the gesture is cancelled.
+
+| Value | Description
+| ------ | ------
+| none | No specific task is performed when the gesture is canceled.
+| stopSpread | The spread animation of the touch ripple effect is stopped when the gesture is canceled.
+| reverseSpread | The spread animation of the touch ripple effect is reversed when the gesture is canceled.
+
+
+
+## Values of TouchRippleLongTapFocusStartEvent 
+
+| Value | Description
+| ------ | ------
+| onContinueStart | The considered to be in focus when it is in a continuable state.
+| onRejectable | The situation that defines whether it is a long tap is considered the focus state.
+
+
+
+## Values of TouchRippleLongTapFocusStartEvent 
+
+This enum is used to defines the render order of a touch ripple effects.
+
+| Value | Description
+| ------ | ------
+| foreground | This value Defines that the touch ripple should be rendered in front of other elements
+| background | This value Defines that the touch ripple should be rendered behind other elements.
