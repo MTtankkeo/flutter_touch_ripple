@@ -21,7 +21,7 @@ Referance to the appropriate code to implement page movement with this code
 ```dart
 TouchRipple(
     onTap: () {
-    HapticFeedback.selectionClick();
+        HapticFeedback.selectionClick();
         onTap?.call();
     },
     // or behavior
