@@ -199,3 +199,9 @@ This enum is used to defines the render order of a touch ripple effects.
 | ------ | ------
 | foreground | This value Defines that the touch ripple should be rendered in front of other elements
 | background | This value Defines that the touch ripple should be rendered behind other elements.
+
+## Apply TouchRippleCancelBehavior.foreground
+![ezgif-1-ea7be44be2](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/ac77426d-716c-4dcc-bdf2-9626eee49b9a)
+
+## Apply TouchRippleCancelBehavior.background
+![ezgif-1-add7f9a0d0](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/07edafeb-27fe-4c37-83a8-5186241ddd0d)
