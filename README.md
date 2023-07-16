@@ -1,7 +1,7 @@
 # Touch Ripple For Flutter
 ### Customizable touch ripple for flutter widget
 
-This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally with randomness.
+This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally.
 
 In conclusion, using this package enables easy definition of flexible touch behaviors or touch animation.
 
@@ -31,6 +31,8 @@ TouchRipple(
     },
     // or behavior
     tapBehavior: const TouchRippleBehavior(
+        // "The spread animation must complete in order for the registered
+        // event callback function to be called." which is equivalent to defining
         eventCallBackableMinPercent: 1,
     ),
 );
