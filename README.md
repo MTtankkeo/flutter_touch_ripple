@@ -193,7 +193,7 @@ This enum is defines the task when the gesture is cancelled.
 
 - - -
 
-## Values of TouchRippleLongTapFocusStartEvent 
+## Values of TouchRippleRenderOrderType 
 
 This enum is used to defines the render order of a touch ripple effects.
 
