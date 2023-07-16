@@ -138,10 +138,10 @@ This enum is defines behavior for which the gesture is rejected.
 | touchSlop | Once the pointer is detected, the event is canceled if the pointer movement distance is greater than or equal to [kTouchSlop].
 | leave | Once the pointer is detected, the event is canceled if the pointer position is outside the position occupied by the widget.
 
-## TouchRippleRejectBehavior.touchSlop
+## Apply TouchRippleRejectBehavior.touchSlop
 ![ezgif-5-d5e8cb93e2](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/2ca71a34-e30e-4b8f-81f4-f58890f725d0)
-
-## TouchRippleRejectBehavior.leave
+ 
+## Apply TouchRippleRejectBehavior.leave
 ![ezgif-5-63fc65bd9f](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/245c7095-29af-4b55-8f22-f453f771d70f)
 
 
