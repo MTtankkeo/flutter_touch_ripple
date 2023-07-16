@@ -127,6 +127,15 @@ This enum is used to defines the behavior of a touch ripple when it overlaps.
 | cancel | If the effects overlap, the previous touch effect will be canceled and the should be added to the stack will be added.
 | ignoring | If the effects overlap, ignore and cancel the event until the previous touch effect disappears.
 
+## Apply TouchRippleRejectBehavior.overlappable
+![ezgif-2-29d7de7115](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/ef9f3e13-f2f0-4e49-b83b-b3fdc990e3c4)
+
+## Apply TouchRippleRejectBehavior.cancel
+![ezgif-2-5f471041ff](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/bba89ffa-2767-4390-99d7-24e5ca96110d)
+
+## Apply TouchRippleRejectBehavior.ignoring
+![ezgif-2-6f60071360](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/2339cbc4-a20a-4fc6-a402-1202d4d35f0a)
+
 - - -
 
 ## Values of TouchRippleRejectBehavior
