@@ -183,6 +183,12 @@ This enum is defines the task when the gesture is cancelled.
 | onContinueStart | The considered to be in focus when it is in a continuable state.
 | onRejectable | The situation that defines whether it is a long tap is considered the focus state.
 
+## Apply TouchRippleCancelBehavior.onContinueStart
+![ezgif-1-8ad43f2371](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/b4fb9254-60f3-4726-b3ad-e673a6ea994a)
+
+## Apply TouchRippleCancelBehavior.onRejectable
+![ezgif-1-fafc42efee](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/1adaec37-7ac4-4cde-9ecc-8d6f9b16b289)
+
 - - -
 
 ## Values of TouchRippleLongTapFocusStartEvent 
