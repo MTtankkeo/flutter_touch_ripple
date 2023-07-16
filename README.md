@@ -115,7 +115,7 @@ See also: Because this values is flexible and interacts with multiple values, we
 | canceledDuration | Defines the duration for the touch ripple effect to fade out when it is interrupted by a touch ripple overlap behavior. | Duration
 | canceledCurve | Defines the curve of the fade out curve animation when the touch ripple effect is cancelled midway by the touch ripple overlap behavior. | Curve
 
-
+- - -
 
 ## Values of TouchRippleOverlapBehavior
 
@@ -127,7 +127,7 @@ This enum is used to defines the behavior of a touch ripple when it overlaps.
 | cancel | If the effects overlap, the previous touch effect will be canceled and the should be added to the stack will be added.
 | ignoring | If the effects overlap, ignore and cancel the event until the previous touch effect disappears.
 
-
+- - -
 
 ## Values of TouchRippleRejectBehavior
 
@@ -138,10 +138,10 @@ This enum is defines behavior for which the gesture is rejected.
 | touchSlop | Once the pointer is detected, the event is canceled if the pointer movement distance is greater than or equal to [kTouchSlop].
 | leave | Once the pointer is detected, the event is canceled if the pointer position is outside the position occupied by the widget.
 
-> ## Apply TouchRippleRejectBehavior.touchSlop
+## Apply TouchRippleRejectBehavior.touchSlop
 > ![ezgif-5-d5e8cb93e2](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/2ca71a34-e30e-4b8f-81f4-f58890f725d0)
  
-> ## Apply TouchRippleRejectBehavior.leave
+## Apply TouchRippleRejectBehavior.leave
 > ![ezgif-5-63fc65bd9f](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/245c7095-29af-4b55-8f22-f453f771d70f)
 
 - - -
@@ -156,7 +156,7 @@ This enum is defines the task when the gesture is cancelled.
 | stopSpread | The spread animation of the touch ripple effect is stopped when the gesture is canceled.
 | reverseSpread | The spread animation of the touch ripple effect is reversed when the gesture is canceled.
 
-
+- - -
 
 ## Values of TouchRippleLongTapFocusStartEvent 
 
@@ -165,7 +165,7 @@ This enum is defines the task when the gesture is cancelled.
 | onContinueStart | The considered to be in focus when it is in a continuable state.
 | onRejectable | The situation that defines whether it is a long tap is considered the focus state.
 
-
+- - -
 
 ## Values of TouchRippleLongTapFocusStartEvent 
 
