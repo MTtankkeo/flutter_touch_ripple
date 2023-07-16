@@ -38,6 +38,11 @@ TouchRipple(
 );
 ```
 
+## Apply eventCallBackableMinPercent = 1
+![ezgif-2-af1eff8e7e](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/f92af980-3c44-4882-9e47-57b67739b8b5)
+
+- - -
+
 ## properties of TouchRipple Widget
 
 | Properie | Description | Default value | Type
