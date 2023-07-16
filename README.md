@@ -165,6 +165,15 @@ This enum is defines the task when the gesture is cancelled.
 | stopSpread | The spread animation of the touch ripple effect is stopped when the gesture is canceled.
 | reverseSpread | The spread animation of the touch ripple effect is reversed when the gesture is canceled.
 
+## Apply TouchRippleCancelBehavior.none
+![ezgif-1-8b40a9458c](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/0f70fc9b-31d4-44f6-9cfa-aa976ec2377f)
+
+## Apply TouchRippleCancelBehavior.stopSpread
+![ezgif-1-61b8e1cf2c](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/8c62e1e5-0f78-4247-9120-b2e2d1c08b78)
+
+## Apply TouchRippleCancelBehavior.reverseSpread
+![ezgif-1-fe8e2bf8fa](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/22e724a0-a838-4066-9801-8bb7e1606466)
+
 - - -
 
 ## Values of TouchRippleLongTapFocusStartEvent 
