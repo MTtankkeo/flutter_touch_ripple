@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_touch_ripple/components/controller.dart';
+import 'package:flutter_touch_ripple/components/states.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/render.dart';
 
@@ -73,10 +74,26 @@ class _TouchRippleStackState extends State<TouchRippleStack> with TickerProvider
   }
 
   @override
+  void dispose() {
+    final controller = widget.controller;
+          controller.hoverState?.dispose();
+          controller.focusState?.dispose();
+
+    final activeStates = controller.rippleStates.toList();
+
+    void disposeState(TouchRippleState state) {
+      state.dispose();
+    }
+    activeStates.forEach(disposeState);
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     CustomPainter? backgroundPainter;
     CustomPainter? foregroundPainter;
-
+    
     final painter = TouchRipplePainter(
       states: widget.controller.paints,
       color: widget.rippleColor,

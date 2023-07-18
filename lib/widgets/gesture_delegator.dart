@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/components/descendant_stateful_widget_visitable.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_touch_ripple/widgets/components/descendant_stateful_widg
 
 
 
-/*
 class TouchRippleGestureDelegator extends TouchRipple {
   const TouchRippleGestureDelegator({
     super.key,

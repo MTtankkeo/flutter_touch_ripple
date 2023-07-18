@@ -16,9 +16,8 @@
 ## 1.0.3
 * Slightly updated version (For additional behaviors and gestures)
 
-<!--
-## 1.1.0
-Added the following events:
-* onVerticalDragStart, onVerticalDragUpdate onVerticalDragEnd, onHorizontalDragStart, onHorizontalDragUpdate, onHorizontalDragEnd.
-* Added new widgets: TouchRippleGestureDelegator, PrimaryTouchRippleController
--->
+## 1.0.4
+* Updated package varsion
+
+## 1.0.5
+* Bug fixes varsion
