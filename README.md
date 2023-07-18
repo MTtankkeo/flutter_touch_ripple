@@ -1,13 +1,12 @@
 # Touch Ripple For Flutter
-### 👁 Customizable touch ripple for flutter widget
+### Customizable touch ripple for flutter widget
 
 This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally.
 
 In conclusion, using this package enables easy definition of flexible touch behaviors or touch animation.
 
 ## View
-![ezgif-3-055c1741ca](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/cf41cccc-3ba0-4713-b4b5-83b407fbee17)
-
+![ezgif-5-2ec16f8df8](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/54ef9092-2dcb-45e9-b2cf-03b03a1296eb)
 
 
 
@@ -38,6 +37,11 @@ TouchRipple(
     ),
 );
 ```
+
+## Apply eventCallBackableMinPercent = 1
+![ezgif-2-af1eff8e7e](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/f92af980-3c44-4882-9e47-57b67739b8b5)
+
+- - -
 
 ## properties of TouchRipple Widget
 
@@ -118,7 +122,7 @@ See also: Because this values is flexible and interacts with multiple values, we
 | canceledDuration | Defines the duration for the touch ripple effect to fade out when it is interrupted by a touch ripple overlap behavior. | Duration
 | canceledCurve | Defines the curve of the fade out curve animation when the touch ripple effect is cancelled midway by the touch ripple overlap behavior. | Curve
 
-
+- - -
 
 ## Values of TouchRippleOverlapBehavior
 
@@ -130,7 +134,16 @@ This enum is used to defines the behavior of a touch ripple when it overlaps.
 | cancel | If the effects overlap, the previous touch effect will be canceled and the should be added to the stack will be added.
 | ignoring | If the effects overlap, ignore and cancel the event until the previous touch effect disappears.
 
+## Apply TouchRippleRejectBehavior.overlappable
+![ezgif-2-29d7de7115](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/ef9f3e13-f2f0-4e49-b83b-b3fdc990e3c4)
 
+## Apply TouchRippleRejectBehavior.cancel
+![ezgif-2-5f471041ff](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/bba89ffa-2767-4390-99d7-24e5ca96110d)
+
+## Apply TouchRippleRejectBehavior.ignoring
+![ezgif-2-6f60071360](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/2339cbc4-a20a-4fc6-a402-1202d4d35f0a)
+
+- - -
 
 ## Values of TouchRippleRejectBehavior
 
@@ -141,7 +154,13 @@ This enum is defines behavior for which the gesture is rejected.
 | touchSlop | Once the pointer is detected, the event is canceled if the pointer movement distance is greater than or equal to [kTouchSlop].
 | leave | Once the pointer is detected, the event is canceled if the pointer position is outside the position occupied by the widget.
 
+## Apply TouchRippleRejectBehavior.touchSlop
+![ezgif-5-d5e8cb93e2](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/2ca71a34-e30e-4b8f-81f4-f58890f725d0)
+ 
+## Apply TouchRippleRejectBehavior.leave
+![ezgif-5-63fc65bd9f](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/245c7095-29af-4b55-8f22-f453f771d70f)
 
+- - -
 
 ## Values of TouchRippleCancelledBehavior 
 
@@ -153,7 +172,16 @@ This enum is defines the task when the gesture is cancelled.
 | stopSpread | The spread animation of the touch ripple effect is stopped when the gesture is canceled.
 | reverseSpread | The spread animation of the touch ripple effect is reversed when the gesture is canceled.
 
+## Apply TouchRippleCancelBehavior.none
+![ezgif-1-8b40a9458c](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/0f70fc9b-31d4-44f6-9cfa-aa976ec2377f)
 
+## Apply TouchRippleCancelBehavior.stopSpread
+![ezgif-1-61b8e1cf2c](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/8c62e1e5-0f78-4247-9120-b2e2d1c08b78)
+
+## Apply TouchRippleCancelBehavior.reverseSpread
+![ezgif-1-fe8e2bf8fa](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/22e724a0-a838-4066-9801-8bb7e1606466)
+
+- - -
 
 ## Values of TouchRippleLongTapFocusStartEvent 
 
@@ -162,9 +190,15 @@ This enum is defines the task when the gesture is cancelled.
 | onContinueStart | The considered to be in focus when it is in a continuable state.
 | onRejectable | The situation that defines whether it is a long tap is considered the focus state.
 
+## Apply TouchRippleCancelBehavior.onContinueStart
+![ezgif-1-8ad43f2371](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/b4fb9254-60f3-4726-b3ad-e673a6ea994a)
 
+## Apply TouchRippleCancelBehavior.onRejectable
+![ezgif-1-fafc42efee](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/1adaec37-7ac4-4cde-9ecc-8d6f9b16b289)
 
-## Values of TouchRippleLongTapFocusStartEvent 
+- - -
+
+## Values of TouchRippleRenderOrderType 
 
 This enum is used to defines the render order of a touch ripple effects.
 
@@ -172,3 +206,9 @@ This enum is used to defines the render order of a touch ripple effects.
 | ------ | ------
 | foreground | This value Defines that the touch ripple should be rendered in front of other elements
 | background | This value Defines that the touch ripple should be rendered behind other elements.
+
+## Apply TouchRippleCancelBehavior.foreground
+![ezgif-1-ea7be44be2](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/ac77426d-716c-4dcc-bdf2-9626eee49b9a)
+
+## Apply TouchRippleCancelBehavior.background
+![ezgif-1-add7f9a0d0](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/07edafeb-27fe-4c37-83a8-5186241ddd0d)
