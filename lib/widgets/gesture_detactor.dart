@@ -113,7 +113,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
 
     if (widget.onTap != null) {
       gestures[TouchRippleTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleTapGestureRecognizer>(
-        () => TouchRippleTapGestureRecognizer(context: context, cancelBehavior: widget.rejectBehavior),
+        () => TouchRippleTapGestureRecognizer(context: context, rejectBehavior: widget.rejectBehavior),
         (TouchRippleTapGestureRecognizer instance) {
           instance
             ..onTap = widget.onTap
@@ -127,7 +127,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
     }
     if (widget.onDoubleTap != null) {
       gestures[TouchRippleDoubleTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleDoubleTapGestureRecognizer>(
-        () => TouchRippleDoubleTapGestureRecognizer(context: context, cancelBehavior: widget.rejectBehavior),
+        () => TouchRippleDoubleTapGestureRecognizer(context: context, rejectBehavior: widget.rejectBehavior),
         (TouchRippleDoubleTapGestureRecognizer instance) {
           instance
             ..doubleTappableDuration = widget.doubleTappableDuration
@@ -144,7 +144,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
       gestures[TouchRippleLongTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleLongTapGestureRecognizer>(
         () => TouchRippleLongTapGestureRecognizer(
           context: context,
-          cancelBehavior: widget.rejectBehavior,
+          rejectBehavior: widget.rejectBehavior,
           focusStartEvent: widget.longTapFocusStartEvent,
         ),
         (TouchRippleLongTapGestureRecognizer instance) {
@@ -162,13 +162,33 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
         },
       );
     }
+    /*
+    if (true) {
+      gestures[TouchRippleHorizontalDragGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleHorizontalDragGestureRecognizer>(
+        () => TouchRippleHorizontalDragGestureRecognizer(
+          context: context,
+        ),
+        (TouchRippleHorizontalDragGestureRecognizer instance) {
+          instance
+            ..onFocusStartCallBack = (recognizer) {
+              print('on Focus Start');
+            }
+            ..onFocusEndCallBack = () {
+              print('on Focus End');
+            };
+        },
+      );
+    }
+    */
     
     /// Add an empty gesture detector to keep the gesture detectors in competition.
     gestures[EmptyGestureRecognizer] = GestureRecognizerFactoryWithHandlers<EmptyGestureRecognizer>(
       () => EmptyGestureRecognizer(),
-      (EmptyGestureRecognizer instance) {},
+      (EmptyGestureRecognizer instance) {
+        // ...
+      },
     );
-
+  
     return gestures;
   }
 

@@ -6,10 +6,16 @@ import 'package:flutter_touch_ripple/components/states.dart';
 
 
 
+mixin TouchRippleBehaviorsMixin {
+
+}
 
 class TouchRippleController extends Listenable {
   /// Defines whether to disable the focus effect when in a hover state.
   bool? _isOnHoveredDisableFocusEffect;
+
+  /// This getter is returns [_isOnHoveredDisableFocusEffect] of
+  /// this controller settings value.
   bool get isOnHoveredDisableFocusEffect {
     assert(
       _isOnHoveredDisableFocusEffect != null,
@@ -17,24 +23,38 @@ class TouchRippleController extends Listenable {
     );
     return _isOnHoveredDisableFocusEffect ?? true;
   }
+  /// This setter is initialise [_isOnHoveredDisableFocusEffect] of
+  /// this controller settings value.
   set isOnHoveredDisableFocusEffect(bool newValue) {
     _isOnHoveredDisableFocusEffect = newValue;
   }
 
+  /// Defines [TouchRippleBackgroundState] of hover state.
   TouchRippleBackgroundState? _hoverState;
+
+  /// This getter is returns defined hover state with this controller.
   TouchRippleBackgroundState? get hoverState => _hoverState;
+
+  /// This setter is defines hover state of this controller.
   set hoverState(TouchRippleBackgroundState? newState) {
     _hoverState = newState?..addListener(notifyListeners);
   }
 
+  /// Defines [TouchRippleBackgroundState] of focus state.
   TouchRippleBackgroundState? _focusState;
+
+  /// This getter is returns defined focus state with this controller.
   TouchRippleBackgroundState? get focusState => _focusState;
+
+  /// This setter is defines focus state of this controller.
   set focusState(TouchRippleBackgroundState? newState) {
     _focusState = newState?..addListener(notifyListeners);
   }
 
+  /// Defines attached list of [TouchRippleState].
   late final List<TouchRippleState> rippleStates = <TouchRippleState>[];
 
+  /// Returns a list of all actived states.
   List<TouchRipplePaintable> get paints {
     final paints = <TouchRipplePaintable>[];
     if (_hoverState != null) paints.add(_hoverState!);
@@ -46,10 +66,14 @@ class TouchRippleController extends Listenable {
     return paints;
   }
 
+  /// Defines the vsync of [AnimationController] of attached states.
   late final TickerProvider vsync;
 
+  /// Defines the callback function that should be called back
+  /// whenever the controller's state updates.
   late final ObserverList<VoidCallback> _listeners = ObserverList<VoidCallback>();
   
+  /// Redefine the current defined vsync of this controller.
   void resetVsync(TickerProvider newVsync) => vsync = newVsync;
   
   /// Returns a new instance of [TouchRippleState] corresponding to the given [behavior].
@@ -89,6 +113,7 @@ class TouchRippleController extends Listenable {
     );
   }
 
+  /// Delegate the states of a given controller to this controller.
   void pasteWith(TouchRippleController controller) {
     hoverState = controller.hoverState;
 
@@ -96,11 +121,13 @@ class TouchRippleController extends Listenable {
     rippleStates.addAll(controller.rippleStates);
   }
   
+  /// Attach a given touch ripple state with the this controller.
   void attach(TouchRippleState state) {
     assert(!rippleStates.contains(state));
     rippleStates.add(state..addListener(notifyListeners));
   }
 
+  /// Dispatch a given touch ripple state with the this controller.
   void dispatch(TouchRippleState state) {
     assert(rippleStates.contains(state));
     rippleStates.remove(state..removeListener(notifyListeners)..dispose());
@@ -118,6 +145,8 @@ class TouchRippleController extends Listenable {
     _listeners.remove(listener);
   }
 
+  // Callbacks all listeners.
+  //
   // ignore: avoid_function_literals_in_foreach_calls
   void notifyListeners() => _listeners.forEach((e) => e.call());
 }

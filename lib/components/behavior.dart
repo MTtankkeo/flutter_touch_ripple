@@ -19,6 +19,8 @@ enum TouchRippleOverlapBehavior {
 
 /// Defines behavior for which the gesture is rejected.
 enum TouchRippleRejectBehavior {
+  /// No specific task is performed when the gesture is canceled.
+  none,
   /// Once the pointer is detected, the event is canceled if the pointer
   /// movement distance is greater than or equal to [kTouchSlop].
   touchSlop,
@@ -28,7 +30,7 @@ enum TouchRippleRejectBehavior {
 }
 
 /// Defines the task when the gesture is cancelled.
-enum TouchRippleCancelBehavior {
+enum TouchRippleCancelledBehavior {
   /// No specific task is performed when the gesture is canceled.
   none,
   /// The spread animation of the touch ripple effect is stopped when
@@ -71,7 +73,7 @@ class TouchRippleBehavior extends CopyPasteable<TouchRippleBehavior> {
     this.fadeOutCurve,
     this.canceledDuration,
     this.canceledCurve,
-  }) : assert(lowerPercent != null ? lowerPercent <= 1 && lowerPercent >= 0 : true, 'The [lowerPercent] must be defined between 0 and 1'),
+  }) :  assert(lowerPercent != null ? lowerPercent <= 1 && lowerPercent >= 0 : true, 'The [lowerPercent] must be defined between 0 and 1'),
         assert(upperPercent != null ? upperPercent <= 1 && upperPercent >= 0 : true, 'The [upperPercent] must be defined between 0 and 1'),
         assert(
           lowerPercent != null ? (upperPercent != null ? upperPercent >= lowerPercent : true) : true,

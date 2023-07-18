@@ -260,15 +260,6 @@ class CalculatorButton extends StatelessWidget {
         onTap?.call();
         print('on tapped');
       },
-      onDoubleTap: () {
-        
-      },
-      onLongTap: (count) {
-        return false;
-      },
-      tapBehavior: const TouchRippleBehavior(
-        eventCallBackableMinPercent: 1,
-      ),
       rippleColor: Colors.white.withAlpha(50),
       hoverColor: hoverColor,
       borderRadius: borderRadius,

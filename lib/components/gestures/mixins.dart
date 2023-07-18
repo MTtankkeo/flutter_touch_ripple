@@ -31,7 +31,7 @@ typedef TouchRippleRejectableCallback = TouchRippleState Function(Offset rejecta
 ///   }
 /// }
 /// ```
-mixin HoldableGestureRecognizer on ResetableGestureRecognizer {
+mixin HoldableGestureRecognizerMixin on ResetableGestureRecognizer {
   /// The pointer ID currently being tracking.
   int? _currentPointer;
   
@@ -75,7 +75,7 @@ mixin HoldableGestureRecognizer on ResetableGestureRecognizer {
   }
 }
 
-mixin UnHoldableGestureRecognizer on ResetableGestureRecognizer {
+mixin UnHoldableGestureRecognizerMixin on ResetableGestureRecognizer {
   bool isAddedPointer = false;
   
   @override
@@ -116,6 +116,8 @@ mixin RejectableGestureRecognizerMixin on ResetableGestureRecognizer {
   bool onRejectableCalled = false;
 
   TouchRippleState? rejectableState;
+
+  bool get isInterlinkable;
 
   /*
    * Rejectable gesture life cycles

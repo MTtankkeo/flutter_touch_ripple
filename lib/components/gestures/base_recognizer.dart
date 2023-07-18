@@ -8,17 +8,16 @@ import 'package:flutter_touch_ripple/components/gestures/recognizers.dart';
 
 
 
-
 /// An abstract class that defines the touch ripple gesture base behavior,
 /// which is a basic and essential behavior.
 abstract class BaseTouchRippleGestureRecognizer extends ResetableGestureRecognizer {
   BaseTouchRippleGestureRecognizer({
     required this.context,
-    required this.cancelBehavior,
+    required this.rejectBehavior,
   });
   
   final BuildContext context;
-  final TouchRippleRejectBehavior cancelBehavior;
+  final TouchRippleRejectBehavior rejectBehavior;
 
   @override
   String get debugDescription => 'Touch Ripple Event CallBack: $debugLabal';
@@ -42,7 +41,8 @@ abstract class BaseTouchRippleGestureRecognizer extends ResetableGestureRecogniz
   
   /// Returns whether to reject the gesture based on the given pointer offset.
   bool rejectByOffset(Offset offset) {
-    if (cancelBehavior == TouchRippleRejectBehavior.leave) {
+    if (rejectBehavior == TouchRippleRejectBehavior.none) return false;
+    if (rejectBehavior == TouchRippleRejectBehavior.leave) {
       final isPointerHit = _renderBox.hitTest(
         BoxHitTestResult(),
         position: offset,

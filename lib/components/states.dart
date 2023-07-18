@@ -25,6 +25,14 @@ mixin AnimationableTouchRippleMixin {
   void dispose();
 }
 
+mixin InterlinkableTouchRippleMixin on TouchRipplePaintable {
+  bool isInterlinked = false;
+
+  /// Resets the current animation setting values of this instance
+  /// with a value that corresponds to the given [behavior].
+  void resetWith({required TouchRippleBehavior behavior});
+}
+
 /// Declaring the functionalities that are the basis for drawing the touch ripple effect.
 abstract class TouchRipplePaintable extends Listenable {
   const TouchRipplePaintable();
@@ -57,7 +65,10 @@ abstract class TouchRipplePaintable extends Listenable {
 ///   );
 /// }
 /// ```
-class TouchRippleState extends TouchRipplePaintable with AnimationableTouchRippleMixin {
+class TouchRippleState extends TouchRipplePaintable
+      with  AnimationableTouchRippleMixin,
+            InterlinkableTouchRippleMixin {
+  
   /// The pointer offset that is the reference point for where the effect spreads.
   /// 
   /// See also:
@@ -217,22 +228,21 @@ class TouchRippleState extends TouchRipplePaintable with AnimationableTouchRippl
   /// In some cases,
   /// it cancels the effect altogether.
   void cancel({
-    required TouchRippleCancelBehavior cancelBehavior,
+    required TouchRippleCancelledBehavior cancelledBehavior,
   }) {
     _fadeAnimation.duration = _behavior.canceledDuration ?? Duration.zero;
     _fadeCurved.curve = _behavior.canceledCurve ?? _behavior.fadeOutCurve!;
 
     fadeOut();
-    switch (cancelBehavior) {
-      case TouchRippleCancelBehavior.reverseSpread: _spreadAnimation.reverse(); break;
-      case TouchRippleCancelBehavior.stopSpread: _spreadAnimation.stop(); break;
-      case TouchRippleCancelBehavior.none: break;
+    switch (cancelledBehavior) {
+      case TouchRippleCancelledBehavior.reverseSpread: _spreadAnimation.reverse(); break;
+      case TouchRippleCancelledBehavior.stopSpread: _spreadAnimation.stop(); break;
+      case TouchRippleCancelledBehavior.none: break;
       default: throw Exception('An undeclared behavior instnace was defined.');
     }
   }
   
-  /// Resets the current animation setting values of this instance
-  /// with a value that corresponds to the given touch ripple behaviour.
+  @override
   void resetWith({
     required TouchRippleBehavior behavior,
   }) {

@@ -1,0 +1,11 @@
+
+
+
+
+
+abstract class TouchRippleEvent {
+  
+  createCallback() {
+
+  }
+}

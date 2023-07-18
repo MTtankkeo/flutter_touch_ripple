@@ -44,11 +44,15 @@ class EmptyGestureRecognizer extends OneSequenceGestureRecognizer {
 }
 
 class TouchRippleTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
-      with RejectableGestureRecognizerMixin, UnHoldableGestureRecognizer {
+      with  RejectableGestureRecognizerMixin,
+            UnHoldableGestureRecognizerMixin {
   TouchRippleTapGestureRecognizer({
     required super.context,
-    required super.cancelBehavior,
+    required super.rejectBehavior,
   });
+
+  @override
+  bool get isInterlinkable => true;
 
   TouchRippleRecognizerCallback? onTap;
 
@@ -105,13 +109,13 @@ class TouchRippleTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
 }
 
 class TouchRippleDoubleTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
-      with  HoldableGestureRecognizer,
+      with  HoldableGestureRecognizerMixin,
             CountableGestureRecognizerMixin,
             FocusableGestureRecognizerMixin {
       
   TouchRippleDoubleTapGestureRecognizer({
     required super.context,
-    required super.cancelBehavior,
+    required super.rejectBehavior,
   });
 
   @override
@@ -195,16 +199,19 @@ class TouchRippleDoubleTapGestureRecognizer extends BaseTouchRippleGestureRecogn
 }
 
 class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
-    with  UnHoldableGestureRecognizer,
+    with  UnHoldableGestureRecognizerMixin,
           RejectableGestureRecognizerMixin,
           CountableGestureRecognizerMixin,
           FocusableGestureRecognizerMixin {
                 
   TouchRippleLongTapGestureRecognizer({
     required super.context,
-    required super.cancelBehavior,
+    required super.rejectBehavior,
     required this.focusStartEvent,
   });
+
+  @override
+  bool get isInterlinkable => true;
 
   TouchRippleLongTapFocusStartEvent focusStartEvent;
 
@@ -328,5 +335,53 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
     _longTappableTimer = null;
     _longTapStartDeleyTimer?.cancel();
     _longTapStartDeleyTimer = null;
+  }
+}
+
+class TouchRippleHorizontalDragGestureRecognizer extends BaseTouchRippleGestureRecognizer
+    with  UnHoldableGestureRecognizerMixin,
+          FocusableGestureRecognizerMixin {
+
+  TouchRippleHorizontalDragGestureRecognizer({
+    required super.context,
+  }) : super(rejectBehavior: TouchRippleRejectBehavior.none);
+  
+  @override
+  String get debugLabal => 'on Horizontal Drag';
+
+  bool isAccepted = false;
+
+  @override
+  void onFocusStart(BaseTouchRippleGestureRecognizer instance) {
+    super.onFocusStart(instance);
+    super.accept();
+  }
+
+  @override
+  void accept() {
+    super.accept();
+
+    isAccepted = true;
+  }
+
+  @override
+  void onPointerMove(PointerMoveEvent event) {
+    super.onPointerMove(event);
+
+    if (pointerMoveDistance.dx.abs() >= kTouchSlop) onFocusStart(this);
+  }
+
+  @override
+  void onPointerUp(PointerUpEvent event) {
+    super.onPointerUp(event);
+
+    if (isAccepted) onFocusEnd();
+  }
+  
+  @override
+  void reset() {
+    super.reset();
+
+    isAccepted = false;
   }
 }

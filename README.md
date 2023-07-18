@@ -1,7 +1,7 @@
 # Touch Ripple For Flutter
 ### 👁 Customizable touch ripple for flutter widget
 
-This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally with randomness.
+This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally.
 
 In conclusion, using this package enables easy definition of flexible touch behaviors or touch animation.
 
@@ -32,6 +32,8 @@ TouchRipple(
     },
     // or behavior
     tapBehavior: const TouchRippleBehavior(
+        // "The spread animation must complete in order for the registered
+        // event callback function to be called." which is equivalent to defining
         eventCallBackableMinPercent: 1,
     ),
 );
@@ -61,7 +63,7 @@ TouchRipple(
 | isDoubleTapContinuable | Defines whether double tapping is allowed in succession. | true | bool
 | isLongTapContinuable | Defines whether long tapping is allowed in succession. | true | bool
 | rejectBehavior | Defines the touch ripple reject with pointer position behavior. | TouchRippleRejectBehavior.leave | TouchRippleRejectBehavior
-| cancelBehavior | Defines the behavior that causes the gesture to be cancelled. | TouchRippleCancelBehavior.none | TouchRippleCancelBehavior
+| cancelledBehavior | Defines the behavior that causes the gesture to be cancelled. | TouchRippleCancelledBehavior.none | TouchRippleCancelledBehavior
 | longTapFocusStartEvent | ... | TouchRippleLongTapFocusStartEvent.onRejectable | TouchRippleLongTapFocusStartEvent
 | rippleColor | Defines touch ripple background color of all events. | getter defaultRippleColor | Color
 | hoverColor | Defines the background color of the hover effect shown when the mouse hovers. | null | Color
@@ -141,7 +143,7 @@ This enum is defines behavior for which the gesture is rejected.
 
 
 
-## Values of TouchRippleCancelBehavior 
+## Values of TouchRippleCancelledBehavior 
 
 This enum is defines the task when the gesture is cancelled.
 
