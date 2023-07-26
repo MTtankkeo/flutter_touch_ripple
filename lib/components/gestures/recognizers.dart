@@ -313,6 +313,13 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
   }
 
   @override
+  void rejectGesture(int pointer) {
+    super.rejectGesture(pointer);
+
+    if (rejectableState != null) super.onFocusEnd();
+  }
+
+  @override
   void onPointerUp(PointerUpEvent event) {
     super.onPointerUp(event);
 

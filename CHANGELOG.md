@@ -21,3 +21,6 @@
 
 ## 1.0.5
 * Bug fixes varsion
+
+## 1.0.6
+* Fixes a phenomenon that does not cancel when the focus is in the longPress state and when the focus is in the focus state.
