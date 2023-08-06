@@ -39,7 +39,7 @@ TouchRipple(
 ```
 
 ## Apply eventCallBackableMinPercent = 1
-When defining the argument eventCallBackableMinPercent of the above TouchRippleBehavior to be 1, we can implement a behavior to move the page after the touch ripple effect is complete.
+When defining the argument __eventCallBackableMinPercent__ of the above __TouchRippleBehavior__ to be 1, we can implement a behavior to move the page after the touch ripple effect is complete.
 
 ![ezgif-2-af1eff8e7e](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/f92af980-3c44-4882-9e47-57b67739b8b5)
 
