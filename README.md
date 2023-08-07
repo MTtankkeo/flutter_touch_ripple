@@ -1,5 +1,3 @@
-![developers_github_banner – 2](https://github.com/Louibooks/Flutter_Touch_Ripple/assets/122026021/f194abbc-4401-485e-ad06-ecbf1d60b806)
-
 # Touch Ripple For Flutter
 ### Customizable touch ripple for flutter widget
 
@@ -10,6 +8,7 @@ This Flutter package allows developer to customize most of the behaviors and ani
 ## View
 ![ezgif-5-2ec16f8df8](https://github.com/MTtankkeo/Flutter_Touch_Ripple/assets/122026021/54ef9092-2dcb-45e9-b2cf-03b03a1296eb)
 
+![developers_github_banner – 2](https://github.com/Louibooks/Flutter_Touch_Ripple/assets/122026021/f194abbc-4401-485e-ad06-ecbf1d60b806)
 
 
 ## How to apply ripple widget
