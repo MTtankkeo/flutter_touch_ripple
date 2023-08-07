@@ -1,6 +1,6 @@
-# Touch Ripple For Flutter
 ![developers_github_banner – 2](https://github.com/Louibooks/Flutter_Touch_Ripple/assets/122026021/f194abbc-4401-485e-ad06-ecbf1d60b806)
 
+# Touch Ripple For Flutter
 ### Customizable touch ripple for flutter widget
 
 This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally.
