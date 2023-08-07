@@ -1,5 +1,5 @@
 # Touch Ripple For Flutter
-### Customizable touch ripple for flutter widget
+### Customizable touch ripple for ___flutter widget___
 
 ![developers_github_banner – 2](https://github.com/Louibooks/Flutter_Touch_Ripple/assets/122026021/f194abbc-4401-485e-ad06-ecbf1d60b806)
 
