@@ -1,4 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/behavior.dart';
 
@@ -325,27 +327,27 @@ class TouchRippleState extends TouchRipplePaintable
       return Offset(dx.abs(), dy.abs());
     }
 
-    /// The offset that serves as the reference point for the spread of the effect.
+    // The offset that serves as the reference point for the spread of the effect.
     final baseOffset = eventedOffset;
 
-    /// If a touch event occurs at the exact center,
-    /// it is the size at which the touch ripple effect fills completely.
+    // If a touch event occurs at the exact center,
+    // it is the size at which the touch ripple effect fills completely.
     final centerDistance = sizeToOffset(size / 2).distance;
 
-    /// However, since touch events don't actually occur at the exact center but at various offsets,
-    /// it is necessary to compensate for this.
-    /// 
-    /// If the touch event moves away from the center,
-    /// the touch ripple effect should expand in size accordingly.
-    /// 
-    /// This defines the additional scale that needs to be expanded.
+    // However, since touch events don't actually occur at the exact center but at various offsets,
+    // it is necessary to compensate for this.
+    //
+    // If the touch event moves away from the center,
+    // the touch ripple effect should expand in size accordingly.
+    //
+    // This defines the additional scale that needs to be expanded.
     final centerToRatio = centerToRatioOf(baseOffset);
 
-    /// This defines the additional touch ripple size.
+    // This defines the additional touch ripple size.
     final distance = Offset(
       sizeToOffset(size).dx * centerToRatio.dx,
       sizeToOffset(size).dy * centerToRatio.dy,
-    ).distance + blur;
+    ).distance + (blur * 2);
 
     final paintSize = (centerDistance + distance) * spreadPercent;
     final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());

@@ -556,7 +556,7 @@ class TouchRipple extends GestureDectectorCreatable {
     super.useDoubleTapFocusEffect = true,
     super.useLongTapFocusEffect = true,
     super.isOnHoveredDisableFocusEffect = false,
-    super.rippleBlurRadius = 10,
+    super.rippleBlurRadius = 20,
   });
 
   @override
