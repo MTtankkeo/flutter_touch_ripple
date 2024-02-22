@@ -556,7 +556,7 @@ class TouchRipple extends GestureDectectorCreatable {
     super.useDoubleTapFocusEffect = true,
     super.useLongTapFocusEffect = true,
     super.isOnHoveredDisableFocusEffect = false,
-    super.rippleBlurRadius = 20,
+    super.rippleBlurRadius = 10,
   });
 
   @override
@@ -571,7 +571,7 @@ class TouchRipple extends GestureDectectorCreatable {
     spreadCurve: Curves.easeOutQuad,
     fadeInDuration: Duration(milliseconds: 100),
     fadeInCurve: Curves.easeOut,
-    fadeOutDuration: Duration(milliseconds: 250),
+    fadeOutDuration: Duration(milliseconds: 200),
     fadeOutCurve: Curves.easeIn,
     canceledDuration: Duration(milliseconds: 50),
     canceledCurve: null,
