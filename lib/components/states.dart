@@ -1,11 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
-
-import 'dart:math';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/behavior.dart';
-
-
 
 
 
