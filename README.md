@@ -99,7 +99,7 @@ When defining the argument ___eventCallBackableMinPercent___ of the above [Touch
 | useDoubleTapFocusEffect | Defines whether to use the focus effect on double tap state. | true | bool
 | useLongTapFocusEffect | Defines whether to use the focus effect on long tap state. | true | bool
 | isOnHoveredDisableFocusEffect | Defines whether to disable the focus effect when in a hover state. | false | bool
-| rippleBlurRadius | Defines the radius value of the blur effect of a ripple. | 20 | double
+| rippleBlurRadius | Defines the radius value of the blur effect of a ripple. | 10 | double
 
 ## properties of TouchRippleBehavior
 
