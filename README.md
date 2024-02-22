@@ -6,7 +6,7 @@ This Flutter package allows developer to customize most of the behaviors and ani
 `In conclusion, using this package enables easy definition of flexible touch behaviors or touch animation.`
 
 ## View
-![preview](https://github.com/MTtankkeo/flutter_touch_ripple/assets/122026021/b1ed32d1-2c32-4a4a-a474-c0a71ffd52d7)
+![preview](https://github.com/MTtankkeo/flutter_touch_ripple/assets/122026021/e539519e-3366-4974-a70a-43a538aeb2ea)
 
 ## How to apply ripple widget
 
