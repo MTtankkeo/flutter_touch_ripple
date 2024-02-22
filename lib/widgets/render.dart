@@ -11,12 +11,14 @@ class TouchRipplePainter<T extends TouchRipplePaintable> extends CustomPainter {
     required this.states,
     required this.color,
     required this.scale,
+    required this.blur,
     required this.borderRadius,
   });
 
   final List<T> states;
   final Color color;
   final double scale;
+  final double blur;
   final BorderRadius borderRadius;
 
   /// Converts the size to an offset and returns it.
@@ -40,7 +42,7 @@ class TouchRipplePainter<T extends TouchRipplePaintable> extends CustomPainter {
       );
     }
     canvas.clipRRect(borderRadius.toRRect(getSizeRect()));
-    state.paint(canvas: canvas, size: size, scale: scale, color: color);
+    state.paint(canvas: canvas, size: size, scale: scale, blur: blur, color: color);
   }
 
   @override

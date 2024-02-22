@@ -15,6 +15,7 @@ class TouchRippleStack extends StatefulWidget {
     required this.renderOrder,
     required this.rippleColor,
     required this.rippleScale,
+    required this.blurRadius,
     required this.borderRadius,
     required this.controller,
   });
@@ -24,19 +25,22 @@ class TouchRippleStack extends StatefulWidget {
   /// {@macro flutter.widgets.ProxyWidget.child}
   final Widget child;
 
-  /// Same as [TouchRippleWidget.renderOrder].
+  /// Same as [TouchRipple.renderOrder].
   final TouchRippleRenderOrderType renderOrder;
 
-  /// Same as [TouchRippleWidget.rippleColor].
+  /// Same as [TouchRipple.rippleColor].
   final Color rippleColor;
 
-  /// Same as [TouchRippleWidget.rippleScale].
+  /// Same as [TouchRipple.rippleScale].
   final double rippleScale;
 
-  /// Same as [TouchRippleWidget.borderRadius].
+  /// Same as [TouchRipple.blurRadius].
+  final double blurRadius;
+
+  /// Same as [TouchRipple.borderRadius].
   final BorderRadius borderRadius;
 
-  /// Same as [TouchRippleWidget.controller].
+  /// Same as [TouchRipple.controller].
   final TouchRippleController controller;
   
   @override
@@ -99,9 +103,10 @@ class _TouchRippleStackState extends State<TouchRippleStack> with TickerProvider
       color: widget.rippleColor,
       scale: widget.rippleScale,
       borderRadius: widget.borderRadius,
+      blur: widget.blurRadius,
     );
 
-    if (widget.renderOrder  == TouchRippleRenderOrderType.background) {
+    if (widget.renderOrder == TouchRippleRenderOrderType.background) {
       backgroundPainter = painter;
     } else {
       foregroundPainter = painter;

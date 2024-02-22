@@ -162,24 +162,6 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
         },
       );
     }
-    /*
-    if (true) {
-      gestures[TouchRippleHorizontalDragGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleHorizontalDragGestureRecognizer>(
-        () => TouchRippleHorizontalDragGestureRecognizer(
-          context: context,
-        ),
-        (TouchRippleHorizontalDragGestureRecognizer instance) {
-          instance
-            ..onFocusStartCallBack = (recognizer) {
-              print('on Focus Start');
-            }
-            ..onFocusEndCallBack = () {
-              print('on Focus End');
-            };
-        },
-      );
-    }
-    */
     
     /// Add an empty gesture detector to keep the gesture detectors in competition.
     gestures[EmptyGestureRecognizer] = GestureRecognizerFactoryWithHandlers<EmptyGestureRecognizer>(

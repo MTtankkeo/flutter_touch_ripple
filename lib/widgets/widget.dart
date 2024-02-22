@@ -108,10 +108,7 @@ abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWid
     required this.useDoubleTapFocusEffect,
     required this.useLongTapFocusEffect,
     required this.isOnHoveredDisableFocusEffect,
-    /*
-    required this.isApplyClip,
-    required this.pointerCenterApplySize,'
-    */
+    required this.rippleBlurRadius,
   }) :  assert(
           tapableDuration != Duration.zero,
           'The tappable duration cannot be zero.'
@@ -429,12 +426,9 @@ abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWid
 
   /// Defines whether to disable the focus effect when in a hover state.
   final bool isOnHoveredDisableFocusEffect;
-  
-  /* Upcoming updates
-  final bool isApplyClip;
 
-  final Size? pointerCenterApplySize;
-  */
+  /// Defines the radius value of the blur effect of a ripple.
+  final double rippleBlurRadius;
   
   /// Create a new instance of the [T] widget that extends from [TouchRippleGestureDetactorWidget].
   T createGestureDetector({
@@ -540,7 +534,7 @@ class TouchRipple extends GestureDectectorCreatable {
     super.renderOrder = TouchRippleRenderOrderType.foreground,
     super.rippleScale = 1,
     super.tapableDuration,
-    super.hitTestBehavior = HitTestBehavior.translucent,
+    super.hitTestBehavior = HitTestBehavior.opaque,
     super.doubleTappableDuration = const Duration(milliseconds: 250),
     super.doubleTapHoldDuration = const Duration(milliseconds: 750),
     super.longTappableDuration,
@@ -562,6 +556,7 @@ class TouchRipple extends GestureDectectorCreatable {
     super.useDoubleTapFocusEffect = true,
     super.useLongTapFocusEffect = true,
     super.isOnHoveredDisableFocusEffect = false,
+    super.rippleBlurRadius = 20,
   });
 
   @override
@@ -572,7 +567,7 @@ class TouchRipple extends GestureDectectorCreatable {
     fadeLowerPercent: 0,
     fadeUpperPercent: 1,
     eventCallBackableMinPercent: null,
-    spreadDuration: Duration(milliseconds: 200),
+    spreadDuration: Duration(milliseconds: 250),
     spreadCurve: Curves.easeOutQuad,
     fadeInDuration: Duration(milliseconds: 100),
     fadeInCurve: Curves.easeOut,
@@ -976,6 +971,7 @@ class TouchRippleWidgetState extends State<TouchRipple> {
         renderOrder: widget.renderOrder,
         rippleColor: rippleColor,
         rippleScale: widget.rippleScale,
+        blurRadius: widget.rippleBlurRadius,
         borderRadius: widget.borderRadius,
         controller: controller,
         child: widget.child,

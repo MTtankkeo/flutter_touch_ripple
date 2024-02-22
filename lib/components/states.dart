@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/behavior.dart';
 
@@ -43,6 +45,7 @@ abstract class TouchRipplePaintable extends Listenable {
     required Canvas canvas,
     required Size size,
     required double scale,
+    required double blur,
     required Color color,
   });
 }
@@ -314,6 +317,7 @@ class TouchRippleState extends TouchRipplePaintable
     required Canvas canvas,
     required Size size,
     required double scale,
+    required double blur,
     required Color color,
   }) {
     // Returns how far the given offset is from the centre of the canvas size,
@@ -345,14 +349,18 @@ class TouchRippleState extends TouchRipplePaintable
     /// This defines the additional touch ripple size.
     final distance = Offset(
       sizeToOffset(size).dx * centerToRatio.dx,
-      sizeToOffset(size).dy * centerToRatio.dy
-    ).distance;
+      sizeToOffset(size).dy * centerToRatio.dy,
+    ).distance + blur;
 
     final paintSize = (centerDistance + distance) * spreadPercent;
     final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());
     final paint = Paint()
       ..color = paintColor
       ..style = PaintingStyle.fill;
+
+    if (blur != 0) {
+      paint.maskFilter = MaskFilter.blur(BlurStyle.normal, blur);
+    }
     
     canvas.drawCircle(baseOffset, paintSize * scale, paint);
   }
@@ -401,6 +409,7 @@ class TouchRippleBackgroundState extends TouchRipplePaintable with Animationable
     required Canvas canvas,
     required Size size,
     required double scale,
+    required double blur,
     required Color color,
   }) {
     final paintColor = this.color.withAlpha(((this.color.alpha) * fadePercent).toInt());
