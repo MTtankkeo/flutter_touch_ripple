@@ -38,7 +38,7 @@ TouchRipple(
 ## How to task async?
 Please referance to this code!
 
-> If you need to implement page push, try changing the value of `tapBehavior.eventCallBackableMinPercent`.
+> If you need to implement page push through touch ripple, try changing the value of `tapBehavior.eventCallBackableMinPercent`.
 
 ```dart
 // for async task.
