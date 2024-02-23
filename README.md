@@ -36,6 +36,20 @@ TouchRipple(
 );
 ```
 
+```dart
+// The async task.
+TouchRipple<String>(
+    onTapAsync: () async {
+        return await Future.delayed(const Duration(milliseconds: 500), () {
+            return "end";
+        });
+    },
+    onTapAsyncStart: () => print("start"),
+    onTapAsyncEnd: print,
+    // ... skip
+);
+```
+
 ## Apply eventCallBackableMinPercent = 1
 When defining the argument ___eventCallBackableMinPercent___ of the above [TouchRippleBehavior] to be 1, we can implement a behavior to move the page after the touch ripple effect is complete.
 
@@ -49,6 +63,9 @@ When defining the argument ___eventCallBackableMinPercent___ of the above [Touch
 | ------ | ------ | ------ | ------
 | child | The [child] widget contained by the [TouchRipple] widget. | required | Widget
 | onTap | Defines a function that is called when the user taps on that widget. | null | TouchRippleEventCallBack
+| onTapAsync | Defines a async function that is called when the user taps on that widget, Unlike [onTap], ripples do not disappear and wait before receiving a response. | null | TouchRippleEventAsyncCallBack
+| onTapAsyncStart | Defines a function that is called when the start of async processing for [onTapAsync]. | null | TouchRippleEventCallBack
+| onTapAsyncEnd | Defines a function that is called when async processing for [onTapAsync] ended, but [tapBehavior.eventCallBackableMinPercent] also affects the timing of the callback. | null | TouchRippleEventCallBack
 | onDoubleTap | Defines a function that is called when the user double taps on that widget. | null | TouchRippleEventCallBack
 | onDoubleTapContinuableChecked | ... | null | TouchRippleContinuableCheckedCallBack
 | onDoubleTapStart | Defines a function that is called when a double tap event occurs and enters the double tap state. | null | TouchRippleStateCallBack

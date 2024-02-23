@@ -33,3 +33,6 @@
 
 ## 1.1.14
 * Changed the default spread curve to Curve.ease.
+
+## 1.1.2
+* Added onTapAsync, onTapAsyncStart, onTapAsyncEnd of touch ripple event.

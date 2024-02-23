@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,9 @@ typedef TouchRippleEventCallBack = VoidCallback;
 
 /// The returned value defines a callback function to call when
 /// the asynchronous to take is successfully performed.
-typedef TouchRippleEventAsyncCallBack = Future<VoidCallback?> Function(void);
+typedef TouchRippleEventAsyncCallBack<T> = Future<T> Function();
+
+typedef TouchRippleEventResponseCallback<T> = void Function(T value);
 
 /// This function defines the action to take when a touch ripple event
 /// has started or ended.
@@ -44,26 +47,29 @@ typedef TouchRippleContinuableCheckedCallBack = bool Function(int count);
 /// events and display them visually to the user.
 /// 
 /// See also:
-/// - Generic [T] defines a type of [TouchRippleGestureDetectorWidget],
-///   which is itself created by the widget.
-abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWidget> extends StatefulWidget {
+/// - Generic [T] defines a type of [onTapAsync] of return type.
+abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidget {
   const GestureDectectorCreatable({
     super.key,
     required this.child,
     required this.onTap,
-    // required this.onTapAsync,
+    required this.onTapAsync,
+    required this.onTapAsyncStart,
+    required this.onTapAsyncEnd,
     required this.onDoubleTap,
     required this.onDoubleTapStart,
     required this.onDoubleTapEnd,
     required this.onLongTap,
     required this.onLongTapStart,
     required this.onLongTapEnd,
+    /* TODO: Should be develop and updated later
     required this.onHorizontalDragStart,
     required this.onHorizontalDragUpdate,
     required this.onHorizontalDragEnd,
     required this.onVerticalDragStart,
     required this.onVerticalDragUpdate,
     required this.onVerticalDragEnd,
+    */
     required this.behavior,
     required this.tapBehavior,
     required this.doubleTapBehavior,
@@ -133,7 +139,9 @@ abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWid
           'Already defined to prevent consecutive double taps from occurring.'
           'Therefore, even if you register the onDoubleTapContinuationableChecked callback function,'
           'it will not be called.'
-        );
+        ),
+        assert((onTap != null && onTapAsync == null)
+            || (onTapAsync != null && onTap == null), "[onTap] and [onTapAsync] cannot be used at the same.");
 
   /// The [child] widget contained by the [TouchRipple] widget.
   /// 
@@ -144,15 +152,24 @@ abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWid
   /// Defines a function that is called when the user taps on that widget.
   /// {@endtemplate}
   final TouchRippleEventCallBack? onTap;
+
+  /// Defines a async function that is called when the user taps on that widget,
+  /// Unlike [onTap],
+  /// ripples do not disappear and wait before receiving a response.
+  final TouchRippleEventAsyncCallBack<T>? onTapAsync;
+
+  /// Defines a function that is called when the start of async processing for [onTapAsync].
+  final TouchRippleEventCallBack? onTapAsyncStart;
   
-  /* Upcoming updates
-  /// {@macro touch_ripple.onTap}
-  final TouchRippleEventAsyncCallBack? onTapAsync;
-  */
+  /// Defines a function that is called when async processing for [onTapAsync] ended.
+  /// 
+  /// See also:
+  /// - [tapBehavior.eventCallBackableMinPercent] also affects the timing of the callback.
+  final TouchRippleEventResponseCallback<T>? onTapAsyncEnd;
 
   /// Defines a function that is called when the user double taps on that widget.
   final TouchRippleEventCallBack? onDoubleTap;
-  
+
   final TouchRippleContinuableCheckedCallBack? onDoubleTapContinuableChecked;
 
   /// Defines a function that is called when a double tap event
@@ -174,6 +191,7 @@ abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWid
   /// is fired and the long tap state has ended.
   final TouchRippleStateCallBack? onLongTapEnd;
   
+  /*
   /// Defines a callback function that is called when the user drags
   /// a certain distance horizontally.
   /// 
@@ -205,6 +223,7 @@ abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWid
   /// Defines a callback function that is called when the gesture
   /// is defined as dragging vertically and then when gesture detection ends.
   final TouchRippleEventCallBack? onVerticalDragEnd;
+  */
 
   /// Defines a function that is called when a hover event
   /// occurs and enters the hover state.
@@ -431,7 +450,7 @@ abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWid
   final double rippleBlurRadius;
   
   /// Create a new instance of the [T] widget that extends from [TouchRippleGestureDetactorWidget].
-  T createGestureDetector({
+  TouchRippleGestureDetectorWidget createGestureDetector({
     required Widget child,
     TouchRippleRecognizerCallback? onTap,
     TouchRippleRejectableCallback? onRejectableTap,
@@ -495,23 +514,20 @@ abstract class GestureDectectorCreatable<T extends TouchRippleGestureDetectorWid
 /// - - -
 /// See also:
 /// - A widget declared to handle click-related events and display them visually to the user.
-class TouchRipple extends GestureDectectorCreatable {
+class TouchRipple<T> extends GestureDectectorCreatable<T> {
   const TouchRipple({
     super.key,
     required super.child,
     super.onTap,
+    super.onTapAsync,
+    super.onTapAsyncStart,
+    super.onTapAsyncEnd,
     super.onDoubleTap,
     super.onDoubleTapStart,
     super.onDoubleTapEnd,
     super.onLongTap,
     super.onLongTapStart,
     super.onLongTapEnd,
-    super.onHorizontalDragStart,
-    super.onHorizontalDragUpdate,
-    super.onHorizontalDragEnd,
-    super.onVerticalDragStart,
-    super.onVerticalDragUpdate,
-    super.onVerticalDragEnd,
     super.behavior,
     super.tapBehavior,
     super.doubleTapBehavior,
@@ -581,7 +597,7 @@ class TouchRipple extends GestureDectectorCreatable {
   Color get defaultRippleColor => Colors.black.withAlpha(75);
 
   @override
-  State<TouchRipple> createState() => TouchRippleWidgetState();
+  State<TouchRipple> createState() => TouchRippleWidgetState<T>();
 
   @override
   createGestureDetector({
@@ -643,7 +659,7 @@ class TouchRipple extends GestureDectectorCreatable {
   }
 }
 
-class TouchRippleWidgetState extends State<TouchRipple> {
+class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
   /// If the controller is not given as an argument in the given state,
   /// The function is called internally to create the controller and return
   /// a new instance of the touch ripple controller.
@@ -651,13 +667,13 @@ class TouchRippleWidgetState extends State<TouchRipple> {
   /// This is because the existence of the controller is essential for managing the touch ripple state.
   late TouchRippleController controller = widget.controller ?? widget.createTouchRippleController();
 
-  /// Convert the two given touch ripple behaviors to null safety instances and return them.
+  /// Convert the two given touch ripple behaviors to null safety instances and return it.
   /// 
   /// Arguments:
   /// - The given [behavior] is a custom behavior defined in the widget state.
   /// 
   /// - The given [defaultBehavior] is the default behavior defined
-  ///    in the widget implementation class.
+  ///   in the widget implementation class.
   static TouchRippleBehavior _toNullSafetedBehavior({
     required TouchRippleBehavior? behavior,
     required TouchRippleBehavior defaultBehavior,
@@ -667,7 +683,7 @@ class TouchRippleWidgetState extends State<TouchRipple> {
     // so we use the pasteWith method to return a combination of
     // the defaultBehavior and the behavior.
     if (behavior != null) return defaultBehavior.pasteWith(behavior);
-                                     return defaultBehavior;
+                          return defaultBehavior;
   }
 
   /// Returns null safeted touch ripple tap default behavior.
@@ -719,7 +735,7 @@ class TouchRippleWidgetState extends State<TouchRipple> {
   }
 
   @override
-  void didUpdateWidget(covariant TouchRipple oldWidget) {
+  void didUpdateWidget(covariant TouchRipple<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     /// If the old ad controller needs to be replaced,
@@ -778,7 +794,7 @@ class TouchRippleWidgetState extends State<TouchRipple> {
   }
 
   /// Attaches the given state to the controller defined in the current widget state.
-  void stateByAttach(TouchRippleState? state) {
+  void attachTo(TouchRippleState? state) {
     if (state != null) controller.attach(state);
   }
 
@@ -786,6 +802,9 @@ class TouchRippleWidgetState extends State<TouchRipple> {
   Widget createGestureDetector({
     required Widget child,
     TouchRippleEventCallBack? onTap,
+    TouchRippleEventAsyncCallBack<T>? onTapAsync,
+    TouchRippleEventCallBack? onTapAsyncStart,
+    TouchRippleEventResponseCallback<T>? onTapAsyncEnd,
     TouchRippleEventCallBack? onDoubleTap,
     TouchRippleStateCallBack? onDoubleTapStart,
     TouchRippleStateCallBack? onDoubleTapEnd,
@@ -819,14 +838,35 @@ class TouchRippleWidgetState extends State<TouchRipple> {
           behavior: tapBehavior,
           onCreateState: () => createTouchRippleState(acceptedOffset, isRejectable: false),
         );
-        stateByAttach(newState?..start());
+        attachTo(newState?..start());
       };
 
       rejectableTapCallback = (rejectableOffset) {
         final newState = createTouchRippleState(rejectableOffset, isRejectable: true);
-        stateByAttach(newState..start());
+        attachTo(newState..start());
 
         return newState;
+      };
+    }
+    if (onTapAsync != null) {
+      tapCallback = (acceptedOffset) {
+        late T responsed;
+        final newState = _inspectCreateState(
+          behavior: tapBehavior,
+          onCreateState: () => controller.createState(
+            behavior: tapBehavior,
+            callback: () => onTapAsyncEnd?.call(responsed),
+            eventedOffset: acceptedOffset,
+            isRejectable: true, // to wait for a response.
+          ),
+        );
+        attachTo(newState?..start());
+
+        onTapAsyncStart?.call();
+        onTapAsync().then((value) {
+          responsed = value;
+          newState?.onAccepted();
+        });
       };
     }
     if (onDoubleTap != null) {
@@ -845,7 +885,7 @@ class TouchRippleWidgetState extends State<TouchRipple> {
           behavior: doubleTapBehavior,
           onCreateState: () => createTouchRippleState(acceptedOffset),
         );
-        stateByAttach(newState?..start());
+        attachTo(newState?..start());
         
         if (widget.isDoubleTapContinuable == false) return false;
         return widget.onDoubleTapContinuableChecked?.call(count)
@@ -868,7 +908,7 @@ class TouchRippleWidgetState extends State<TouchRipple> {
       };
       rejectableLongTapCallback = (rejectableOffset) {
         final newState =  createTouchRippleState(rejectableOffset);
-                          stateByAttach(newState..start());
+                          attachTo(newState..start());
 
         return newState;
       };
@@ -959,6 +999,9 @@ class TouchRippleWidgetState extends State<TouchRipple> {
   Widget build(BuildContext context) {
     final gestureDetector = createGestureDetector(
       onTap: widget.onTap,
+      onTapAsync: widget.onTapAsync,
+      onTapAsyncStart: widget.onTapAsyncStart,
+      onTapAsyncEnd: widget.onTapAsyncEnd,
       onDoubleTap: widget.onDoubleTap,
       onDoubleTapStart: widget.onDoubleTapStart,
       onDoubleTapEnd: widget.onDoubleTapEnd,
