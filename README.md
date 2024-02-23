@@ -8,8 +8,7 @@ This Flutter package allows developer to customize most of the behaviors and ani
 ## View
 ![preview](https://github.com/MTtankkeo/flutter_touch_ripple/assets/122026021/e539519e-3366-4974-a70a-43a538aeb2ea)
 
-## How to apply ripple widget
-
+## How to apply ripple widget?
 Please referance to this code!
 
 ```dart
@@ -36,8 +35,13 @@ TouchRipple(
 );
 ```
 
+## How to task async?
+Please referance to this code!
+
+> If you need to implement page push, try changing the value of `tapBehavior.eventCallBackableMinPercent`.
+
 ```dart
-// The async task.
+// for async task.
 TouchRipple<String>(
     onTapAsync: () async {
         return await Future.delayed(const Duration(milliseconds: 500), () {
