@@ -27,3 +27,9 @@
 
 ## 1.1.0
 * Added blur effect of touch ripple effect.
+
+## 1.1.1 ~ 1.1.13
+* bug fix.
+
+## 1.1.14
+* Changed the default spread curve to Curve.ease.

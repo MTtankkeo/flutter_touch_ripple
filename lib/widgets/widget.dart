@@ -568,7 +568,7 @@ class TouchRipple extends GestureDectectorCreatable {
     fadeUpperPercent: 1,
     eventCallBackableMinPercent: null,
     spreadDuration: Duration(milliseconds: 250),
-    spreadCurve: Curves.easeOutQuad,
+    spreadCurve: Curves.ease,
     fadeInDuration: Duration(milliseconds: 100),
     fadeInCurve: Curves.easeOut,
     fadeOutDuration: Duration(milliseconds: 200),
