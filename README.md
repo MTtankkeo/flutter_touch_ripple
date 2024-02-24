@@ -3,7 +3,7 @@
 
 This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally.
 
-`In conclusion, using this package enables easy definition of flexible touch behaviors or touch animation.`
+> In conclusion, using this package enables easy definition of flexible touch behaviors or touch animation.
 
 ## View
 ![preview](https://github.com/MTtankkeo/flutter_touch_ripple/assets/122026021/e539519e-3366-4974-a70a-43a538aeb2ea)
