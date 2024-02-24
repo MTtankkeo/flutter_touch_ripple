@@ -139,7 +139,8 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
           'it will not be called.'
         ),
         assert((onTap != null && onTapAsync == null)
-            || (onTapAsync != null && onTap == null), "[onTap] and [onTapAsync] cannot be used at the same.");
+            || (onTapAsync != null && onTap == null
+            || (onTap == null && onTapAsync == null)), "[onTap] and [onTapAsync] cannot be used at the same.");
 
   /// The [child] widget contained by the [TouchRipple] widget.
   /// 
