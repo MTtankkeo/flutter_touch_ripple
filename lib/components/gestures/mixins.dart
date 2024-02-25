@@ -5,21 +5,20 @@ import 'package:flutter_touch_ripple/components/gestures/recognizers.dart';
 import 'package:flutter_touch_ripple/components/states.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 
-
-
-
-
 /// The given [acceptedOffset] defines the pointer offset that was defined
 /// after the gesture was accepted.
-typedef TouchRippleAcceptedCallback = void Function(TouchRippleState acceptedState);
+typedef TouchRippleAcceptedCallback = void Function(
+    TouchRippleState acceptedState);
 
-typedef TouchRippleRejectedCallback = void Function(TouchRippleState rejectedState);
+typedef TouchRippleRejectedCallback = void Function(
+    TouchRippleState rejectedState);
 
-typedef TouchRippleRejectableCallback = TouchRippleState Function(Offset rejectableOffset);
+typedef TouchRippleRejectableCallback = TouchRippleState Function(
+    Offset rejectableOffset);
 
 /// It provides functionality to continuously track the defined pointers
 /// to prevent the gesture from being rejected.
-/// 
+///
 /// Example:
 /// ```dart
 /// class TouchRippleDoubleTapGestureRecognizer extends BaseTouchRippleGestureRecognizer {
@@ -34,7 +33,7 @@ typedef TouchRippleRejectableCallback = TouchRippleState Function(Offset rejecta
 mixin HoldableGestureRecognizerMixin on ResetableGestureRecognizer {
   /// The pointer ID currently being tracking.
   int? _currentPointer;
-  
+
   /// Defines a pointer IDs to keep track of so that gestures are not rejected.
   final List<int> _holdedPointerList = [];
 
@@ -77,7 +76,7 @@ mixin HoldableGestureRecognizerMixin on ResetableGestureRecognizer {
 
 mixin UnHoldableGestureRecognizerMixin on ResetableGestureRecognizer {
   bool isAddedPointer = false;
-  
+
   @override
   void addPointer(PointerDownEvent event) {
     if (isAddedPointer == false) {
@@ -101,7 +100,7 @@ mixin UnHoldableGestureRecognizerMixin on ResetableGestureRecognizer {
   @override
   void reset() {
     super.reset();
-    
+
     isAddedPointer = false;
   }
 }
@@ -110,7 +109,7 @@ mixin RejectableGestureRecognizerMixin on ResetableGestureRecognizer {
   TouchRippleAcceptedCallback? onAcceptedCallBack;
   TouchRippleRejectedCallback? onRejectedCallBack;
   TouchRippleRejectableCallback? onRejectableCallBack;
-  
+
   bool onAcceptedCalled = false;
   bool onRejectedCalled = false;
   bool onRejectableCalled = false;
@@ -127,15 +126,17 @@ mixin RejectableGestureRecognizerMixin on ResetableGestureRecognizer {
   void onAccepted() {
     onAcceptedCalled = true;
 
-    assert(rejectableState != null, 'If the state is rejectable, the touch ripple state must be defined.');
+    assert(rejectableState != null,
+        'If the state is rejectable, the touch ripple state must be defined.');
     if (rejectableState != null) onAcceptedCallBack?.call(rejectableState!);
   }
 
   @protected
   void onRejected() {
     onRejectedCalled = true;
-    
-    assert(rejectableState != null, 'If the state is rejectable, the touch ripple state must be defined.');
+
+    assert(rejectableState != null,
+        'If the state is rejectable, the touch ripple state must be defined.');
     if (rejectableState != null) onRejectedCallBack?.call(rejectableState!);
   }
 
@@ -173,20 +174,18 @@ mixin RejectableGestureRecognizerMixin on ResetableGestureRecognizer {
   }
 }
 
-
-
-
-
-typedef TouchRippleFocusStartStateCallBack = void Function(BaseTouchRippleGestureRecognizer recognizer);
+typedef TouchRippleFocusStartStateCallBack = void Function(
+    BaseTouchRippleGestureRecognizer recognizer);
 
 mixin FocusableGestureRecognizerMixin on ResetableGestureRecognizer {
   TouchRippleFocusStartStateCallBack? onFocusStartCallBack;
   TouchRippleStateCallBack? onFocusEndCallBack;
-  
+
   @mustCallSuper
   void onFocusStart(
     BaseTouchRippleGestureRecognizer instance,
-  ) => onFocusStartCallBack?.call(instance);
+  ) =>
+      onFocusStartCallBack?.call(instance);
 
   @mustCallSuper
   void onFocusEnd() => onFocusEndCallBack?.call();
@@ -202,7 +201,7 @@ mixin CountableGestureRecognizerMixin on ResetableGestureRecognizer {
 
   @mustCallSuper
   void onContinueStart() => onContinueStartCallBack?.call();
-  
+
   @mustCallSuper
   void onContinueEnd() => onContinueEndCallBack?.call();
 }

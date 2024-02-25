@@ -4,10 +4,6 @@ import 'package:flutter_touch_ripple/components/gestures/mixins.dart';
 import 'package:flutter_touch_ripple/components/gestures/recognizers.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 
-
-
-
-
 /// An abstract stateful widget declared to detect and callback touch events.
 abstract class TouchRippleGestureDetectorWidget extends StatefulWidget {
   const TouchRippleGestureDetectorWidget({
@@ -45,13 +41,13 @@ class TouchRippleGestureDetector extends TouchRippleGestureDetectorWidget {
   });
 
   /// The [child] widget contained by the [TouchRipple] widget.
-  /// 
+  ///
   /// {@macro flutter.widgets.ProxyWidget.child}
   final Widget child;
 
   /// Same as [HitTestBehavior] of [RawGestureDetector].
   final HitTestBehavior behavior;
-  
+
   /// Same as [TouchRippleWidget.cancelBehavior].
   final TouchRippleRejectBehavior rejectBehavior;
 
@@ -71,12 +67,12 @@ class TouchRippleGestureDetector extends TouchRippleGestureDetectorWidget {
 
   /// Same as [TouchRippleWidget.longTappableDuration].
   final Duration? longTappableDuration;
-  
+
   /// Same as [TouchRippleWidget.longTapStartDeleyDuration].
   final Duration? longTapStartDeleyDuration;
 
   final TouchRippleRecognizerCallback? onTap;
-  
+
   final TouchRippleRejectableCallback? onRejectableTap;
 
   final TouchRippleRecognizerCountableCallback? onDoubleTap;
@@ -86,7 +82,7 @@ class TouchRippleGestureDetector extends TouchRippleGestureDetectorWidget {
   final TouchRippleStateCallBack? onDoubleTapEnd;
 
   final TouchRippleRejectableCallback? onRejectableLongTap;
-  
+
   final TouchRippleRecognizerCountableCallback? onLongTap;
 
   final TouchRippleStateCallBack? onLongTapStart;
@@ -102,18 +98,21 @@ class TouchRippleGestureDetector extends TouchRippleGestureDetectorWidget {
   final TouchRippleStateCallBack? onFocusEnd;
 
   @override
-  State<TouchRippleGestureDetector> createState() => _TouchRippleGestureDetectorState();
+  State<TouchRippleGestureDetector> createState() =>
+      _TouchRippleGestureDetectorState();
 }
 
-class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector> {
-  
+class _TouchRippleGestureDetectorState
+    extends State<TouchRippleGestureDetector> {
   /// Returns the gestures corresponding to the given or updated status argument.
   Map<Type, GestureRecognizerFactory> createGestures() {
     final gestures = <Type, GestureRecognizerFactory>{};
 
     if (widget.onTap != null) {
-      gestures[TouchRippleTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleTapGestureRecognizer>(
-        () => TouchRippleTapGestureRecognizer(context: context, rejectBehavior: widget.rejectBehavior),
+      gestures[TouchRippleTapGestureRecognizer] =
+          GestureRecognizerFactoryWithHandlers<TouchRippleTapGestureRecognizer>(
+        () => TouchRippleTapGestureRecognizer(
+            context: context, rejectBehavior: widget.rejectBehavior),
         (TouchRippleTapGestureRecognizer instance) {
           instance
             ..onTap = widget.onTap
@@ -126,8 +125,11 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
       );
     }
     if (widget.onDoubleTap != null) {
-      gestures[TouchRippleDoubleTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleDoubleTapGestureRecognizer>(
-        () => TouchRippleDoubleTapGestureRecognizer(context: context, rejectBehavior: widget.rejectBehavior),
+      gestures[TouchRippleDoubleTapGestureRecognizer] =
+          GestureRecognizerFactoryWithHandlers<
+              TouchRippleDoubleTapGestureRecognizer>(
+        () => TouchRippleDoubleTapGestureRecognizer(
+            context: context, rejectBehavior: widget.rejectBehavior),
         (TouchRippleDoubleTapGestureRecognizer instance) {
           instance
             ..doubleTappableDuration = widget.doubleTappableDuration
@@ -141,7 +143,9 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
       );
     }
     if (widget.onRejectableLongTap != null) {
-      gestures[TouchRippleLongTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleLongTapGestureRecognizer>(
+      gestures[TouchRippleLongTapGestureRecognizer] =
+          GestureRecognizerFactoryWithHandlers<
+              TouchRippleLongTapGestureRecognizer>(
         () => TouchRippleLongTapGestureRecognizer(
           context: context,
           rejectBehavior: widget.rejectBehavior,
@@ -162,15 +166,16 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
         },
       );
     }
-    
+
     /// Add an empty gesture detector to keep the gesture detectors in competition.
-    gestures[EmptyGestureRecognizer] = GestureRecognizerFactoryWithHandlers<EmptyGestureRecognizer>(
+    gestures[EmptyGestureRecognizer] =
+        GestureRecognizerFactoryWithHandlers<EmptyGestureRecognizer>(
       () => EmptyGestureRecognizer(),
       (EmptyGestureRecognizer instance) {
         // ...
       },
     );
-  
+
     return gestures;
   }
 

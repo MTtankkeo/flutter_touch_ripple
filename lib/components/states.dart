@@ -2,8 +2,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/behavior.dart';
 
-
-
 /// Provides an interface for animating the touch ripple effect.
 mixin AnimationableTouchRippleMixin {
   /// Run the animation initialised in the current instance.
@@ -46,13 +44,13 @@ abstract class TouchRipplePaintable extends Listenable {
 }
 
 /// Initialize, manage, and connect multiple animation objects to implement the touch ripple effect.
-/// 
+///
 /// How to initialized:
 /// ```dart
 /// /// Since multiple tickers need to be created and managed,
 /// /// [SingleTickerProviderStateMixin] should not be used.
 /// class WidgetState extends State<Widget> with TickerProviderStateMixin {
-/// 
+///
 ///   /// Create a new [TouchRippleState] instance.
 ///   final state =TouchRippleState(
 ///     vsync: this,
@@ -64,18 +62,16 @@ abstract class TouchRipplePaintable extends Listenable {
 /// }
 /// ```
 class TouchRippleState extends TouchRipplePaintable
-      with  AnimationableTouchRippleMixin,
-            InterlinkableTouchRippleMixin {
-  
+    with AnimationableTouchRippleMixin, InterlinkableTouchRippleMixin {
   /// The pointer offset that is the reference point for where the effect spreads.
-  /// 
+  ///
   /// See also:
   /// - The gesture detector detects the gesture and then refers to
   ///    the current pointer offset after the gesture is accepted.
   final Offset eventedOffset;
-  
+
   /// Whether the instance was created while the gesture was not accepted.
-  /// 
+  ///
   /// See also:
   /// - This implies an unstable state where the gesture that creates
   ///    that instance can be rejected in the middle.
@@ -94,7 +90,7 @@ class TouchRippleState extends TouchRipplePaintable
   late final CurvedAnimation _fadeCurved;
 
   /// The touch ripple behavior given at initialization.
-  /// 
+  ///
   /// See also:
   /// - The animation instances corresponding to that behavior is initialized.
   late final TouchRippleBehavior _behavior;
@@ -104,8 +100,7 @@ class TouchRippleState extends TouchRipplePaintable
     final lowerPercent = _behavior.lowerPercent ?? 0;
     final upperPercent = _behavior.upperPercent ?? 1;
 
-    return lowerPercent +
-          (upperPercent - lowerPercent) * _spreadCurved.value;
+    return lowerPercent + (upperPercent - lowerPercent) * _spreadCurved.value;
   }
 
   /// Returns animation progress value of fade animation.
@@ -113,37 +108,36 @@ class TouchRippleState extends TouchRipplePaintable
     final lowerPercent = _behavior.fadeLowerPercent ?? 0;
     final upperPercent = _behavior.fadeUpperPercent ?? 1;
 
-    return lowerPercent +
-          (upperPercent - lowerPercent) * _fadeCurved.value;
+    return lowerPercent + (upperPercent - lowerPercent) * _fadeCurved.value;
   }
 
   /// Initializes several animation instance needed to implement the touch ripple effect.
-  /// 
+  ///
   /// Initializes the spread animation and defines the fade behavior based
   /// on the state of the spread animation,
-  /// 
+  ///
   /// If the spread animation value has updated, it will continue to check the animation value
   /// until it can call the event callback function,
-  /// 
+  ///
   /// When create a [TouchRippleState] instance while the gesture is not accepted,
   /// the event callback function call postponed until the gesture is accepted.
-  /// 
+  ///
   /// - When we say that a gesture is not accepted,
   ///    we are primarily referring to situations where the gesture may be rejected midway through,
   ///    or where we create a touch ripple state instance with the gesture not accepted
   ///    in order to show the user the effect in advance.
-  /// 
+  ///
   /// Initializes the fade animation and defines the behavior based on the state of the fade animation.
   /// For example, if the fade-out state is complete,
   /// call the given [onDismissed] so that this instance can be dispatched from the controller.
-  /// 
+  ///
   /// Arguments:
   /// - The given [callback] is invoked at the the event
   ///    callback timing corresponding to the given [behavior].
-  /// 
+  ///
   /// - The given [isRejectable] defines whether the instance was initialized
   ///    while the gesture was not yet accepted.
-  /// 
+  ///
   /// See also:
   /// - Call a given callback function based on the state of the animation.
   TouchRippleState({
@@ -153,10 +147,10 @@ class TouchRippleState extends TouchRipplePaintable
     required void Function(TouchRippleState state) onDismissed,
     required this.eventedOffset,
     bool isRejectable = false,
-  }) : _isRejectable = isRejectable,
-       _behavior = behavior
-  {
-    assert(behavior.spreadDuration != null, 'Spread duration of touch ripple behavior was not initialized.');
+  })  : _isRejectable = isRejectable,
+        _behavior = behavior {
+    assert(behavior.spreadDuration != null,
+        'Spread duration of touch ripple behavior was not initialized.');
     _spreadAnimation = AnimationController(
       vsync: vsync,
       duration: behavior.spreadDuration ?? Duration.zero,
@@ -165,24 +159,29 @@ class TouchRippleState extends TouchRipplePaintable
     // Call the event callback function when the current animation
     // progress can call the event callback function.
     void checkEventCallBack() {
-      assert(behavior.lowerPercent != null, 'Lower percent of touch ripple behavior was not initialized.');
+      assert(behavior.lowerPercent != null,
+          'Lower percent of touch ripple behavior was not initialized.');
       final lowerPercent = behavior.lowerPercent ?? 0;
-      
+
       if (_isRejectable) return;
-      if (spreadPercent >= (behavior.eventCallBackableMinPercent ?? lowerPercent)) {
+      if (spreadPercent >=
+          (behavior.eventCallBackableMinPercent ?? lowerPercent)) {
         callback.call();
         // Deregistering the listener as there is no longer a need to know
         // when to invoke the event callback function.
         _spreadAnimation.removeListener(checkEventCallBack);
       }
     }
+
     _spreadAnimation.addListener(checkEventCallBack);
     _spreadAnimation.addStatusListener((status) {
       if (status == AnimationStatus.forward) fadeIn();
-      if (status == AnimationStatus.completed && _isRejectable == false) fadeOut();
+      if (status == AnimationStatus.completed && _isRejectable == false)
+        fadeOut();
     });
 
-    assert(behavior.spreadCurve != null, 'Spread curve of touch ripple behavior was not initialized.');
+    assert(behavior.spreadCurve != null,
+        'Spread curve of touch ripple behavior was not initialized.');
     _spreadCurved = CurvedAnimation(
       parent: _spreadAnimation,
       curve: behavior.spreadCurve ?? Curves.linear,
@@ -197,15 +196,17 @@ class TouchRippleState extends TouchRipplePaintable
       if (status == AnimationStatus.dismissed) onDismissed.call(this);
     });
 
-    assert(behavior.fadeInCurve != null, 'Fade in curve of touch ripple behavior was not initialized.');
-    assert(behavior.fadeOutCurve != null, 'Fade out curve of touch ripple behavior was not initialized.');
+    assert(behavior.fadeInCurve != null,
+        'Fade in curve of touch ripple behavior was not initialized.');
+    assert(behavior.fadeOutCurve != null,
+        'Fade out curve of touch ripple behavior was not initialized.');
     _fadeCurved = CurvedAnimation(
       parent: _fadeAnimation,
       curve: behavior.fadeInCurve ?? Curves.linear,
       reverseCurve: behavior.fadeOutCurve,
     );
   }
-  
+
   @override
   void start() => _spreadAnimation.forward();
 
@@ -233,13 +234,19 @@ class TouchRippleState extends TouchRipplePaintable
 
     fadeOut();
     switch (cancelledBehavior) {
-      case TouchRippleCancelledBehavior.reverseSpread: _spreadAnimation.reverse(); break;
-      case TouchRippleCancelledBehavior.stopSpread: _spreadAnimation.stop(); break;
-      case TouchRippleCancelledBehavior.none: break;
-      default: throw Exception('An undeclared behavior instnace was defined.');
+      case TouchRippleCancelledBehavior.reverseSpread:
+        _spreadAnimation.reverse();
+        break;
+      case TouchRippleCancelledBehavior.stopSpread:
+        _spreadAnimation.stop();
+        break;
+      case TouchRippleCancelledBehavior.none:
+        break;
+      default:
+        throw Exception('An undeclared behavior instnace was defined.');
     }
   }
-  
+
   @override
   void resetWith({
     required TouchRippleBehavior behavior,
@@ -249,8 +256,10 @@ class TouchRippleState extends TouchRipplePaintable
     _fadeAnimation.duration = _behavior.fadeInDuration;
     _fadeAnimation.reverseDuration = _behavior.fadeOutDuration;
 
-    assert(behavior.fadeInCurve != null, 'Fade in curve of touch ripple behavior was not initialized.');
-    assert(behavior.fadeOutCurve != null, 'Fade out curve of touch ripple behavior was not initialized.');
+    assert(behavior.fadeInCurve != null,
+        'Fade in curve of touch ripple behavior was not initialized.');
+    assert(behavior.fadeOutCurve != null,
+        'Fade out curve of touch ripple behavior was not initialized.');
     _fadeCurved.curve = _behavior.fadeInCurve ?? Curves.linear;
     _fadeCurved.reverseCurve = _behavior.fadeOutCurve;
   }
@@ -271,13 +280,13 @@ class TouchRippleState extends TouchRipplePaintable
     _spreadAnimation.resync(vsync);
     _fadeAnimation.resync(vsync);
   }
-  
+
   @override
   void addListener(VoidCallback listener) {
     _spreadAnimation.addListener(listener);
     _fadeAnimation.addListener(listener);
   }
-  
+
   @override
   void removeListener(VoidCallback listener) {
     _spreadAnimation.removeListener(listener);
@@ -321,7 +330,7 @@ class TouchRippleState extends TouchRipplePaintable
       final sizeOffset = sizeToOffset(size);
       final dx = (offset.dx / sizeOffset.dx) - 0.5;
       final dy = (offset.dy / sizeOffset.dy) - 0.5;
-      
+
       return Offset(dx.abs(), dy.abs());
     }
 
@@ -343,9 +352,10 @@ class TouchRippleState extends TouchRipplePaintable
 
     // This defines the additional touch ripple size.
     final distance = Offset(
-      sizeToOffset(size).dx * centerToRatio.dx,
-      sizeToOffset(size).dy * centerToRatio.dy,
-    ).distance + (blur * 2);
+          sizeToOffset(size).dx * centerToRatio.dx,
+          sizeToOffset(size).dy * centerToRatio.dy,
+        ).distance +
+        (blur * 2);
 
     final paintSize = (centerDistance + distance) * spreadPercent;
     final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());
@@ -356,15 +366,15 @@ class TouchRippleState extends TouchRipplePaintable
     if (blur != 0) {
       paint.maskFilter = MaskFilter.blur(BlurStyle.normal, blur);
     }
-    
+
     canvas.drawCircle(baseOffset, paintSize * scale, paint);
   }
 }
 
-class TouchRippleBackgroundState extends TouchRipplePaintable with AnimationableTouchRippleMixin {
-
+class TouchRippleBackgroundState extends TouchRipplePaintable
+    with AnimationableTouchRippleMixin {
   late final Color color;
-  
+
   /// The animation controller for the fade in or fade out animation of touch ripple hover effect.
   late final AnimationController _fadeAnimation;
 
@@ -373,7 +383,7 @@ class TouchRippleBackgroundState extends TouchRipplePaintable with Animationable
 
   /// Returns animation progress value of fade animation.
   double get fadePercent => _fadeCurved.value;
-  
+
   TouchRippleBackgroundState({
     required TickerProvider vsync,
     required this.color,
@@ -407,11 +417,12 @@ class TouchRippleBackgroundState extends TouchRipplePaintable with Animationable
     required double blur,
     required Color color,
   }) {
-    final paintColor = this.color.withAlpha(((this.color.alpha) * fadePercent).toInt());
+    final paintColor =
+        this.color.withAlpha(((this.color.alpha) * fadePercent).toInt());
     final paint = Paint()
       ..color = paintColor
       ..style = PaintingStyle.fill;
-    
+
     canvas.drawPaint(paint);
   }
 
@@ -426,13 +437,15 @@ class TouchRippleBackgroundState extends TouchRipplePaintable with Animationable
 
   @override
   void fadeOut() => _fadeAnimation.reverse();
-  
+
   @override
-  void addListener(VoidCallback listener) => _fadeAnimation.addListener(listener);
-  
+  void addListener(VoidCallback listener) =>
+      _fadeAnimation.addListener(listener);
+
   @override
-  void removeListener(VoidCallback listener) => _fadeAnimation.removeListener(listener);
-  
+  void removeListener(VoidCallback listener) =>
+      _fadeAnimation.removeListener(listener);
+
   @override
   void dispose() {
     _fadeAnimation.dispose();

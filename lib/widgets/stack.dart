@@ -4,9 +4,6 @@ import 'package:flutter_touch_ripple/components/states.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/render.dart';
 
-
-
-
 /// This is a widget that is declared to manage, add or remove touch effect animations.
 class TouchRippleStack extends StatefulWidget {
   const TouchRippleStack({
@@ -21,7 +18,7 @@ class TouchRippleStack extends StatefulWidget {
   });
 
   /// The [child] widget contained by the [TouchRippleStack] widget.
-  /// 
+  ///
   /// {@macro flutter.widgets.ProxyWidget.child}
   final Widget child;
 
@@ -42,13 +39,13 @@ class TouchRippleStack extends StatefulWidget {
 
   /// Same as [TouchRipple.controller].
   final TouchRippleController controller;
-  
+
   @override
   State<TouchRippleStack> createState() => _TouchRippleStackState();
 }
 
-class _TouchRippleStackState extends State<TouchRippleStack> with TickerProviderStateMixin {
-
+class _TouchRippleStackState extends State<TouchRippleStack>
+    with TickerProviderStateMixin {
   void onUpdated() {
     setState(() {
       // The defined touch ripple state updates to update the state of the widget.
@@ -80,14 +77,15 @@ class _TouchRippleStackState extends State<TouchRippleStack> with TickerProvider
   @override
   void dispose() {
     final controller = widget.controller;
-          controller.hoverState?.dispose();
-          controller.focusState?.dispose();
+    controller.hoverState?.dispose();
+    controller.focusState?.dispose();
 
     final activeStates = controller.rippleStates.toList();
 
     void disposeState(TouchRippleState state) {
       state.dispose();
     }
+
     activeStates.forEach(disposeState);
 
     super.dispose();
@@ -97,7 +95,7 @@ class _TouchRippleStackState extends State<TouchRippleStack> with TickerProvider
   Widget build(BuildContext context) {
     CustomPainter? backgroundPainter;
     CustomPainter? foregroundPainter;
-    
+
     final painter = TouchRipplePainter(
       states: widget.controller.paints,
       color: widget.rippleColor,

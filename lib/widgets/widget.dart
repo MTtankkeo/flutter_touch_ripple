@@ -10,15 +10,12 @@ import 'package:flutter_touch_ripple/components/states.dart';
 import 'package:flutter_touch_ripple/widgets/gesture_detactor.dart';
 import 'package:flutter_touch_ripple/widgets/stack.dart';
 
-
-
-
-
 /// This enum is used to defines the render order of a touch ripple effects.
 enum TouchRippleRenderOrderType {
   /// This value Defines that the touch ripple should be rendered
   /// in front of other elements
   foreground,
+
   /// This value Defines that the touch ripple should be rendered
   /// behind other elements.
   background,
@@ -43,10 +40,11 @@ typedef TouchRippleContinuableCheckedCallBack = bool Function(int count);
 
 /// An abstract stateful widget declared to handle click-related
 /// events and display them visually to the user.
-/// 
+///
 /// See also:
 /// - Generic [T] defines a type of [onTapAsync] of return type.
-abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidget {
+abstract class GestureDectectorCreatable<T extends dynamic>
+    extends StatefulWidget {
   const GestureDectectorCreatable({
     super.key,
     required this.child,
@@ -113,37 +111,34 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
     required this.useLongTapFocusEffect,
     required this.isOnHoveredDisableFocusEffect,
     required this.rippleBlurRadius,
-  }) :  assert(
-          tapableDuration != Duration.zero,
-          'The tappable duration cannot be zero.'
-          'If the tappable duration is zero, tapping will not occur in all situations.'
-        ),
+  })  : assert(
+            tapableDuration != Duration.zero,
+            'The tappable duration cannot be zero.'
+            'If the tappable duration is zero, tapping will not occur in all situations.'),
         assert(
-          onDoubleTap == null ? onDoubleTapStart == null : true,
-          'The onDoubleTap parameter is not givend, so the double tap gesture is not defined.'
-          'Therefore, the onDoubleTapStart function is not called'
-        ),
+            onDoubleTap == null ? onDoubleTapStart == null : true,
+            'The onDoubleTap parameter is not givend, so the double tap gesture is not defined.'
+            'Therefore, the onDoubleTapStart function is not called'),
         assert(
-          onDoubleTap == null ? onDoubleTapEnd == null : true,
-          'The onDoubleTap parameter is not givend, so the double tap gesture is not defined.'
-          'Therefore, the onDoubleTapEnd function is not called'
-        ),
+            onDoubleTap == null ? onDoubleTapEnd == null : true,
+            'The onDoubleTap parameter is not givend, so the double tap gesture is not defined.'
+            'Therefore, the onDoubleTapEnd function is not called'),
+        assert(rippleScale >= 1,
+            'The ripple size cannot be smaller than its original size. Please adjust the scale to be 1 or larger.'),
         assert(
-          rippleScale >= 1,
-          'The ripple size cannot be smaller than its original size. Please adjust the scale to be 1 or larger.'
-        ),
+            !(isDoubleTapContinuable == false &&
+                onDoubleTapContinuableChecked != null),
+            'Already defined to prevent consecutive double taps from occurring.'
+            'Therefore, even if you register the onDoubleTapContinuationableChecked callback function,'
+            'it will not be called.'),
         assert(
-          !(isDoubleTapContinuable == false && onDoubleTapContinuableChecked != null),
-          'Already defined to prevent consecutive double taps from occurring.'
-          'Therefore, even if you register the onDoubleTapContinuationableChecked callback function,'
-          'it will not be called.'
-        ),
-        assert((onTap != null && onTapAsync == null)
-            || (onTapAsync != null && onTap == null
-            || (onTap == null && onTapAsync == null)), "[onTap] and [onTapAsync] cannot be used at the same.");
+            (onTap != null && onTapAsync == null) ||
+                (onTapAsync != null && onTap == null ||
+                    (onTap == null && onTapAsync == null)),
+            "[onTap] and [onTapAsync] cannot be used at the same.");
 
   /// The [child] widget contained by the [TouchRipple] widget.
-  /// 
+  ///
   /// {@macro flutter.widgets.ProxyWidget.child}
   final Widget child;
 
@@ -159,9 +154,9 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 
   /// Defines a function that is called when the start of async processing for [onTapAsync].
   final TouchRippleEventCallBack? onTapAsyncStart;
-  
+
   /// Defines a function that is called when async processing for [onTapAsync] ended.
-  /// 
+  ///
   /// See also:
   /// - [tapBehavior.eventCallBackableMinPercent] also affects the timing of the callback.
   final TouchRippleEventResponseCallback<T>? onTapAsyncEnd;
@@ -189,7 +184,7 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
   /// Defines a function that is called when a long tap event
   /// is fired and the long tap state has ended.
   final TouchRippleStateCallBack? onLongTapEnd;
-  
+
   /*
   /// Defines a callback function that is called when the user drags
   /// a certain distance horizontally.
@@ -226,46 +221,46 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 
   /// Defines a function that is called when a hover event
   /// occurs and enters the hover state.
-  /// 
+  ///
   /// See also:
   /// - Stylus is not detected here (flutter not supported)
   final TouchRippleStateCallBack? onHoverStart;
-  
+
   /// Defines a function that is called when the hover state ends.
-  /// 
+  ///
   /// See also:
   /// - Stylus is not detected here (flutter not supported)
   final TouchRippleStateCallBack? onHoverEnd;
 
   /// Defines a callback function that is called when the transitions to the focus state.
-  /// 
+  ///
   /// {@template touch_ripple.focusState}
   /// See also:
   /// - The focus state is a state in which the gesture can continue to detect and process pointers.
-  /// 
+  ///
   ///   For example, a double tap state can be defined as a state in which
   ///   the widget continues to detect the pointer and define the gesture continuously.
   /// {@endtemplate}
   final TouchRippleStateCallBack? onFocusStart;
-  
+
   /// Defines a callback function that is called when the focus state ends.
-  /// 
+  ///
   /// {@macro touch_ripple.focusState}
   final TouchRippleStateCallBack? onFocusEnd;
 
   /// Defines the default behavior of touch ripple all event.
-  /// 
+  ///
   /// See also:
   /// - If an behavior is not defined in the tap, double tap, or long tap events,
   ///   it will be defined as the value defined for that behavior.
   final TouchRippleBehavior? behavior;
 
   /// Return the default values for all the defined properties of a touch ripple.
-  /// 
+  ///
   /// See also:
   /// - The values of all properties of the returned instance must be defined and not null.
   /// - The value is not directly referenced externally.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// @override
@@ -275,7 +270,7 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
   /// );
   /// ```
   TouchRippleBehavior get defaultBehavior;
-  
+
   /// Returns the final defined touch ripple behavior of tap event.
   TouchRippleBehavior get defaultTapBehavior => defaultBehavior;
 
@@ -284,12 +279,12 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 
   /// Returns the final defined touch ripple behavior of long tap event.
   TouchRippleBehavior get defaultLongTapBehavior => defaultBehavior.copyWith(
-    spreadDuration: const Duration(seconds: 1),
-    spreadCurve: Curves.linear,
-    fadeInDuration: const Duration(seconds: 1),
-    fadeInCurve: Curves.linear,
-    lowerPercent: 0,
-  );
+        spreadDuration: const Duration(seconds: 1),
+        spreadCurve: Curves.linear,
+        fadeInDuration: const Duration(seconds: 1),
+        fadeInCurve: Curves.linear,
+        lowerPercent: 0,
+      );
 
   /// Returns the final defined touch ripple behavior of horizontal drag event.
   TouchRippleBehavior get defaultHorizontalDragBehavior => defaultBehavior;
@@ -314,34 +309,34 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 
   /// Defines the touch ripple reject with pointer position behavior.
   final TouchRippleRejectBehavior rejectBehavior;
-  
+
   /// Defines the behavior that causes the gesture to be cancelled.
   final TouchRippleCancelledBehavior cancelledBehavior;
 
   final TouchRippleLongTapFocusStartEvent longTapFocusStartEvent;
-  
+
   /// Defines touch ripple background color of all events.
   final Color? rippleColor;
 
   /// Defines default touch ripple background color of all events.
-  Color get defaultRippleColor; 
+  Color get defaultRippleColor;
 
   /// Defines the background color of the hover effect shown when the mouse hovers.
-  /// 
+  ///
   /// See also:
   /// - If this argument is not defined, no action is taken on mouse hover
   ///    therefore, the hover effect is not implemented either.
   final Color? hoverColor;
-  
+
   /// Defines fade-in duration of hover animatin.
   final Duration hoverFadeInDuration;
 
   /// Defines fade-in curve of hover curved animatin.
   final Curve hoverFadeInCurve;
-  
+
   /// Defines fade-out duration of hover animatin.
   final Duration? hoverFadeOutDuration;
-  
+
   /// Defines fade-out curve of hover curved animatin.
   final Curve? hoverFadeOutCurve;
 
@@ -350,50 +345,50 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 
   /// [tapableDuration] defines the duration after which the tap event is
   /// canceled after the pointerDown event occurs,
-  /// 
+  ///
   /// In other words, in order to detect the point and have the tap event occur,
   /// the tap event must occur before the [tapableDuration].
   final Duration? tapableDuration;
-  
+
   /// Defines the order in which the touch ripple effect is drawn.
   final TouchRippleRenderOrderType renderOrder;
 
   /// Same as [HitTestBehavior] of [RawGestureDetector].
   final HitTestBehavior hitTestBehavior;
-  
+
   /// The duration between two taps that is considered a double tap,
   /// This refers to the time interval used to recognize double taps.
-  /// 
+  ///
   /// See also:
   /// - If a tap occurs and a tap occurs again before [doubleTappableDuration],
   ///    it is considered a double tap.
   final Duration? doubleTappableDuration;
 
   /// Defines the minimum duration to end the double tap state.
-  /// 
+  ///
   /// If a double tap state starts and no tap events occur during that duration,
   /// the double tap state ends.
   final Duration? doubleTapHoldDuration;
 
   /// Defines the minimum duration define as a long tap.
-  /// 
+  ///
   /// See also:
   /// - A pointer down event is defined as a long tap when it occurs and a duration
   ///   of [longTappableDuration] or more has elapsed.
-  /// 
+  ///
   /// - If the value is not defined,
   ///   it is replaced by the spread duration of the long tap behavior.
   final Duration? longTappableDuration;
 
   /// Defines the amount of duration that must elapse before a long press
   /// gesture is considered initiated.
-  /// 
+  ///
   /// See also:
   /// - For example if that value is defined as 500 milliseconds,
   ///   the long press action is not considered to have started until the user has held down
   ///   the widget for at least 500 milliseconds.
   final Duration longTapStartDeleyDuration;
-  
+
   /// The minimum duration to wait before showing the preview tap effect,
   /// if no other events need to be considered.
   final Duration? tapPreviewMinDuration;
@@ -414,7 +409,7 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
   /// Defines what percentage of ripple color opacity the default focus color
   /// will be defined as when no focus color is artificially defined.
   final double focusColorRelativeOpacity;
-  
+
   /// Defines whether a hover effect should be used throughout.
   final bool useHoverEffect;
 
@@ -423,13 +418,13 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 
   /// Defines the background colour of the focus effect that occurs on focus.
   final Color? focusColor;
-  
+
   /// Defines fade-in duration of focus animatin.
   final Duration focusFadeInDuration;
 
   /// Defines fade-in curve of focus curved animatin.
   final Curve focusFadeInCurve;
-  
+
   /// Defines fade-out duration of focus animatin.
   final Duration? focusFadeOutDuration;
 
@@ -447,7 +442,7 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 
   /// Defines the radius value of the blur effect of a ripple.
   final double rippleBlurRadius;
-  
+
   /// Create a new instance of the [T] widget that extends from [TouchRippleGestureDetactorWidget].
   TouchRippleGestureDetectorWidget createGestureDetector({
     required Widget child,
@@ -463,15 +458,16 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
     TouchRippleAcceptedCallback? onAccepted,
     TouchRippleRejectedCallback? onRejected,
   });
-  
+
   /// Create a new instance of the [TouchRippleController],
-  /// 
+  ///
   /// Called to create a new controller instance from an abstract class when
   /// the given controller does not exist and cannot be referenced.
-  /// 
+  ///
   /// See also:
   /// - [TouchRipple.controller]
-  TouchRippleController createTouchRippleController() => TouchRippleController();
+  TouchRippleController createTouchRippleController() =>
+      TouchRippleController();
 
   /// Finds the [TouchRippleWidgetState] from the closest instance
   /// of this class that encloses the given context.
@@ -481,14 +477,14 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 }
 
 /// Customizable touch ripple for flutter widget
-/// 
+///
 /// - This package has been developed to resemble Android touch ripple effects.
 ///    Additionally, it allows for easy definition
 ///    and customization of animations, features, or actions.
 /// - - -
-/// 
+///
 /// `The following describes how to make the declaration.`
-/// 
+///
 /// Example:
 /// ```dart
 /// TouchRipple(
@@ -496,7 +492,7 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 ///     child: ... // <- this your widget!
 /// ),
 /// ```
-/// 
+///
 /// How to make sure your event callback function is called
 /// after the touch ripple effect is complete:
 /// ```dart
@@ -509,7 +505,7 @@ abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidg
 ///   child: Container(),
 /// );
 /// ```
-/// 
+///
 /// - - -
 /// See also:
 /// - A widget declared to handle click-related events and display them visually to the user.
@@ -544,7 +540,8 @@ class TouchRipple<T> extends GestureDectectorCreatable<T> {
     super.isLongTapContinuable = true,
     super.rejectBehavior = TouchRippleRejectBehavior.leave,
     super.cancelledBehavior = TouchRippleCancelledBehavior.none,
-    super.longTapFocusStartEvent = TouchRippleLongTapFocusStartEvent.onRejectable,
+    super.longTapFocusStartEvent =
+        TouchRippleLongTapFocusStartEvent.onRejectable,
     super.rippleColor,
     super.renderOrder = TouchRippleRenderOrderType.foreground,
     super.rippleScale = 1,
@@ -576,21 +573,21 @@ class TouchRipple<T> extends GestureDectectorCreatable<T> {
 
   @override
   TouchRippleBehavior get defaultBehavior => const TouchRippleBehavior(
-    overlap: TouchRippleOverlapBehavior.overlappable,
-    lowerPercent: 0.3,
-    upperPercent: 1,
-    fadeLowerPercent: 0,
-    fadeUpperPercent: 1,
-    eventCallBackableMinPercent: null,
-    spreadDuration: Duration(milliseconds: 250),
-    spreadCurve: Curves.ease,
-    fadeInDuration: Duration(milliseconds: 100),
-    fadeInCurve: Curves.easeOut,
-    fadeOutDuration: Duration(milliseconds: 200),
-    fadeOutCurve: Curves.easeIn,
-    canceledDuration: Duration(milliseconds: 50),
-    canceledCurve: null,
-  );
+        overlap: TouchRippleOverlapBehavior.overlappable,
+        lowerPercent: 0.3,
+        upperPercent: 1,
+        fadeLowerPercent: 0,
+        fadeUpperPercent: 1,
+        eventCallBackableMinPercent: null,
+        spreadDuration: Duration(milliseconds: 250),
+        spreadCurve: Curves.ease,
+        fadeInDuration: Duration(milliseconds: 100),
+        fadeInCurve: Curves.easeOut,
+        fadeOutDuration: Duration(milliseconds: 200),
+        fadeOutCurve: Curves.easeIn,
+        canceledDuration: Duration(milliseconds: 50),
+        canceledCurve: null,
+      );
 
   @override
   Color get defaultRippleColor => Colors.black.withAlpha(75);
@@ -662,15 +659,16 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
   /// If the controller is not given as an argument in the given state,
   /// The function is called internally to create the controller and return
   /// a new instance of the touch ripple controller.
-  /// 
+  ///
   /// This is because the existence of the controller is essential for managing the touch ripple state.
-  late TouchRippleController controller = widget.controller ?? widget.createTouchRippleController();
+  late TouchRippleController controller =
+      widget.controller ?? widget.createTouchRippleController();
 
   /// Convert the two given touch ripple behaviors to null safety instances and return it.
-  /// 
+  ///
   /// Arguments:
   /// - The given [behavior] is a custom behavior defined in the widget state.
-  /// 
+  ///
   /// - The given [defaultBehavior] is the default behavior defined
   ///   in the widget implementation class.
   static TouchRippleBehavior _toNullSafetedBehavior({
@@ -678,11 +676,11 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     required TouchRippleBehavior defaultBehavior,
   }) {
     // If behavior is not null,
-    // it means that the user specified a custom behavior, 
+    // it means that the user specified a custom behavior,
     // so we use the pasteWith method to return a combination of
     // the defaultBehavior and the behavior.
     if (behavior != null) return defaultBehavior.pasteWith(behavior);
-                          return defaultBehavior;
+    return defaultBehavior;
   }
 
   /// Returns null safeted touch ripple tap default behavior.
@@ -729,8 +727,8 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
   void initState() {
     super.initState();
 
-    controller.isOnHoveredDisableFocusEffect
-      = widget.isOnHoveredDisableFocusEffect;
+    controller.isOnHoveredDisableFocusEffect =
+        widget.isOnHoveredDisableFocusEffect;
   }
 
   @override
@@ -739,20 +737,20 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
 
     /// If the old ad controller needs to be replaced,
     /// the existing states will be retained and delegated to the new controller.
-    if (widget.controller != null
-    && oldWidget.controller != null
-    && widget.controller != oldWidget.controller) {
+    if (widget.controller != null &&
+        oldWidget.controller != null &&
+        widget.controller != oldWidget.controller) {
       controller = widget.controller!..pasteWith(controller);
     }
 
-    if(widget.rejectBehavior != oldWidget.rejectBehavior) {
+    if (widget.rejectBehavior != oldWidget.rejectBehavior) {
       setState(() {
         // The child widget should update with the updated setting value.
       });
     }
 
-    controller.isOnHoveredDisableFocusEffect
-      = widget.isOnHoveredDisableFocusEffect;
+    controller.isOnHoveredDisableFocusEffect =
+        widget.isOnHoveredDisableFocusEffect;
   }
 
   /// Returns whether the currently active touch ripple effect should be cancelled,
@@ -762,12 +760,12 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
   }) {
     /// If a given behavior defines that ripple effects cannot overlap,
     /// and there are currently actived effects, the actived effect must be cancelled.
-    return behavior.overlap == TouchRippleOverlapBehavior.cancel
-        && controller.rippleStates.isNotEmpty;
+    return behavior.overlap == TouchRippleOverlapBehavior.cancel &&
+        controller.rippleStates.isNotEmpty;
   }
 
   /// nspects the given behavior and creates a new TouchRippleState accordingly.
-  /// 
+  ///
   /// See also:
   /// - Returns null if the ripple effect should be ignored.
   TouchRippleState? _inspectCreateState({
@@ -779,14 +777,15 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     // and there are currently active ripple effects,
     // it will cancel all of them.
     if (_checkShouldCancelled(behavior: behavior)) {
-      controller.rippleStates.toList().forEach((e) => e.cancel(cancelledBehavior: widget.cancelledBehavior));
+      controller.rippleStates.toList().forEach(
+          (e) => e.cancel(cancelledBehavior: widget.cancelledBehavior));
     }
 
     /// If a given behavior is defined to ignore an event
     /// if it would cause an overlapping effect,
     /// it will not generate a touch ripple effect if there is currently an active ripple effect.
-    if (behavior.overlap == TouchRippleOverlapBehavior.ignoring
-     && controller.rippleStates.isNotEmpty) {
+    if (behavior.overlap == TouchRippleOverlapBehavior.ignoring &&
+        controller.rippleStates.isNotEmpty) {
       return null;
     }
     return onCreateState.call();
@@ -820,9 +819,10 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     TouchRippleRejectableCallback? rejectableLongTapCallback;
     // TouchRippleRecognizerCallback? onHorizontalDragCallback;
     // TouchRippleRecognizerCallback? onVerticalDragCallback;
-    
+
     if (onTap != null) {
-      TouchRippleState createTouchRippleState(Offset baseOffset, {required bool isRejectable}) {
+      TouchRippleState createTouchRippleState(Offset baseOffset,
+          {required bool isRejectable}) {
         final newState = controller.createState(
           behavior: tapBehavior,
           callback: onTap,
@@ -835,13 +835,15 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
       tapCallback = (Offset acceptedOffset) {
         final newState = _inspectCreateState(
           behavior: tapBehavior,
-          onCreateState: () => createTouchRippleState(acceptedOffset, isRejectable: false),
+          onCreateState: () =>
+              createTouchRippleState(acceptedOffset, isRejectable: false),
         );
         attachTo(newState?..start());
       };
 
       rejectableTapCallback = (rejectableOffset) {
-        final newState = createTouchRippleState(rejectableOffset, isRejectable: true);
+        final newState =
+            createTouchRippleState(rejectableOffset, isRejectable: true);
         attachTo(newState..start());
 
         return newState;
@@ -885,10 +887,10 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
           onCreateState: () => createTouchRippleState(acceptedOffset),
         );
         attachTo(newState?..start());
-        
+
         if (widget.isDoubleTapContinuable == false) return false;
-        return widget.onDoubleTapContinuableChecked?.call(count)
-            ?? widget.isDoubleTapContinuable;
+        return widget.onDoubleTapContinuableChecked?.call(count) ??
+            widget.isDoubleTapContinuable;
       };
     }
     if (widget.onLongTap != null) {
@@ -901,13 +903,13 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
         );
         return newState;
       }
-      
+
       longTapCallback = (acceptedOffset, count) {
         return onLongTap?.call(count) ?? false;
       };
       rejectableLongTapCallback = (rejectableOffset) {
-        final newState =  createTouchRippleState(rejectableOffset);
-                          attachTo(newState..start());
+        final newState = createTouchRippleState(rejectableOffset);
+        attachTo(newState..start());
 
         return newState;
       };
@@ -930,20 +932,19 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     {
       focusStartCallBack = (instance) {
         if (widget.useFocusEffect == false) return;
-        if (widget.useDoubleTapFocusEffect == false
-         && instance is TouchRippleDoubleTapGestureRecognizer
-         || widget.useLongTapFocusEffect == false
-         && instance is TouchRippleLongTapGestureRecognizer) return;
+        if (widget.useDoubleTapFocusEffect == false &&
+                instance is TouchRippleDoubleTapGestureRecognizer ||
+            widget.useLongTapFocusEffect == false &&
+                instance is TouchRippleLongTapGestureRecognizer) return;
 
         // If focus state already initialised,
         // it will fade back in without creating the state.
         if (controller.focusState == null) {
           Color getDefaultFocusColor() {
             return rippleColor.withAlpha(
-              (rippleColor.alpha * widget.focusColorRelativeOpacity).toInt()
-            );
+                (rippleColor.alpha * widget.focusColorRelativeOpacity).toInt());
           }
-          
+
           final newState = controller.createBackgroundState(
             color: widget.focusColor ?? getDefaultFocusColor(),
             fadeInDuration: widget.focusFadeInDuration,
@@ -983,15 +984,16 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
       onRejected: (rejectedState) => rejectedState.onRejected(),
       onFocusStart: focusStartCallBack,
       onFocusEnd: focusEndCallBack,
-      longTappableDuration: widget.longTappableDuration ?? longTapBehavior.spreadDuration,
+      longTappableDuration:
+          widget.longTappableDuration ?? longTapBehavior.spreadDuration,
       child: child,
     );
   }
-  
+
   /// Before building the widget, if there are callback functions
   /// for the given events, necessary callback functions with
   /// defined touch ripple effect logic will be defined for those events.
-  /// 
+  ///
   /// Then, the defined callback functions are passed directly to
   /// the widget responsible for managing gestures as its child widget.
   @override
@@ -1019,21 +1021,20 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
         child: widget.child,
       ),
     );
-    
+
     // If current platform is touch-based,
     // don't need to define mouse-related behaviours.
     //
     // Even if hover is considered,
     // the stylus hover listener functionality is no longer
     // supported in Flutter.
-    if (Platform.isFuchsia
-     || Platform.isAndroid
-     || Platform.isIOS) return gestureDetector;
+    if (Platform.isFuchsia || Platform.isAndroid || Platform.isIOS)
+      return gestureDetector;
 
     PointerEnterEventListener? onHoverStartCallBack;
     PointerExitEventListener? onHoverEndCallBack;
     MouseCursor? cursor;
-    
+
     // The following code block takes the task of defining
     // the mouse hover event callback functions.
     {
@@ -1045,8 +1046,7 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
         if (controller.hoverState == null) {
           Color getDefaultHoverColor() {
             return rippleColor.withAlpha(
-              (rippleColor.alpha * widget.hoverColorRelativeOpacity).toInt()
-            );
+                (rippleColor.alpha * widget.hoverColorRelativeOpacity).toInt());
           }
 
           final newState = controller.createBackgroundState(
@@ -1071,10 +1071,10 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
         widget.onHoverEnd?.call();
       };
     }
-    
-    if (widget.onTap != null
-     || widget.onDoubleTap != null
-     || widget.onLongTap != null) {
+
+    if (widget.onTap != null ||
+        widget.onDoubleTap != null ||
+        widget.onLongTap != null) {
       cursor = widget.hoverCursor;
     }
     return MouseRegion(

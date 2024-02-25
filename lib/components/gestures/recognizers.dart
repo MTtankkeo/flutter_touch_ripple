@@ -6,13 +6,10 @@ import 'package:flutter_touch_ripple/components/behavior.dart';
 import 'package:flutter_touch_ripple/components/gestures/base_recognizer.dart';
 import 'package:flutter_touch_ripple/components/gestures/mixins.dart';
 
-
-
-
-
 typedef TouchRippleRecognizerCallback = void Function(Offset acceptedOffset);
 
-typedef TouchRippleRecognizerCountableCallback = bool Function(Offset acceptedOffset, int count);
+typedef TouchRippleRecognizerCountableCallback = bool Function(
+    Offset acceptedOffset, int count);
 
 /// Provides the ability to set a member variable of a extended class to its initial value when
 /// a gesture is rejected or accepted, that is, when the gesture ends.
@@ -23,7 +20,7 @@ abstract class ResetableGestureRecognizer extends OneSequenceGestureRecognizer {
     // detect and process the gesture again.
     Future.microtask(reset);
   }
-  
+
   /// A callback function that is called to define all the member variables of this class
   /// to their initial values if the gesture is rejected or accepted.
   @mustCallSuper
@@ -44,8 +41,7 @@ class EmptyGestureRecognizer extends OneSequenceGestureRecognizer {
 }
 
 class TouchRippleTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
-      with  RejectableGestureRecognizerMixin,
-            UnHoldableGestureRecognizerMixin {
+    with RejectableGestureRecognizerMixin, UnHoldableGestureRecognizerMixin {
   TouchRippleTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
@@ -68,14 +64,14 @@ class TouchRippleTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
   @override
   void onPointerDown(PointerDownEvent event) {
     super.onPointerDown(event);
-    
+
     if (previewMinDuration != null) {
       _previewTimer?.cancel();
       _previewTimer = Timer(previewMinDuration!, () {
         onRejectable(super.currentPointerOffset);
       });
     }
-    
+
     assert(acceptableDuration != Duration.zero);
     if (acceptableDuration != null) {
       _acceptableTimer?.cancel();
@@ -108,11 +104,12 @@ class TouchRippleTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
   }
 }
 
-class TouchRippleDoubleTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
-      with  HoldableGestureRecognizerMixin,
-            CountableGestureRecognizerMixin,
-            FocusableGestureRecognizerMixin {
-      
+class TouchRippleDoubleTapGestureRecognizer
+    extends BaseTouchRippleGestureRecognizer
+    with
+        HoldableGestureRecognizerMixin,
+        CountableGestureRecognizerMixin,
+        FocusableGestureRecognizerMixin {
   TouchRippleDoubleTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
@@ -120,12 +117,12 @@ class TouchRippleDoubleTapGestureRecognizer extends BaseTouchRippleGestureRecogn
 
   @override
   String get debugLabal => 'on Double Tap';
-  
+
   TouchRippleRecognizerCountableCallback? onDoubleTap;
 
   Duration? doubleTappableDuration;
   Duration? doubleTapHoldDuration;
-  
+
   Timer? _doubleTappableTimer;
   Timer? _doubleTapHoldTimer;
 
@@ -153,17 +150,14 @@ class TouchRippleDoubleTapGestureRecognizer extends BaseTouchRippleGestureRecogn
 
     _tapCount++;
 
-    assert(
-      doubleTappableDuration != null,
-      'The [_doubleTappableTimer] must be initialised before the [doubleTappableDuration] can be Initialised.'
-    );
-    assert(
-      doubleTapHoldDuration != null,
-      'The [_doubleTapHoldTimer] must be initialised before the [doubleTapHoldDuration] can be Initialised.'
-    );
+    assert(doubleTappableDuration != null,
+        'The [_doubleTappableTimer] must be initialised before the [doubleTappableDuration] can be Initialised.');
+    assert(doubleTapHoldDuration != null,
+        'The [_doubleTapHoldTimer] must be initialised before the [doubleTapHoldDuration] can be Initialised.');
     if (_doubleTapCount == 1) onContinueStart();
     if (_doubleTapCount > 0) {
-      final isContinueable = onDoubleTap?.call(currentPointerOffset, _doubleTapCount);
+      final isContinueable =
+          onDoubleTap?.call(currentPointerOffset, _doubleTapCount);
 
       accept();
       if (isContinueable ?? false) {
@@ -189,7 +183,7 @@ class TouchRippleDoubleTapGestureRecognizer extends BaseTouchRippleGestureRecogn
   @override
   void reset() {
     super.reset();
-    
+
     _tapCount = 0;
     _doubleTappableTimer?.cancel();
     _doubleTappableTimer = null;
@@ -198,12 +192,13 @@ class TouchRippleDoubleTapGestureRecognizer extends BaseTouchRippleGestureRecogn
   }
 }
 
-class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecognizer
-    with  UnHoldableGestureRecognizerMixin,
-          RejectableGestureRecognizerMixin,
-          CountableGestureRecognizerMixin,
-          FocusableGestureRecognizerMixin {
-                
+class TouchRippleLongTapGestureRecognizer
+    extends BaseTouchRippleGestureRecognizer
+    with
+        UnHoldableGestureRecognizerMixin,
+        RejectableGestureRecognizerMixin,
+        CountableGestureRecognizerMixin,
+        FocusableGestureRecognizerMixin {
   TouchRippleLongTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
@@ -225,7 +220,7 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
 
   Timer? _longTappableTimer;
   Timer? _longTapStartDeleyTimer;
-  
+
   int _longTapCount = 0;
 
   @override
@@ -255,17 +250,16 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
   @override
   void onAccept() {
     assert(
-      true,
-      'Long tap gestures can only be accepted when the gesture is in a rejectable state,'
-      'so they can never be accepted under normal circumstances when'
-      'the gesture is not in a rejectable state.'
-    );
+        true,
+        'Long tap gestures can only be accepted when the gesture is in a rejectable state,'
+        'so they can never be accepted under normal circumstances when'
+        'the gesture is not in a rejectable state.');
   }
 
   @override
   void onAccepted() {
     super.onAccepted();
-          onContinueEnd();
+    onContinueEnd();
   }
 
   void continueLongTap() {
@@ -274,7 +268,7 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
     void longTappable() {
       final pointerOffset = currentPointerOffset;
       final isContinue = onLongTap?.call(currentPointerOffset, ++_longTapCount);
-        
+
       assert(isContinue != null);
       if (isContinue ?? false) {
         onRejectable(pointerOffset);
@@ -285,12 +279,13 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
         accept();
       }
     }
+
     longTappable();
   }
 
   void startLongTappable() {
     onRejectable(currentPointerOffset);
-    
+
     _longTappableTimer?.cancel();
     _longTappableTimer = Timer(longTappableDuration!, () {
       onContinueStart();
@@ -303,7 +298,8 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
     super.onPointerDown(event);
 
     _longTapStartDeleyTimer?.cancel();
-    _longTapStartDeleyTimer = Timer(longTapStartDeleyDuration!, startLongTappable);
+    _longTapStartDeleyTimer =
+        Timer(longTapStartDeleyDuration!, startLongTappable);
   }
 
   @override
@@ -323,7 +319,7 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
   void onPointerUp(PointerUpEvent event) {
     super.onPointerUp(event);
 
-    if(_longTapCount == 0) {
+    if (_longTapCount == 0) {
       reject();
       onContinueEnd();
     } else {
@@ -345,14 +341,13 @@ class TouchRippleLongTapGestureRecognizer extends BaseTouchRippleGestureRecogniz
   }
 }
 
-class TouchRippleHorizontalDragGestureRecognizer extends BaseTouchRippleGestureRecognizer
-    with  UnHoldableGestureRecognizerMixin,
-          FocusableGestureRecognizerMixin {
-
+class TouchRippleHorizontalDragGestureRecognizer
+    extends BaseTouchRippleGestureRecognizer
+    with UnHoldableGestureRecognizerMixin, FocusableGestureRecognizerMixin {
   TouchRippleHorizontalDragGestureRecognizer({
     required super.context,
   }) : super(rejectBehavior: TouchRippleRejectBehavior.none);
-  
+
   @override
   String get debugLabal => 'on Horizontal Drag';
 
@@ -384,7 +379,7 @@ class TouchRippleHorizontalDragGestureRecognizer extends BaseTouchRippleGestureR
 
     if (isAccepted) onFocusEnd();
   }
-  
+
   @override
   void reset() {
     super.reset();

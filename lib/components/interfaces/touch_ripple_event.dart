@@ -1,11 +1,3 @@
-
-
-
-
-
 abstract class TouchRippleEvent {
-  
-  createCallback() {
-
-  }
+  createCallback() {}
 }

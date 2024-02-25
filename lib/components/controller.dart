@@ -3,12 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/behavior.dart';
 import 'package:flutter_touch_ripple/components/states.dart';
 
-
-
-
-mixin TouchRippleBehaviorsMixin {
-
-}
+mixin TouchRippleBehaviorsMixin {}
 
 class TouchRippleController extends Listenable {
   /// Defines whether to disable the focus effect when in a hover state.
@@ -17,12 +12,11 @@ class TouchRippleController extends Listenable {
   /// This getter is returns [_isOnHoveredDisableFocusEffect] of
   /// this controller settings value.
   bool get isOnHoveredDisableFocusEffect {
-    assert(
-      _isOnHoveredDisableFocusEffect != null,
-      'A required setting value was not initialised on the controller.'
-    );
+    assert(_isOnHoveredDisableFocusEffect != null,
+        'A required setting value was not initialised on the controller.');
     return _isOnHoveredDisableFocusEffect ?? true;
   }
+
   /// This setter is initialise [_isOnHoveredDisableFocusEffect] of
   /// this controller settings value.
   set isOnHoveredDisableFocusEffect(bool newValue) {
@@ -58,7 +52,8 @@ class TouchRippleController extends Listenable {
   List<TouchRipplePaintable> get paints {
     final paints = <TouchRipplePaintable>[];
     if (_hoverState != null) paints.add(_hoverState!);
-    if (_focusState != null && (_hoverState == null || !isOnHoveredDisableFocusEffect)) {
+    if (_focusState != null &&
+        (_hoverState == null || !isOnHoveredDisableFocusEffect)) {
       paints.add(_focusState!);
     }
     paints.addAll(rippleStates);
@@ -71,11 +66,12 @@ class TouchRippleController extends Listenable {
 
   /// Defines the callback function that should be called back
   /// whenever the controller's state updates.
-  late final ObserverList<VoidCallback> _listeners = ObserverList<VoidCallback>();
-  
+  late final ObserverList<VoidCallback> _listeners =
+      ObserverList<VoidCallback>();
+
   /// Redefine the current defined vsync of this controller.
   void resetVsync(TickerProvider newVsync) => vsync = newVsync;
-  
+
   /// Returns a new instance of [TouchRippleState] corresponding to the given [behavior].
   TouchRippleState createState({
     required TouchRippleBehavior behavior,
@@ -120,7 +116,7 @@ class TouchRippleController extends Listenable {
     rippleStates.clear();
     rippleStates.addAll(controller.rippleStates);
   }
-  
+
   /// Attach a given touch ripple state with the this controller.
   void attach(TouchRippleState state) {
     assert(!rippleStates.contains(state));
@@ -130,15 +126,17 @@ class TouchRippleController extends Listenable {
   /// Dispatch a given touch ripple state with the this controller.
   void dispatch(TouchRippleState state) {
     assert(rippleStates.contains(state));
-    rippleStates.remove(state..removeListener(notifyListeners)..dispose());
+    rippleStates.remove(state
+      ..removeListener(notifyListeners)
+      ..dispose());
   }
-  
+
   @override
   void addListener(VoidCallback listener) {
     assert(!_listeners.contains(listener));
     _listeners.add(listener);
   }
-  
+
   @override
   void removeListener(VoidCallback listener) {
     assert(_listeners.contains(listener));

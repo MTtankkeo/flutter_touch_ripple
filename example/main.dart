@@ -7,10 +7,6 @@ void main() {
   runApp(const MainPage());
 }
 
-
-
-
-
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -24,9 +20,8 @@ class _MainPageState extends State<MainPage> {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(child: CalculatorPage())
-      ),
+          backgroundColor: Colors.black,
+          body: SafeArea(child: CalculatorPage())),
     );
   }
 }
@@ -105,19 +100,61 @@ class _CalculatorPageState extends State<CalculatorPage> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: CalculatorButton(value: 'MC', foregroundColor: Colors.transparent, fontColor: CalculatorStyles.descriptionColor, fontSize: 16, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: 'MC',
+                            foregroundColor: Colors.transparent,
+                            fontColor: CalculatorStyles.descriptionColor,
+                            fontSize: 16,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'MR',  foregroundColor: Colors.transparent, fontColor: CalculatorStyles.descriptionColor, fontSize: 16, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: 'MR',
+                            foregroundColor: Colors.transparent,
+                            fontColor: CalculatorStyles.descriptionColor,
+                            fontSize: 16,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'M+',  foregroundColor: Colors.transparent,fontColor: CalculatorStyles.descriptionColor,  fontSize: 16, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: 'M+',
+                            foregroundColor: Colors.transparent,
+                            fontColor: CalculatorStyles.descriptionColor,
+                            fontSize: 16,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'M-',  foregroundColor: Colors.transparent, fontColor: CalculatorStyles.descriptionColor, fontSize: 16, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: 'M-',
+                            foregroundColor: Colors.transparent,
+                            fontColor: CalculatorStyles.descriptionColor,
+                            fontSize: 16,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'MS',  foregroundColor: Colors.transparent, fontColor: CalculatorStyles.descriptionColor, fontSize: 16, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: 'MS',
+                            foregroundColor: Colors.transparent,
+                            fontColor: CalculatorStyles.descriptionColor,
+                            fontSize: 16,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'M↓',  foregroundColor: Colors.transparent, fontColor: CalculatorStyles.descriptionColor, fontSize: 16, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: 'M↓',
+                            foregroundColor: Colors.transparent,
+                            fontColor: CalculatorStyles.descriptionColor,
+                            fontSize: 16,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '( / )',  foregroundColor: Colors.transparent, fontColor: CalculatorStyles.descriptionColor, fontSize: 16, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '( / )',
+                            foregroundColor: Colors.transparent,
+                            fontColor: CalculatorStyles.descriptionColor,
+                            fontSize: 16,
+                            onTap: () {})),
                   ],
                 ),
               ),
@@ -127,11 +164,17 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   children: [
                     Expanded(child: CalculatorButton(value: '%', onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'CE', onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(value: 'CE', onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'Init', onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(value: 'Init', onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'Cancel', hoverColor: Colors.red.withAlpha(25), onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: 'Cancel',
+                            hoverColor: Colors.red.withAlpha(25),
+                            onTap: () {})),
                   ],
                 ),
               ),
@@ -139,11 +182,14 @@ class _CalculatorPageState extends State<CalculatorPage> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: CalculatorButton(value: '¹⁄ₓ', onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(value: '¹⁄ₓ', onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: 'x²', onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(value: 'x²', onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '√(2x)', onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(value: '√(2x)', onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
                     Expanded(child: CalculatorButton(value: '/', onTap: () {})),
                   ],
@@ -153,11 +199,23 @@ class _CalculatorPageState extends State<CalculatorPage> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: CalculatorButton(value: '7', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '7',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '8', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '8',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '9', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '9',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
                     Expanded(child: CalculatorButton(value: 'X', onTap: () {})),
                   ],
@@ -167,11 +225,23 @@ class _CalculatorPageState extends State<CalculatorPage> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: CalculatorButton(value: '4', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '4',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '5', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '5',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '6', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '6',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
                     Expanded(child: CalculatorButton(value: 'ㅡ', onTap: () {})),
                   ],
@@ -181,11 +251,23 @@ class _CalculatorPageState extends State<CalculatorPage> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: CalculatorButton(value: '1', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '1',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '2', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '2',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '3', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '3',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
                     Expanded(child: CalculatorButton(value: '+', onTap: () {})),
                   ],
@@ -195,13 +277,30 @@ class _CalculatorPageState extends State<CalculatorPage> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: CalculatorButton(value: '-/+', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '-/+',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '0', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '0',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '.', foregroundColor: CalculatorStyles.foregroundColor2, onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '.',
+                            foregroundColor: CalculatorStyles.foregroundColor2,
+                            onTap: () {})),
                     const SizedBox(width: CalculatorStyles.innerPadding),
-                    Expanded(child: CalculatorButton(value: '=', foregroundColor: const Color.fromRGBO(0, 150, 255, 1), onTap: () {})),
+                    Expanded(
+                        child: CalculatorButton(
+                            value: '=',
+                            foregroundColor:
+                                const Color.fromRGBO(0, 150, 255, 1),
+                            onTap: () {})),
                   ],
                 ),
               ),
@@ -210,7 +309,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
         );
 
         const maxHeight = 750.0;
-        if(constraints.maxHeight >= maxHeight) {
+        if (constraints.maxHeight >= maxHeight) {
           return Column(
             children: [
               Expanded(child: header),
@@ -225,8 +324,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
         }
 
         return Column(
-            children: [header, Expanded(child: content)],
-          );
+          children: [header, Expanded(child: content)],
+        );
       },
     );
   }
@@ -270,13 +369,13 @@ class CalculatorButton extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: Text(
-            value,
-            style: TextStyle(
-              fontSize: fontSize,
-              color: fontColor ?? CalculatorStyles.subColor,
-              fontFamily: 'Pretendard',
-            ),
+          value,
+          style: TextStyle(
+            fontSize: fontSize,
+            color: fontColor ?? CalculatorStyles.subColor,
+            fontFamily: 'Pretendard',
           ),
+        ),
       ),
     );
   }
