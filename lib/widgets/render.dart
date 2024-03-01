@@ -30,12 +30,21 @@ class TouchRipplePainter<T extends TouchRipplePaintable> extends CustomPainter {
       final scaledSize = size * scale;
       final offset = (sizeToOffset(size) - sizeToOffset(scaledSize)) / 2;
       return Rect.fromLTWH(
-          offset.dx, offset.dy, scaledSize.width, scaledSize.height);
+        offset.dx,
+        offset.dy,
+        scaledSize.width,
+        scaledSize.height
+      );
     }
 
     canvas.clipRRect(borderRadius.toRRect(getSizeRect()));
     state.paint(
-        canvas: canvas, size: size, scale: scale, blur: blur, color: color);
+      canvas: canvas,
+      size: size,
+      scale: scale,
+      blur: blur,
+      color: color
+    );
   }
 
   @override

@@ -6,8 +6,7 @@ import 'package:flutter_touch_ripple/components/gestures/recognizers.dart';
 
 /// An abstract class that defines the touch ripple gesture base behavior,
 /// which is a basic and essential behavior.
-abstract class BaseTouchRippleGestureRecognizer
-    extends ResetableGestureRecognizer {
+abstract class BaseTouchRippleGestureRecognizer extends ResetableGestureRecognizer {
   BaseTouchRippleGestureRecognizer({
     required this.context,
     required this.rejectBehavior,
@@ -51,7 +50,7 @@ abstract class BaseTouchRippleGestureRecognizer
 
     // is TouchRippleCancalBehavior.touchSlop
     return pointerMoveDistance.dx.abs() > kTouchSlop ||
-        pointerMoveDistance.dy.abs() > kTouchSlop;
+           pointerMoveDistance.dy.abs() > kTouchSlop;
   }
 
   /// Defines the values needed to process the gesture and
@@ -73,7 +72,7 @@ abstract class BaseTouchRippleGestureRecognizer
     if (event is PointerDownEvent) onPointerDown(event);
     if (event is PointerMoveEvent) {
       final isRejectable = rejectByOffset(currentPointerOffset);
-      isRejectable ? reject() : onPointerMove(event);
+            isRejectable ? reject() : onPointerMove(event);
     }
     if (event is PointerUpEvent) onPointerUp(event);
     if (event is PointerCancelEvent) onPointerCancel(event);

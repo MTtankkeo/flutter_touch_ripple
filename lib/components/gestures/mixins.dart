@@ -7,14 +7,11 @@ import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 
 /// The given [acceptedOffset] defines the pointer offset that was defined
 /// after the gesture was accepted.
-typedef TouchRippleAcceptedCallback = void Function(
-    TouchRippleState acceptedState);
+typedef TouchRippleAcceptedCallback = void Function(TouchRippleState acceptedState);
 
-typedef TouchRippleRejectedCallback = void Function(
-    TouchRippleState rejectedState);
+typedef TouchRippleRejectedCallback = void Function(TouchRippleState rejectedState);
 
-typedef TouchRippleRejectableCallback = TouchRippleState Function(
-    Offset rejectableOffset);
+typedef TouchRippleRejectableCallback = TouchRippleState Function(Offset rejectableOffset);
 
 /// It provides functionality to continuously track the defined pointers
 /// to prevent the gesture from being rejected.
@@ -126,8 +123,7 @@ mixin RejectableGestureRecognizerMixin on ResetableGestureRecognizer {
   void onAccepted() {
     onAcceptedCalled = true;
 
-    assert(rejectableState != null,
-        'If the state is rejectable, the touch ripple state must be defined.');
+    assert(rejectableState != null, 'If the state is rejectable, the touch ripple state must be defined.');
     if (rejectableState != null) onAcceptedCallBack?.call(rejectableState!);
   }
 
@@ -135,8 +131,7 @@ mixin RejectableGestureRecognizerMixin on ResetableGestureRecognizer {
   void onRejected() {
     onRejectedCalled = true;
 
-    assert(rejectableState != null,
-        'If the state is rejectable, the touch ripple state must be defined.');
+    assert(rejectableState != null, 'If the state is rejectable, the touch ripple state must be defined.');
     if (rejectableState != null) onRejectedCallBack?.call(rejectableState!);
   }
 
@@ -182,10 +177,9 @@ mixin FocusableGestureRecognizerMixin on ResetableGestureRecognizer {
   TouchRippleStateCallBack? onFocusEndCallBack;
 
   @mustCallSuper
-  void onFocusStart(
-    BaseTouchRippleGestureRecognizer instance,
-  ) =>
-      onFocusStartCallBack?.call(instance);
+  void onFocusStart(BaseTouchRippleGestureRecognizer instance) {
+    onFocusStartCallBack?.call(instance);
+  }
 
   @mustCallSuper
   void onFocusEnd() => onFocusEndCallBack?.call();

@@ -540,8 +540,7 @@ class TouchRipple<T> extends GestureDectectorCreatable<T> {
     super.isLongTapContinuable = true,
     super.rejectBehavior = TouchRippleRejectBehavior.leave,
     super.cancelledBehavior = TouchRippleCancelledBehavior.none,
-    super.longTapFocusStartEvent =
-        TouchRippleLongTapFocusStartEvent.onRejectable,
+    super.longTapFocusStartEvent = TouchRippleLongTapFocusStartEvent.onRejectable,
     super.rippleColor,
     super.renderOrder = TouchRippleRenderOrderType.foreground,
     super.rippleScale = 1,
@@ -573,21 +572,21 @@ class TouchRipple<T> extends GestureDectectorCreatable<T> {
 
   @override
   TouchRippleBehavior get defaultBehavior => const TouchRippleBehavior(
-        overlap: TouchRippleOverlapBehavior.overlappable,
-        lowerPercent: 0.3,
-        upperPercent: 1,
-        fadeLowerPercent: 0,
-        fadeUpperPercent: 1,
-        eventCallBackableMinPercent: null,
-        spreadDuration: Duration(milliseconds: 250),
-        spreadCurve: Curves.ease,
-        fadeInDuration: Duration(milliseconds: 100),
-        fadeInCurve: Curves.easeOut,
-        fadeOutDuration: Duration(milliseconds: 200),
-        fadeOutCurve: Curves.easeIn,
-        canceledDuration: Duration(milliseconds: 50),
-        canceledCurve: null,
-      );
+    overlap: TouchRippleOverlapBehavior.overlappable,
+    lowerPercent: 0.3,
+    upperPercent: 1,
+    fadeLowerPercent: 0,
+    fadeUpperPercent: 1,
+    eventCallBackableMinPercent: null,
+    spreadDuration: Duration(milliseconds: 250),
+    spreadCurve: Curves.ease,
+    fadeInDuration: Duration(milliseconds: 100),
+    fadeInCurve: Curves.easeOut,
+    fadeOutDuration: Duration(milliseconds: 200),
+    fadeOutCurve: Curves.easeIn,
+    canceledDuration: Duration(milliseconds: 50),
+    canceledCurve: null,
+  );
 
   @override
   Color get defaultRippleColor => Colors.black.withAlpha(75);
@@ -760,8 +759,8 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
   }) {
     /// If a given behavior defines that ripple effects cannot overlap,
     /// and there are currently actived effects, the actived effect must be cancelled.
-    return behavior.overlap == TouchRippleOverlapBehavior.cancel &&
-        controller.rippleStates.isNotEmpty;
+    return behavior.overlap == TouchRippleOverlapBehavior.cancel
+        && controller.rippleStates.isNotEmpty;
   }
 
   /// nspects the given behavior and creates a new TouchRippleState accordingly.
@@ -784,8 +783,8 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     /// If a given behavior is defined to ignore an event
     /// if it would cause an overlapping effect,
     /// it will not generate a touch ripple effect if there is currently an active ripple effect.
-    if (behavior.overlap == TouchRippleOverlapBehavior.ignoring &&
-        controller.rippleStates.isNotEmpty) {
+    if (behavior.overlap == TouchRippleOverlapBehavior.ignoring
+     && controller.rippleStates.isNotEmpty) {
       return null;
     }
     return onCreateState.call();
@@ -821,8 +820,7 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     // TouchRippleRecognizerCallback? onVerticalDragCallback;
 
     if (onTap != null) {
-      TouchRippleState createTouchRippleState(Offset baseOffset,
-          {required bool isRejectable}) {
+      TouchRippleState createTouchRippleState(Offset baseOffset, {required bool isRejectable}) {
         final newState = controller.createState(
           behavior: tapBehavior,
           callback: onTap,
@@ -835,15 +833,13 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
       tapCallback = (Offset acceptedOffset) {
         final newState = _inspectCreateState(
           behavior: tapBehavior,
-          onCreateState: () =>
-              createTouchRippleState(acceptedOffset, isRejectable: false),
+          onCreateState: () => createTouchRippleState(acceptedOffset, isRejectable: false),
         );
         attachTo(newState?..start());
       };
 
       rejectableTapCallback = (rejectableOffset) {
-        final newState =
-            createTouchRippleState(rejectableOffset, isRejectable: true);
+        final newState = createTouchRippleState(rejectableOffset, isRejectable: true);
         attachTo(newState..start());
 
         return newState;
@@ -932,10 +928,10 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     {
       focusStartCallBack = (instance) {
         if (widget.useFocusEffect == false) return;
-        if (widget.useDoubleTapFocusEffect == false &&
-                instance is TouchRippleDoubleTapGestureRecognizer ||
-            widget.useLongTapFocusEffect == false &&
-                instance is TouchRippleLongTapGestureRecognizer) return;
+        if (widget.useDoubleTapFocusEffect == false
+         && instance is TouchRippleDoubleTapGestureRecognizer
+         || widget.useLongTapFocusEffect == false
+         && instance is TouchRippleLongTapGestureRecognizer) return;
 
         // If focus state already initialised,
         // it will fade back in without creating the state.
@@ -984,8 +980,7 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
       onRejected: (rejectedState) => rejectedState.onRejected(),
       onFocusStart: focusStartCallBack,
       onFocusEnd: focusEndCallBack,
-      longTappableDuration:
-          widget.longTappableDuration ?? longTapBehavior.spreadDuration,
+      longTappableDuration: widget.longTappableDuration ?? longTapBehavior.spreadDuration,
       child: child,
     );
   }
@@ -1028,8 +1023,9 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     // Even if hover is considered,
     // the stylus hover listener functionality is no longer
     // supported in Flutter.
-    if (Platform.isFuchsia || Platform.isAndroid || Platform.isIOS)
+    if (Platform.isFuchsia || Platform.isAndroid || Platform.isIOS) {
       return gestureDetector;
+    }
 
     PointerEnterEventListener? onHoverStartCallBack;
     PointerExitEventListener? onHoverEndCallBack;

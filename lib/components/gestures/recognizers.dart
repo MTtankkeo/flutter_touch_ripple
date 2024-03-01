@@ -156,8 +156,7 @@ class TouchRippleDoubleTapGestureRecognizer
         'The [_doubleTapHoldTimer] must be initialised before the [doubleTapHoldDuration] can be Initialised.');
     if (_doubleTapCount == 1) onContinueStart();
     if (_doubleTapCount > 0) {
-      final isContinueable =
-          onDoubleTap?.call(currentPointerOffset, _doubleTapCount);
+      final isContinueable = onDoubleTap?.call(currentPointerOffset, _doubleTapCount);
 
       accept();
       if (isContinueable ?? false) {
@@ -298,8 +297,7 @@ class TouchRippleLongTapGestureRecognizer
     super.onPointerDown(event);
 
     _longTapStartDeleyTimer?.cancel();
-    _longTapStartDeleyTimer =
-        Timer(longTapStartDeleyDuration!, startLongTappable);
+    _longTapStartDeleyTimer = Timer(longTapStartDeleyDuration!, startLongTappable);
   }
 
   @override

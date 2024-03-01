@@ -125,9 +125,7 @@ class _TouchRippleGestureDetectorState
       );
     }
     if (widget.onDoubleTap != null) {
-      gestures[TouchRippleDoubleTapGestureRecognizer] =
-          GestureRecognizerFactoryWithHandlers<
-              TouchRippleDoubleTapGestureRecognizer>(
+      gestures[TouchRippleDoubleTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleDoubleTapGestureRecognizer>(
         () => TouchRippleDoubleTapGestureRecognizer(
             context: context, rejectBehavior: widget.rejectBehavior),
         (TouchRippleDoubleTapGestureRecognizer instance) {
@@ -143,9 +141,7 @@ class _TouchRippleGestureDetectorState
       );
     }
     if (widget.onRejectableLongTap != null) {
-      gestures[TouchRippleLongTapGestureRecognizer] =
-          GestureRecognizerFactoryWithHandlers<
-              TouchRippleLongTapGestureRecognizer>(
+      gestures[TouchRippleLongTapGestureRecognizer] = GestureRecognizerFactoryWithHandlers<TouchRippleLongTapGestureRecognizer>(
         () => TouchRippleLongTapGestureRecognizer(
           context: context,
           rejectBehavior: widget.rejectBehavior,
@@ -168,8 +164,7 @@ class _TouchRippleGestureDetectorState
     }
 
     /// Add an empty gesture detector to keep the gesture detectors in competition.
-    gestures[EmptyGestureRecognizer] =
-        GestureRecognizerFactoryWithHandlers<EmptyGestureRecognizer>(
+    gestures[EmptyGestureRecognizer] = GestureRecognizerFactoryWithHandlers<EmptyGestureRecognizer>(
       () => EmptyGestureRecognizer(),
       (EmptyGestureRecognizer instance) {
         // ...
