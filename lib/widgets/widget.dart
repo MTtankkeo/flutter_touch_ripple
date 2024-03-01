@@ -8,6 +8,7 @@ import 'package:flutter_touch_ripple/components/gestures/mixins.dart';
 import 'package:flutter_touch_ripple/components/gestures/recognizers.dart';
 import 'package:flutter_touch_ripple/components/states.dart';
 import 'package:flutter_touch_ripple/widgets/gesture_detactor.dart';
+import 'package:flutter_touch_ripple/widgets/primary_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/stack.dart';
 
 /// This enum is used to defines the render order of a touch ripple effects.
@@ -43,8 +44,7 @@ typedef TouchRippleContinuableCheckedCallBack = bool Function(int count);
 ///
 /// See also:
 /// - Generic [T] defines a type of [onTapAsync] of return type.
-abstract class GestureDectectorCreatable<T extends dynamic>
-    extends StatefulWidget {
+abstract class GestureDectectorCreatable<T extends dynamic> extends StatefulWidget {
   const GestureDectectorCreatable({
     super.key,
     required this.child,
@@ -112,30 +112,36 @@ abstract class GestureDectectorCreatable<T extends dynamic>
     required this.isOnHoveredDisableFocusEffect,
     required this.rippleBlurRadius,
   })  : assert(
-            tapableDuration != Duration.zero,
-            'The tappable duration cannot be zero.'
-            'If the tappable duration is zero, tapping will not occur in all situations.'),
+          tapableDuration != Duration.zero,
+          'The tappable duration cannot be zero.'
+          'If the tappable duration is zero, tapping will not occur in all situations.'
+        ),
         assert(
-            onDoubleTap == null ? onDoubleTapStart == null : true,
-            'The onDoubleTap parameter is not givend, so the double tap gesture is not defined.'
-            'Therefore, the onDoubleTapStart function is not called'),
+          onDoubleTap == null ? onDoubleTapStart == null : true,
+          'The onDoubleTap parameter is not givend, so the double tap gesture is not defined.'
+          'Therefore, the onDoubleTapStart function is not called'
+        ),
         assert(
-            onDoubleTap == null ? onDoubleTapEnd == null : true,
-            'The onDoubleTap parameter is not givend, so the double tap gesture is not defined.'
-            'Therefore, the onDoubleTapEnd function is not called'),
-        assert(rippleScale >= 1,
-            'The ripple size cannot be smaller than its original size. Please adjust the scale to be 1 or larger.'),
+          onDoubleTap == null ? onDoubleTapEnd == null : true,
+          'The onDoubleTap parameter is not givend, so the double tap gesture is not defined.'
+          'Therefore, the onDoubleTapEnd function is not called'
+        ),
         assert(
-            !(isDoubleTapContinuable == false &&
-                onDoubleTapContinuableChecked != null),
-            'Already defined to prevent consecutive double taps from occurring.'
-            'Therefore, even if you register the onDoubleTapContinuationableChecked callback function,'
-            'it will not be called.'),
+          rippleScale >= 1,
+          'The ripple size cannot be smaller than its original size. Please adjust the scale to be 1 or larger.'
+        ),
         assert(
-            (onTap != null && onTapAsync == null) ||
-                (onTapAsync != null && onTap == null ||
-                    (onTap == null && onTapAsync == null)),
-            "[onTap] and [onTapAsync] cannot be used at the same.");
+          !(isDoubleTapContinuable == false && onDoubleTapContinuableChecked != null),
+          'Already defined to prevent consecutive double taps from occurring.'
+          'Therefore, even if you register the onDoubleTapContinuationableChecked callback function,'
+          'it will not be called.'
+        ),
+        assert(
+          (onTap != null && onTapAsync == null) ||
+          (onTapAsync != null && onTap == null ||
+          (onTap == null && onTapAsync == null)),
+          "[onTap] and [onTapAsync] cannot be used at the same."
+        );
 
   /// The [child] widget contained by the [TouchRipple] widget.
   ///
@@ -272,19 +278,19 @@ abstract class GestureDectectorCreatable<T extends dynamic>
   TouchRippleBehavior get defaultBehavior;
 
   /// Returns the final defined touch ripple behavior of tap event.
-  TouchRippleBehavior get defaultTapBehavior => defaultBehavior;
+  TouchRippleBehavior? get defaultTapBehavior => null;
 
   /// Returns the final defined touch ripple behavior of double tap event.
-  TouchRippleBehavior get defaultDoubleTapBehavior => defaultBehavior;
+  TouchRippleBehavior? get defaultDoubleTapBehavior => null;
 
   /// Returns the final defined touch ripple behavior of long tap event.
-  TouchRippleBehavior get defaultLongTapBehavior => defaultBehavior.copyWith(
-        spreadDuration: const Duration(seconds: 1),
-        spreadCurve: Curves.linear,
-        fadeInDuration: const Duration(seconds: 1),
-        fadeInCurve: Curves.linear,
-        lowerPercent: 0,
-      );
+  TouchRippleBehavior? get defaultLongTapBehavior => const TouchRippleBehavior(
+    spreadDuration: Duration(seconds: 1),
+    spreadCurve: Curves.linear,
+    fadeInDuration: Duration(seconds: 1),
+    fadeInCurve: Curves.linear,
+    lowerPercent: 0,
+  );
 
   /// Returns the final defined touch ripple behavior of horizontal drag event.
   TouchRippleBehavior get defaultHorizontalDragBehavior => defaultBehavior;
@@ -466,8 +472,7 @@ abstract class GestureDectectorCreatable<T extends dynamic>
   ///
   /// See also:
   /// - [TouchRipple.controller]
-  TouchRippleController createTouchRippleController() =>
-      TouchRippleController();
+  TouchRippleController createTouchRippleController() => TouchRippleController();
 
   /// Finds the [TouchRippleWidgetState] from the closest instance
   /// of this class that encloses the given context.
@@ -660,8 +665,7 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
   /// a new instance of the touch ripple controller.
   ///
   /// This is because the existence of the controller is essential for managing the touch ripple state.
-  late TouchRippleController controller =
-      widget.controller ?? widget.createTouchRippleController();
+  late TouchRippleController controller = widget.controller ?? widget.createTouchRippleController();
 
   /// Convert the two given touch ripple behaviors to null safety instances and return it.
   ///
@@ -671,56 +675,65 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
   /// - The given [defaultBehavior] is the default behavior defined
   ///   in the widget implementation class.
   static TouchRippleBehavior _toNullSafetedBehavior({
-    required TouchRippleBehavior? behavior,
-    required TouchRippleBehavior defaultBehavior,
+    required TouchRippleBehavior? child,
+    required TouchRippleBehavior parent,
   }) {
     // If behavior is not null,
     // it means that the user specified a custom behavior,
     // so we use the pasteWith method to return a combination of
     // the defaultBehavior and the behavior.
-    if (behavior != null) return defaultBehavior.pasteWith(behavior);
-    return defaultBehavior;
+    if (child != null) return parent.merge(child);
+    return parent;
   }
 
   /// Returns null safeted touch ripple tap default behavior.
   TouchRippleBehavior get defaultBehavior {
-    return _toNullSafetedBehavior(
-      behavior: widget.behavior,
-      defaultBehavior: widget.defaultTapBehavior,
-    );
+    var parent = widget.defaultBehavior;
+    var primary = PrimaryTouchRipple.of(context)?.behvaior;
+    if (primary != null) {
+      parent = parent.merge(primary);
+    }
+
+    return _toNullSafetedBehavior(child: widget.behavior, parent: parent);
   }
 
   /// Returns null safeted touch ripple tap behavior.
   TouchRippleBehavior get tapBehavior {
-    return _toNullSafetedBehavior(
-      behavior: widget.tapBehavior,
-      defaultBehavior: widget.defaultBehavior,
-    );
+    var parent = defaultBehavior.merge(widget.defaultTapBehavior);
+    var primary = PrimaryTouchRipple.of(context)?.tapBehavior;
+    if (primary != null) {
+      parent = parent.merge(primary);
+    }
+
+    return _toNullSafetedBehavior(child: widget.tapBehavior, parent: parent);
   }
 
   /// Returns null safeted touch ripple double tap behavior.
   TouchRippleBehavior get doubleTapBehavior {
-    return _toNullSafetedBehavior(
-      behavior: widget.doubleTapBehavior,
-      defaultBehavior: widget.defaultBehavior,
-    );
+    var parent = defaultBehavior.merge(widget.defaultDoubleTapBehavior);
+    var primary = PrimaryTouchRipple.of(context)?.doubleTapBehavior;
+    if (primary != null) {
+      parent = parent.merge(primary);
+    }
+
+    return _toNullSafetedBehavior(child: widget.doubleTapBehavior, parent: parent);
   }
 
   /// Returns null safeted touch ripple long tap behavior.
   TouchRippleBehavior get longTapBehavior {
-    TouchRippleBehavior? behavior = widget.defaultLongTapBehavior;
-    if (widget.longTapBehavior != null) {
-      behavior = behavior.pasteWith(widget.longTapBehavior!);
+    var parent = defaultBehavior.merge(widget.defaultLongTapBehavior);
+    var primary = PrimaryTouchRipple.of(context)?.longTapBehavior;
+    if (primary != null) {
+      parent = parent.merge(primary);
     }
 
-    return _toNullSafetedBehavior(
-      behavior: behavior,
-      defaultBehavior: widget.defaultBehavior,
-    );
+    return _toNullSafetedBehavior(child: widget.longTapBehavior, parent: parent);
   }
 
   /// Returns current defined touch ripple color.
-  Color get rippleColor => widget.rippleColor ?? widget.defaultRippleColor;
+  Color get rippleColor => widget.rippleColor
+    ?? PrimaryTouchRipple.of(context)?.rippleColor
+    ?? widget.defaultRippleColor;
 
   @override
   void initState() {
@@ -776,8 +789,7 @@ class TouchRippleWidgetState<T> extends State<TouchRipple<T>> {
     // and there are currently active ripple effects,
     // it will cancel all of them.
     if (_checkShouldCancelled(behavior: behavior)) {
-      controller.rippleStates.toList().forEach(
-          (e) => e.cancel(cancelledBehavior: widget.cancelledBehavior));
+      controller.rippleStates.toList().forEach((e) => e.cancel(cancelledBehavior: widget.cancelledBehavior));
     }
 
     /// If a given behavior is defined to ignore an event

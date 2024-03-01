@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_touch_ripple/components/interfaces/copy_pasteable.dart';
 
 /// Defines the behavior of a touch ripple when it overlaps.
 enum TouchRippleOverlapBehavior {
@@ -60,7 +59,7 @@ enum TouchRippleLongTapContinueBehavior {
 */
 
 /// A class declared to define the basic behavior of touch ripple.
-class TouchRippleBehavior extends CopyPasteable<TouchRippleBehavior> {
+class TouchRippleBehavior {
   const TouchRippleBehavior({
     this.overlap,
     this.lowerPercent,
@@ -180,7 +179,6 @@ class TouchRippleBehavior extends CopyPasteable<TouchRippleBehavior> {
   /// the touch ripple effect is cancelled midway by the touch ripple overlap behavior.
   final Curve? canceledCurve;
 
-  @override
   TouchRippleBehavior copyWith({
     TouchRippleOverlapBehavior? overlap,
     double? lowerPercent,
@@ -202,8 +200,7 @@ class TouchRippleBehavior extends CopyPasteable<TouchRippleBehavior> {
       upperPercent: upperPercent ?? this.upperPercent,
       fadeLowerPercent: fadeLowerPercent ?? this.fadeLowerPercent,
       fadeUpperPercent: fadeUpperPercent ?? this.fadeUpperPercent,
-      eventCallBackableMinPercent:
-          eventCallBackableMinPercent ?? this.eventCallBackableMinPercent,
+      eventCallBackableMinPercent: eventCallBackableMinPercent ?? this.eventCallBackableMinPercent,
       spreadDuration: spreadDuration ?? this.spreadDuration,
       spreadCurve: spreadCurve ?? this.spreadCurve,
       fadeInDuration: fadeInDuration ?? this.fadeInDuration,
@@ -215,24 +212,24 @@ class TouchRippleBehavior extends CopyPasteable<TouchRippleBehavior> {
     );
   }
 
-  @override
-  TouchRippleBehavior pasteWith(TouchRippleBehavior object) {
+  TouchRippleBehavior merge(TouchRippleBehavior? target) {
+    if (target == null) return this;
+
     return TouchRippleBehavior(
-      overlap: object.overlap ?? overlap,
-      lowerPercent: object.lowerPercent ?? lowerPercent,
-      upperPercent: object.upperPercent ?? upperPercent,
-      fadeLowerPercent: object.fadeLowerPercent ?? fadeLowerPercent,
-      fadeUpperPercent: object.fadeUpperPercent ?? fadeUpperPercent,
-      eventCallBackableMinPercent:
-          object.eventCallBackableMinPercent ?? eventCallBackableMinPercent,
-      spreadDuration: object.spreadDuration ?? spreadDuration,
-      spreadCurve: object.spreadCurve ?? spreadCurve,
-      fadeInDuration: object.fadeInDuration ?? fadeInDuration,
-      fadeInCurve: object.fadeInCurve ?? fadeInCurve,
-      fadeOutDuration: object.fadeOutDuration ?? fadeOutDuration,
-      fadeOutCurve: object.fadeOutCurve ?? fadeOutCurve,
-      canceledDuration: object.canceledDuration ?? canceledDuration,
-      canceledCurve: object.canceledCurve ?? canceledCurve,
+      overlap: target.overlap ?? overlap,
+      lowerPercent: target.lowerPercent ?? lowerPercent,
+      upperPercent: target.upperPercent ?? upperPercent,
+      fadeLowerPercent: target.fadeLowerPercent ?? fadeLowerPercent,
+      fadeUpperPercent: target.fadeUpperPercent ?? fadeUpperPercent,
+      eventCallBackableMinPercent: target.eventCallBackableMinPercent ?? eventCallBackableMinPercent,
+      spreadDuration: target.spreadDuration ?? spreadDuration,
+      spreadCurve: target.spreadCurve ?? spreadCurve,
+      fadeInDuration: target.fadeInDuration ?? fadeInDuration,
+      fadeInCurve: target.fadeInCurve ?? fadeInCurve,
+      fadeOutDuration: target.fadeOutDuration ?? fadeOutDuration,
+      fadeOutCurve: target.fadeOutCurve ?? fadeOutCurve,
+      canceledDuration: target.canceledDuration ?? canceledDuration,
+      canceledCurve: target.canceledCurve ?? canceledCurve,
     );
   }
 }
