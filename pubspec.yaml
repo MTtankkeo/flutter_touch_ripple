@@ -1,0 +1,19 @@
+name: flutter_touch_ripple
+description: "This package serves as a replacement for the existing Inkwell in Flutter, implementing a more flexible and smoother touch effect."
+version: 2.0.0
+homepage:
+
+environment:
+  sdk: '>=3.4.0-190.0.dev <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
