@@ -22,7 +22,7 @@ class TouchRippleController extends Listenable {
   }
 
   void detach(TouchEffect effect) {
-
+    // TODO: After developing all TouchEffect.
   }
 
   /// Merges the effects of the given touch-ripple controller.
