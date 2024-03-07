@@ -1,7 +1,9 @@
 library flutter_touch_ripple;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+// in components
+export "components/behavior.dart";
+export "components/style.dart";
+
+// in widgets
+export "widgets/touch_ripple.dart";
+export "widgets/touch_ripple_gesture_detector.dart";
