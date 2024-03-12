@@ -1,7 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/controller.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
+import 'package:flutter_touch_ripple/widgets/primary_touch_ripple_style.dart';
 import 'package:flutter_touch_ripple/widgets/render_touch_ripple.dart';
+import 'package:flutter_touch_ripple/widgets/touch_ripple_context.dart';
 
 class TouchRipple extends StatefulWidget {
   const TouchRipple({
@@ -29,14 +31,28 @@ class TouchRipple extends StatefulWidget {
   State<TouchRipple> createState() => _TouchRippleState();
 }
 
-class _TouchRippleState extends State<TouchRipple> {
+class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, TickerProviderStateMixin {
   late TouchRippleController _controller = widget.controller ?? TouchRippleController();
+
+  @override
+  TickerProvider get vsync => this;
+
+  @override
+  TouchRippleStyle get style => widget.style ?? PrimaryTouchRippleStyle.madeOf(context)!.style;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // A touch-ripple context must be registered only once at the initialing.
+    _controller.context = this;
+  }
 
   @override
   void didUpdateWidget(covariant TouchRipple oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    /// When the touch-ripple controller changes.
+    // When the touch-ripple controller changes.
     if (widget.controller != null
     && (widget.controller != _controller)) {
       _controller = widget.controller!..merge(_controller);
