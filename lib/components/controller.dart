@@ -4,6 +4,8 @@ import 'package:flutter_touch_ripple/components/effect.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_context.dart';
 
+import 'effect.dart';
+
 /// Controls a touch-ripple widget.
 /// 
 /// Touch-ripple controllers are typically stored as member variables in [State]
@@ -13,7 +15,7 @@ import 'package:flutter_touch_ripple/widgets/touch_ripple_context.dart';
 class TouchRippleController extends Listenable {
   final List<TouchEffect> _effects = <TouchEffect>[];
   final ObserverList<VoidCallback> _listeners = ObserverList<VoidCallback>();
-  
+
   set context(TouchRippleContext context) {
     assert(_context == null, "A touch-ripple context has already been initialized.");
     _context = context;
@@ -39,11 +41,11 @@ class TouchRippleController extends Listenable {
   }
 
   void attach(TouchEffect effect) {
-    // TODO: After developing all TouchEffect.
+    _effects.add(effect);
   }
 
   void detach(TouchEffect effect) {
-    // TODO: After developing all TouchEffect.
+    _effects.remove(effect);
   }
 
   /// Merges the effects of the given touch-ripple controller.
