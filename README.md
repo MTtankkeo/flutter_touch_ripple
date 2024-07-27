@@ -1,6 +1,14 @@
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/4702191a-06cf-4835-bc45-9a0a99f18db2">
+    <img src="https://github.com/user-attachments/assets/67af34e9-2d7b-450d-bd08-1c31934eda60">
     <h1>Flutter Touch Ripple</h1>
+    <table>
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>v1.1.21</th>
+          </tr>
+        </tbody>
+    </table>
 </div>
 
 ### Customizable touch ripple for flutter widget
