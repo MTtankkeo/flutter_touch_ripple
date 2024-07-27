@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/88a5e3c5-2aca-4fad-8b2a-03e8ab447a74">
+    <img src="https://github.com/user-attachments/assets/3c1f249a-68a0-4778-bce2-818ec48ef16e">
     <h1>Flutter Touch Ripple</h1>
 </div>
 
