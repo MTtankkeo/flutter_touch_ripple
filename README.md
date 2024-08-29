@@ -11,5 +11,5 @@
     </table>
 </div>
 
-# Description
+# Introduction
 This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally.
