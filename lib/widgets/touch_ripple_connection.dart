@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
-/// This widget detects user gestures, notifies the relevant controller that manages
-/// touch ripple effects, and delegates the handling to it.
+/// This widget detects user gestures, notifies the relevant controller that
+/// manages touch ripple effects, and delegates the handling to it.
 class TouchRippleConnection extends StatefulWidget {
   const TouchRippleConnection({
     super.key,
@@ -36,6 +36,9 @@ class _TouchRippleConnectionState extends State<TouchRippleConnection> {
   Widget build(BuildContext context) {
     return Listener(
       behavior: widget.behavior,
+      onPointerDown: (event) {
+        print(event);
+      },
       child: widget.child,
     );
   }

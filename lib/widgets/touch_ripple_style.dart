@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// This inherited widget globally provides the style information for touch ripple effects
-/// to all descendant widgets in the widget tree.
+/// This inherited widget globally provides the style information for touch ripple
+/// effects to all descendant widgets in the widget tree.
 class TouchRippleStyle extends InheritedWidget {
   const TouchRippleStyle({
     super.key,
@@ -17,7 +17,8 @@ class TouchRippleStyle extends InheritedWidget {
   final Color? hoverColor;
 
   @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    throw UnimplementedError();
+  bool updateShouldNotify(TouchRippleStyle oldWidget) {
+    return rippleColor != oldWidget.rippleColor
+        || hoverColor != oldWidget.hoverColor;
   }
 }
