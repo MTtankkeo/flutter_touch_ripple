@@ -1,5 +1,3 @@
-
-import 'package:flutter_touch_ripple/components/touch_ripple_state.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 
 /// Signature for the function that is called when the touch ripple effect is
