@@ -58,7 +58,7 @@ class _TouchRippleState extends State<TouchRipple> implements TouchRippleContext
 
   @override
   Widget build(BuildContext context) {
-    return TouchRippleConnection(
+    return TouchRippleGestureDetector(
       onTap: widget.onTap,
       onDoubleTap: widget.onDoubleTap,
       onLongTap: widget.onLongTap,

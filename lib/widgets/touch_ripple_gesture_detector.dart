@@ -3,8 +3,8 @@ import "package:flutter_touch_ripple/components/touch_ripple_controller.dart";
 
 /// This widget detects user gestures, notifies the relevant controller that
 /// manages touch ripple effects, and delegates the handling to it.
-class TouchRippleConnection extends StatefulWidget {
-  const TouchRippleConnection({
+class TouchRippleGestureDetector extends StatefulWidget {
+  const TouchRippleGestureDetector({
     super.key,
     this.onTap,
     this.onDoubleTap,
@@ -32,17 +32,20 @@ class TouchRippleConnection extends StatefulWidget {
   final Widget child;
 
   @override
-  State<TouchRippleConnection> createState() => _TouchRippleConnectionState();
+  State<TouchRippleGestureDetector> createState() => _TouchRippleGestureDetectorState();
 }
 
-class _TouchRippleConnectionState extends State<TouchRippleConnection> {
+class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector> {
+
+  initPointer(PointerDownEvent event) {
+    // GestureBinding.instance.gestureArena.add(event.pointer, );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Listener(
       behavior: widget.behavior,
-      onPointerDown: (event) {
-        print(event);
-      },
+      onPointerDown: initPointer,
       child: widget.child,
     );
   }
