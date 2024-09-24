@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_touch_ripple/components/touch_ripple_controller.dart';
-import 'package:flutter_touch_ripple/widgets/touch_ripple_connection.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
 /// This widget, inspired by Google Material's ripple effect,
@@ -38,8 +37,14 @@ class TouchRipple extends StatefulWidget {
   State<TouchRipple> createState() => _TouchRippleState();
 }
 
-class _TouchRippleState extends State<TouchRipple> {
+class _TouchRippleState extends State<TouchRipple> implements TouchRippleContext {
   late TouchRippleController _controller = widget.controller ?? TouchRippleController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.context = this;
+  }
 
   @override
   void didUpdateWidget(covariant TouchRipple oldWidget) {
@@ -62,4 +67,10 @@ class _TouchRippleState extends State<TouchRipple> {
       child: TouchRippleRender(controller: _controller, child: widget.child),
     );
   }
+
+  @override
+  Color get rippleColor => const Color.fromRGBO(0, 0, 0, 0.2);
+
+  @override
+  Color get hoverColor => const Color.fromRGBO(0, 0, 0, 0.1);
 }

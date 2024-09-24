@@ -34,11 +34,13 @@ class TouchRippleController extends Listenable {
     _states.remove(effect..removeListener(notifyListeners));
   }
 
-  /// Delegates all states from a given controller to itself and removes all states from
-  /// the given controller, ensuring that each state exists only once in the controller.
+  /// Delegates all states and context from a given controller to itself and removes
+  /// all states from the given controller, ensuring that each state exists only
+  /// once in the controller.
   delegateFrom(TouchRippleController other) {
     _states.clear();
     _states.addAll(other._states..clear());
+    context = other.context;
   }
 
   @override
