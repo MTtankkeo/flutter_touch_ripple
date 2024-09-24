@@ -14,7 +14,17 @@ class TouchRippleController {
   late final TouchRippleContext context;
 
   /// This list defines the value for a state that represents a touch ripple effect.
-  final List<TouchRippleState> _states = [];
+  final List<TouchRippleEffect> _states = [];
+
+  attach(TouchRippleEffect effect) {
+    assert(!_states.contains(effect), "Already exists a given effect");
+    _states.add(effect..onDispose = () => detach(effect));
+  }
+
+  detach(TouchRippleEffect effect) {
+    assert(_states.contains(effect), "Already not exists a given effect");
+    _states.remove(effect);
+  }
 
   /// Delegates all states from a given controller to itself and removes all states from
   /// the given controller, ensuring that each state exists only once in the controller.

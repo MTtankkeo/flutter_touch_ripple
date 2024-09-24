@@ -1,23 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_controller.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_connection.dart';
+import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
 /// This widget, inspired by Google Material's ripple effect,
 /// visualizes various gestures such as tap, double tap,
 /// and long press through ripple effects.
 ///
-class TouchRipple extends TouchRippleConnection {
+class TouchRipple extends StatefulWidget {
   const TouchRipple({
     super.key,
-    super.onTap,
-    super.onDoubleTap,
-    super.onLongTap,
-    super.behavior,
-    required super.child,
+    this.onTap,
+    this.onDoubleTap,
+    this.onLongTap,
+    this.behavior,
     this.controller,
+    required this.child,
   });
 
+  /// This callback function is called when the user taps or clicks.
+  final Function? onTap;
+
+  /// This callback function is called when the user double taps or double clicks.
+  final Function? onDoubleTap;
+
+  /// This callback function is called when the user long presses or long clicks.
+  final Function? onLongTap;
+
+  /// This defines the behavior of hit testing for the child widget.
+  final HitTestBehavior? behavior;
+
   final TouchRippleController? controller;
+
+  final Widget child;
 
   @override
   State<TouchRipple> createState() => _TouchRippleState();
@@ -42,8 +57,9 @@ class _TouchRippleState extends State<TouchRipple> {
       onTap: widget.onTap,
       onDoubleTap: widget.onDoubleTap,
       onLongTap: widget.onLongTap,
-      behavior: widget.behavior,
-      child: widget.child,
+      behavior: widget.behavior ?? HitTestBehavior.translucent,
+      controller: _controller,
+      child: TouchRippleRender(controller: _controller, child: widget.child),
     );
   }
 }

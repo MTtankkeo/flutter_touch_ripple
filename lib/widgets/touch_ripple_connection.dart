@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_touch_ripple/components/touch_ripple_controller.dart";
 
 /// This widget detects user gestures, notifies the relevant controller that
 /// manages touch ripple effects, and delegates the handling to it.
@@ -9,6 +10,7 @@ class TouchRippleConnection extends StatefulWidget {
     this.onDoubleTap,
     this.onLongTap,
     this.behavior = HitTestBehavior.translucent,
+    required this.controller,
     required this.child,
   });
 
@@ -24,6 +26,8 @@ class TouchRippleConnection extends StatefulWidget {
   /// This defines the behavior of hit testing for the child widget.
   final HitTestBehavior behavior;
 
+  final TouchRippleController controller;
+
   /// This widget is the target for detecting gestures related to touch ripple effects.
   final Widget child;
 
@@ -32,8 +36,6 @@ class TouchRippleConnection extends StatefulWidget {
 }
 
 class _TouchRippleConnectionState extends State<TouchRippleConnection> {
-
-  
   @override
   Widget build(BuildContext context) {
     return Listener(
