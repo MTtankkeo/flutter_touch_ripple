@@ -13,21 +13,24 @@ class TouchRipple extends StatefulWidget {
     this.onDoubleTap,
     this.onLongTap,
     this.behavior,
+    this.rejectBehavior,
     this.controller,
     required this.child,
   });
 
   /// This callback function is called when the user taps or clicks.
-  final Function? onTap;
+  final VoidCallback? onTap;
 
   /// This callback function is called when the user double taps or double clicks.
-  final Function? onDoubleTap;
+  final VoidCallback? onDoubleTap;
 
   /// This callback function is called when the user long presses or long clicks.
-  final Function? onLongTap;
+  final VoidCallback? onLongTap;
 
   /// This defines the behavior of hit testing for the child widget.
   final HitTestBehavior? behavior;
+
+  final TouchRippleRejectBehavior? rejectBehavior;
 
   final TouchRippleController? controller;
 
@@ -50,8 +53,7 @@ class _TouchRippleState extends State<TouchRipple> implements TouchRippleContext
   void didUpdateWidget(covariant TouchRipple oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.controller != null
-     && oldWidget.controller != widget.controller) {
+    if (oldWidget.controller != null && oldWidget.controller != widget.controller) {
       _controller = widget.controller!..delegateFrom(_controller);
     }
   }
@@ -73,4 +75,7 @@ class _TouchRippleState extends State<TouchRipple> implements TouchRippleContext
 
   @override
   Color get hoverColor => const Color.fromRGBO(0, 0, 0, 0.1);
+
+  @override
+  TouchRippleRejectBehavior get rejectBehavior => widget.rejectBehavior ?? TouchRippleRejectBehavior.leave;
 }
