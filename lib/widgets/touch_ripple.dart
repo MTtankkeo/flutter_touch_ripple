@@ -84,6 +84,12 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(covariant TouchRipple oldWidget) {
     super.didUpdateWidget(oldWidget);
 

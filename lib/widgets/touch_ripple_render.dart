@@ -34,11 +34,27 @@ class _TouchRippleRenderState extends State<TouchRippleRender> {
   /// Returns an instance of a given [TouchRippleController] as this widget reference.
   TouchRippleController get controller => widget.controller;
 
+  /// Called when the touch ripple state updated.
+  void onUpdated() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
+    controller.addListener(onUpdated);
+  }
 
-    controller.addListener(() => setState(() {}));
+  @override
+  void activate() {
+    super.activate();
+    controller.addListener(onUpdated);
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    controller.removeListener(onUpdated);
   }
 
   @override

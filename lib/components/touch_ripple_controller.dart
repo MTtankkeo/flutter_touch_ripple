@@ -65,9 +65,9 @@ class TouchRippleController extends Listenable {
     _listeners.remove(listener);
   }
 
-  notifyListeners() {
-    for (final listener in _listeners) {
-      listener.call();
-    }
+  void notifyListeners() => _listeners.forEach((l) => l.call());
+
+  dispose() {
+    _states.toList().forEach((state) => state.dispose());
   }
 }

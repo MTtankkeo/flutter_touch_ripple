@@ -12,10 +12,13 @@ abstract class TouchRippleEffect extends Listenable {
   /// Whether the ripple effect is attached to the touch ripple controller.
   bool isAttached = false;
 
-  //
-  start();
+  /// Disposes of the Ticker or related animation instances.
+  /// 
+  /// Calling this function resolves errors and memory leaks that may occur
+  /// when the widget has been disposed but the effect-related instances remain.
+  void dispose();
 
-  paint(TouchRippleContext context, Canvas canvas, Size size);
+  void paint(TouchRippleContext context, Canvas canvas, Size size);
 }
 
 class TouchRippleSpreadingEffect extends TouchRippleEffect {
@@ -195,7 +198,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     canvas.drawCircle(baseOffset, paintSize * context.rippleScale, paint);
   }
 
-  dispose() {
+  @override
+  void dispose() {
     onDispose?.call();
     _spreadAnimation.dispose();
     _spreadCurved.dispose();
