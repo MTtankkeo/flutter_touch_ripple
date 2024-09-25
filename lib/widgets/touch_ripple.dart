@@ -13,10 +13,11 @@ class TouchRipple extends StatefulWidget {
     this.onDoubleTap,
     this.onLongTap,
     this.behavior,
+    this.rippleScale,
     this.rejectBehavior,
     this.controller,
     required this.child,
-  });
+  }) : assert(rippleScale == null || rippleScale != 0);
 
   /// This callback function is called when the user taps or clicks.
   final VoidCallback? onTap;
@@ -30,6 +31,8 @@ class TouchRipple extends StatefulWidget {
   /// This defines the behavior of hit testing for the child widget.
   final HitTestBehavior? behavior;
 
+  final double? rippleScale;
+
   final TouchRippleRejectBehavior? rejectBehavior;
 
   final TouchRippleController? controller;
@@ -40,7 +43,7 @@ class TouchRipple extends StatefulWidget {
   State<TouchRipple> createState() => _TouchRippleState();
 }
 
-class _TouchRippleState extends State<TouchRipple> implements TouchRippleContext {
+class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, TickerProviderStateMixin {
   late TouchRippleController _controller = widget.controller ?? TouchRippleController();
 
   @override
@@ -71,6 +74,9 @@ class _TouchRippleState extends State<TouchRipple> implements TouchRippleContext
   }
 
   @override
+  TickerProvider get vsync => this;
+
+  @override
   Color get rippleColor => const Color.fromRGBO(0, 0, 0, 0.2);
 
   @override
@@ -78,4 +84,10 @@ class _TouchRippleState extends State<TouchRipple> implements TouchRippleContext
 
   @override
   TouchRippleRejectBehavior get rejectBehavior => widget.rejectBehavior ?? TouchRippleRejectBehavior.leave;
+  
+  @override
+  double get rippleScale => 1;
+
+  @override
+  BorderRadius get rippleBorderRadius => BorderRadius.zero;
 }

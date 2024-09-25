@@ -18,22 +18,22 @@ class TouchRippleGestureDetector extends StatefulWidget {
     required this.child,
   });
 
-  /// This callback function is called when the user taps or clicks.
+  /// The callback function is called when the user taps or clicks.
   final VoidCallback? onTap;
 
-  /// This callback function is called when the user double taps or double clicks.
+  /// The callback function is called when the user double taps or double clicks.
   final VoidCallback? onDoubleTap;
 
-  /// This callback function is called when the user long presses or long clicks.
+  /// The callback function is called when the user long presses or long clicks.
   final VoidCallback? onLongTap;
 
-  /// This defines the behavior of hit testing for the child widget.
+  /// The defines the behavior of hit testing for the child widget.
   final HitTestBehavior behavior;
 
-  /// This controller that manages ripple effects triggered by user gestures.
+  /// The controller that manages ripple effects triggered by user gestures.
   final TouchRippleController controller;
 
-  /// This widget is the target for detecting gestures related to touch ripple effects.
+  /// The widget is the target for detecting gestures related to touch ripple effects.
   final Widget child;
 
   @override
@@ -41,14 +41,14 @@ class TouchRippleGestureDetector extends StatefulWidget {
 }
 
 class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector> {
-  /// This list defines instances of a builder function that creates GestureRecognizer objects.
+  /// The list defines instances of a builder function that creates GestureRecognizer objects.
   /// Instances of [GestureRecognizer] should be added and removed according to the lifecycle
   /// of the gesture detector.
   ///
   /// This keeps the context about the factory and lifecycle management clear and concise.
   final List<GestureRecognizerBuilder> _builders = [];
 
-  /// This list defines the instances of currently active [GestureRecognizer].
+  /// The list defines the instances of currently active [GestureRecognizer].
   final List<GestureRecognizer> _recognizers = <GestureRecognizer>[];
 
   /// Returns an instance of a given [TouchRippleController] as this widget reference.
@@ -62,8 +62,30 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
       _builders.add(() => TouchRippleTapGestureRecognizer(
           context: context,
           rejectBehavior: controller.context.rejectBehavior,
-          onTap: () => widget.onTap?.call(),
-          onTapRejectable: () => print("Tap Rejectable"),
+          onTap: (offset) {
+            controller.attach(TouchRippleSpreadingEffect(
+              vsync: controller.context.vsync,
+              callback: widget.onTap!,
+              isRejectable: false,
+              baseOffset: offset,
+              behavior: TouchRippleBehavior(
+                lowerPercent: 0,
+                upperPercent: 1,
+                spreadDuration: Duration(milliseconds: 1000),
+                spreadCurve: Curves.ease,
+                fadeInDuration: Duration(milliseconds: 500),
+                fadeInCurve: Curves.ease,
+                fadeOutDuration: Duration(milliseconds: 500),
+                fadeOutCurve: Curves.ease,
+                cancelDuration: Duration.zero,
+                cancelCurve: Curves.linear,
+                fadeLowerPercent: 0,
+                fadeUpperPercent: 1,
+                eventCallBackableMinPercent: 0,
+              )
+            )..start());
+          },
+          onTapRejectable: (offset) => print("Tap Rejectable"),
           onTapReject: () => print("Tap Reject"),
           onTapAccept: () => print("Tap Accept"),
         )

@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_event.dart';
 
 /// Signature for the callback function that is called when a [GestureRecognizer] disposed.
 typedef GestureRecognizerDisposeCallback = void Function(GestureRecognizer instance);
@@ -167,8 +168,8 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   });
 
   /// The callback function is invoked when a gesture recognizer is ultimately accepted.
-  final VoidCallback onTap;
-  final VoidCallback onTapRejectable;
+  final TouchRippleCallback onTap;
+  final TouchRippleCallback onTapRejectable;
   final VoidCallback onTapReject;
   final VoidCallback onTapAccept;
 
@@ -179,7 +180,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   void acceptGesture(int pointer) {
     super.acceptGesture(pointer);
 
-    onTap.call();
+    onTap.call(currentPointerOffset);
   }
 
   @override

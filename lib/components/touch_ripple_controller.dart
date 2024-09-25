@@ -19,6 +19,8 @@ class TouchRippleController extends Listenable {
   /// The list defines the value for a state that represents a touch ripple effect.
   final _states = <TouchRippleEffect>[];
 
+  List<TouchRippleEffect> get activeEffects => _states;
+
   /// Delegates the task of adding a touch ripple effect to this controller
   /// to ensure it can be reliably detached and disposed later.
   attach(TouchRippleEffect effect) {
