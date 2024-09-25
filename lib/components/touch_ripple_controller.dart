@@ -24,14 +24,23 @@ class TouchRippleController extends Listenable {
   /// Delegates the task of adding a touch ripple effect to this controller
   /// to ensure it can be reliably detached and disposed later.
   attach(TouchRippleEffect effect) {
-    assert(!_states.contains(effect), "Already exists a given effect");
-    _states.add(effect..addListener(notifyListeners)..onDispose = () => detach(effect));
+    if (context.overlapBehavior == TouchRippleOverlapBehavior.ignore && _states.isNotEmpty) return;
+    if (context.overlapBehavior == TouchRippleOverlapBehavior.cancel) {
+      _states.whereType<TouchRippleSpreadingEffect>().toList().forEach((effect) => effect.cancel());
+    }
+
+    effect.addListener(notifyListeners);
+    effect.isAttached = true;
+    effect.onDispose = () => detach(effect);
+
+    assert(!_states.contains(effect), "Already exists a given ripple effect");
+    _states.add(effect);
   }
 
   /// Delegates the task of detaching and disposing of a touch ripple effect
   /// to ensure consistency with [attach] function.
   detach(TouchRippleEffect effect) {
-    assert(_states.contains(effect), "Already not exists a given effect");
+    assert(_states.contains(effect), "Already not exists a given ripple effect");
     _states.remove(effect..removeListener(notifyListeners));
   }
 

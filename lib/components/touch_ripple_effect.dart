@@ -9,6 +9,12 @@ abstract class TouchRippleEffect extends Listenable {
   /// and the relevant instances have been cleaned up.
   VoidCallback? onDispose;
 
+  /// Whether the ripple effect is attached to the touch ripple controller.
+  bool isAttached = false;
+
+  //
+  start();
+
   paint(TouchRippleContext context, Canvas canvas, Size size);
 }
 
@@ -32,8 +38,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       assert(behavior.upperPercent != null, "Upper percent of touch ripple behavior was not initialized.");
       final lowerPercent = behavior.lowerPercent ?? 0;
 
-      if (isRejectable) return;
-      if (spreadPercent >= (behavior.eventCallBackableMinPercent ?? lowerPercent)) {
+      if (this.isRejectable) return;
+      if (this.isAttached && spreadPercent >= (behavior.eventCallBackableMinPercent ?? lowerPercent)) {
         callback.call();
         // Deregisters the listener as there is no longer a need to know
         // when to invoke the event callback function.
@@ -75,7 +81,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   final TouchRippleBehavior behavior;
 
-  final bool isRejectable;
+  bool isRejectable;
 
   late final AnimationController _spreadAnimation;
   late final CurvedAnimation _spreadCurved;
@@ -132,6 +138,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   /// please call the corresponding function.
   void onAccepted() {
     assert(isRejectable, 'The gesture has already been defined as accepted.');
+    isRejectable = false;
     _spreadAnimation.notifyListeners();
     _spreadAnimation.notifyStatusListeners(_spreadAnimation.status);
   }

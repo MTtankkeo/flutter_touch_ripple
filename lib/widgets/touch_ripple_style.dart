@@ -14,6 +14,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.rippleBlurRadius,
     this.rippleBorderRadius,
     this.rejectBehavior,
+    this.overlapBehavior,
     this.renderOrderType
   });
 
@@ -35,6 +36,10 @@ class TouchRippleStyle extends InheritedWidget {
   /// The value defines the behavior that defines when a gesture should be
   /// rejected, specifying the conditions for rejection.
   final TouchRippleRejectBehavior? rejectBehavior;
+
+  /// The value defines the behavior of a touch ripple when it overlaps
+  /// with other ripple effects. (e.g. overlappable, cancel, ignore)
+  final TouchRippleOverlapBehavior? overlapBehavior;
 
   /// The value defines the enumeration specifies the rendering order of the touch
   /// ripple effect, determining whether it should appear in the foreground or background.

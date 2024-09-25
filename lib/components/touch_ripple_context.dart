@@ -30,7 +30,7 @@ mixin TouchRippleContext {
 
   /// Returns the duration after which the gesture is considered
   /// rejected if the pointer is still down and no tap is completed.
-  /// If this duration elapses without a successful gesture, the 
+  /// If this duration elapses without a successful gesture, the
   /// gesture will be rejected.
   Duration get tappableDuration;
 
@@ -40,6 +40,10 @@ mixin TouchRippleContext {
   /// Returns the behavior that defines when a gesture should be rejected,
   /// specifying the conditions for rejection.
   TouchRippleRejectBehavior get rejectBehavior;
+
+  /// Return the behavior of a touch ripple when it overlaps with
+  /// other ripple effects. (e.g. overlappable, cancel, ignore)
+  TouchRippleOverlapBehavior get overlapBehavior;
 }
 
 /// The enumeration defines when a gesture should be rejected,
@@ -57,4 +61,19 @@ enum TouchRippleRejectBehavior {
   /// Sets the gesture to be canceled if the pointer position is
   /// outside the area occupied by the widget.
   leave,
+}
+
+/// The enumeration defines the behavior of a touch ripple
+/// when it overlaps with other ripple effects.
+enum TouchRippleOverlapBehavior {
+  /// Sets the touch ripples to be allowed to overlap with each other.
+  overlappable,
+
+  /// Sets the touch ripple to be canceled if the effects overlap,
+  /// with the new effect being added to the stack.
+  cancel,
+
+  /// Sets the event to be ignored if the effects overlap,
+  /// canceling the previous touch effect until it disappears.
+  ignore,
 }
