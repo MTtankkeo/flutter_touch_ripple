@@ -1,5 +1,11 @@
 import 'package:flutter/animation.dart';
 
+/// This data class defines the configuration for a touch ripple effect,
+/// including animation durations, curves, and spread/fade percentages.
+/// 
+/// This allows for customization of how the ripple effect behaves,
+/// such as the timing and extent of spread, fade-in, fade-out,
+/// and event callback triggering.
 class TouchRippleBehavior {
   const TouchRippleBehavior({
     this.spreadDuration,
@@ -56,5 +62,8 @@ class TouchRippleBehavior {
   /// The percentage value of the maximum fade ratio for the touch ripple effect.
   final double? fadeUpperPercent;
 
+  /// The minimum percentage of spread at which the event callback is triggered.
+  /// For example, if set to 0.5, the callback is invoked when the ripple effect 
+  /// has spread to `50%` of the widget's area.
   final double? eventCallBackableMinPercent;
 }

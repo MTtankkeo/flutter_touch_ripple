@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
-/// This widget, inspired by Google Material's ripple effect,
-/// visualizes various gestures such as tap, double tap,
-/// and long press through ripple effects.
-///
+/// This widget, inspired by Google Material's ripple effect, visualizes
+/// various gestures such as tap, double tap, and long press through
+/// ripple effects.
 class TouchRipple extends StatefulWidget {
   const TouchRipple({
     super.key,
@@ -13,27 +13,51 @@ class TouchRipple extends StatefulWidget {
     this.onDoubleTap,
     this.onLongTap,
     this.behavior,
+    this.rippleColor,
+    this.hoverColor,
     this.rippleScale,
+    this.rippleBlurRadius,
+    this.rippleBorderRadius,
     this.rejectBehavior,
+    this.renderOrderType,
     this.controller,
     required this.child,
   }) : assert(rippleScale == null || rippleScale != 0);
 
-  /// This callback function is called when the user taps or clicks.
+  /// The callback function is called when the user taps or clicks.
   final VoidCallback? onTap;
 
-  /// This callback function is called when the user double taps or double clicks.
+  /// The callback function is called when the user double taps or double clicks.
   final VoidCallback? onDoubleTap;
 
-  /// This callback function is called when the user long presses or long clicks.
+  /// The callback function is called when the user long presses or long clicks.
   final VoidCallback? onLongTap;
 
-  /// This defines the behavior of hit testing for the child widget.
+  /// The behavior of hit testing for the child widget.
   final HitTestBehavior? behavior;
 
+  /// The background color of a spread ripple effect.
+  final Color? rippleColor;
+
+  /// The background color of a effect when the user hovers.
+  final Color? hoverColor;
+
+  /// The scale percentage value of a ripple effect.
   final double? rippleScale;
 
+  /// The radius pixels of a blur filter to touch ripple.
+  final double? rippleBlurRadius;
+
+  /// The instance of a border radius for a ripple effect.
+  final BorderRadius? rippleBorderRadius;
+
+  /// The behavior that defines when a gesture should be rejected,
+  /// specifying the conditions for rejection.
   final TouchRippleRejectBehavior? rejectBehavior;
+
+  /// The enumeration specifies the rendering order of the touch ripple effect,
+  /// determining whether it should appear in the foreground or background.
+  final TouchRippleRenderOrderType? renderOrderType;
 
   final TouchRippleController? controller;
 
@@ -45,6 +69,8 @@ class TouchRipple extends StatefulWidget {
 
 class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, TickerProviderStateMixin {
   late TouchRippleController _controller = widget.controller ?? TouchRippleController();
+
+  TouchRippleStyle? get style => TouchRippleStyle.maybeOf(context);
 
   @override
   void initState() {
@@ -63,13 +89,22 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
 
   @override
   Widget build(BuildContext context) {
+    final _renderOrderType =
+         widget.renderOrderType // 1
+      ?? style?.renderOrderType // 2
+      ?? TouchRippleRenderOrderType.background;
+
     return TouchRippleGestureDetector(
       onTap: widget.onTap,
       onDoubleTap: widget.onDoubleTap,
       onLongTap: widget.onLongTap,
       behavior: widget.behavior ?? HitTestBehavior.translucent,
       controller: _controller,
-      child: TouchRippleRender(controller: _controller, child: widget.child),
+      child: TouchRippleRender(
+        controller: _controller,
+        orderType: _renderOrderType,
+        child: widget.child
+      ),
     );
   }
 
@@ -77,17 +112,57 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   TickerProvider get vsync => this;
 
   @override
-  Color get rippleColor => const Color.fromRGBO(0, 0, 0, 0.2);
+  Color get rippleColor {
+    return widget.rippleColor ?? style?.rippleColor ?? const Color.fromRGBO(0, 0, 0, 0.2);
+  }
 
   @override
-  Color get hoverColor => const Color.fromRGBO(0, 0, 0, 0.1);
+  Color get hoverColor {
+    return widget.hoverColor ?? style?.hoverColor ?? const Color.fromRGBO(0, 0, 0, 0.1);
+  }
 
   @override
-  TouchRippleRejectBehavior get rejectBehavior => widget.rejectBehavior ?? TouchRippleRejectBehavior.leave;
-  
-  @override
-  double get rippleScale => 1;
+  double get rippleScale {
+    return widget.rippleScale ?? style?.rippleScale ?? 1;
+  }
 
   @override
-  BorderRadius get rippleBorderRadius => BorderRadius.zero;
+  double get rippleBlurRadius {
+    return widget.rippleBlurRadius ?? style?.rippleBlurRadius ?? 0;
+  }
+
+  @override
+  BorderRadius get rippleBorderRadius {
+    return widget.rippleBorderRadius ?? style?.rippleBorderRadius ?? BorderRadius.zero;
+  }
+
+  @override
+  Duration get previewDuration => Duration(milliseconds: 100);
+
+  @override
+  Duration get tappableDuration => Duration.zero;
+
+  @override
+  TouchRippleBehavior get tapBehavior {
+    return TouchRippleBehavior(
+      lowerPercent: 0.3,
+      upperPercent: 1,
+      spreadDuration: Duration(milliseconds: 300),
+      spreadCurve: Curves.ease,
+      fadeInDuration: Duration(milliseconds: 100),
+      fadeInCurve: Curves.ease,
+      fadeOutDuration: Duration(milliseconds: 200),
+      fadeOutCurve: Curves.ease,
+      cancelDuration: Duration.zero,
+      cancelCurve: Curves.linear,
+      fadeLowerPercent: 0,
+      fadeUpperPercent: 1,
+      eventCallBackableMinPercent: 0,
+    );
+  }
+
+  @override
+  TouchRippleRejectBehavior get rejectBehavior {
+    return widget.rejectBehavior ?? style?.rejectBehavior ?? TouchRippleRejectBehavior.leave;
+  }
 }

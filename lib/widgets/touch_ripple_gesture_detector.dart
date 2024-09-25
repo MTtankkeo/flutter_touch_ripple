@@ -59,46 +59,49 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
     _builders.clear();
 
     if (widget.onTap != null) {
-      _builders.add(() => TouchRippleTapGestureRecognizer(
+      _builders.add(() {
+        late TouchRippleSpreadingEffect activeEffect;
+        return TouchRippleTapGestureRecognizer(
           context: context,
           rejectBehavior: controller.context.rejectBehavior,
+          previewMinDuration: controller.context.previewDuration,
+          acceptableDuration: controller.context.tappableDuration,
           onTap: (offset) {
-            controller.attach(TouchRippleSpreadingEffect(
+            activeEffect = TouchRippleSpreadingEffect(
               vsync: controller.context.vsync,
               callback: widget.onTap!,
               isRejectable: false,
               baseOffset: offset,
-              behavior: TouchRippleBehavior(
-                lowerPercent: 0,
-                upperPercent: 1,
-                spreadDuration: Duration(milliseconds: 1000),
-                spreadCurve: Curves.ease,
-                fadeInDuration: Duration(milliseconds: 500),
-                fadeInCurve: Curves.ease,
-                fadeOutDuration: Duration(milliseconds: 500),
-                fadeOutCurve: Curves.ease,
-                cancelDuration: Duration.zero,
-                cancelCurve: Curves.linear,
-                fadeLowerPercent: 0,
-                fadeUpperPercent: 1,
-                eventCallBackableMinPercent: 0,
-              )
-            )..start());
+              behavior: controller.context.tapBehavior
+            );
+
+            controller.attach(activeEffect..start());
           },
-          onTapRejectable: (offset) => print("Tap Rejectable"),
-          onTapReject: () => print("Tap Reject"),
-          onTapAccept: () => print("Tap Accept"),
+          onTapRejectable: (offset) {
+            activeEffect = TouchRippleSpreadingEffect(
+              vsync: controller.context.vsync,
+              callback: widget.onTap!,
+              isRejectable: true,
+              baseOffset: offset,
+              behavior: controller.context.tapBehavior
+            );
+
+            controller.attach(activeEffect..start());
+          },
+          onTapReject: () => activeEffect.onRejected(),
+          onTapAccept: () => activeEffect.onAccepted(),
         )
         // Called when this gesture recognizer disposed.
-        ..onDispose = _builders.remove
-      );
+        ..onDispose = _recognizers.remove;
+      });
     }
   }
 
   _handlePointerDown(PointerDownEvent event) {
     // Recreates the necessary gesture recognizer to forward to
     // a new lifecycle when no gesture recognizer has been assigned.
-    if (_recognizers.isEmpty) {
+    if (_recognizers.length <= 1) {
+      _recognizers.clear();
       _recognizers.addAll([HoldingGestureRecognizer()]);
       _recognizers.addAll(_builders.map((builder) => builder.call()));
     }

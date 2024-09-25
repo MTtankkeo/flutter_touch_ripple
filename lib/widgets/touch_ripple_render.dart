@@ -2,15 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_controller.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_effect.dart';
 
+/// The enumeration specifies the rendering order of the touch ripple effect,
+/// determining whether it should appear in the foreground or background.
+enum TouchRippleRenderOrderType {
+  /// Specifies that the touch ripple should be drawn in the foreground,
+  /// meaning it will appear above all other visual widgets in the interface.
+  foreground,
+
+  /// Specifies that the touch ripple should be drawn in the background,
+  /// ensuring it appears beneath all other visual widgets in the interface.
+  background,
+}
+
 class TouchRippleRender extends StatefulWidget {
   const TouchRippleRender({
     super.key,
     required this.child,
+    required this.orderType,
     required this.controller,
   });
 
-  final Widget child;
+  final TouchRippleRenderOrderType orderType;
   final TouchRippleController controller;
+  final Widget child;
 
   @override
   State<TouchRippleRender> createState() => _TouchRippleRenderState();
@@ -29,8 +43,21 @@ class _TouchRippleRenderState extends State<TouchRippleRender> {
 
   @override
   Widget build(BuildContext context) {
+    CustomPainter? backgroundPainter;
+    CustomPainter? foregroundPainter;
+
+    /// The instance of a current painter for a ripple effect.
+    final painter = TouchRipplePainter(controller: widget.controller);
+
+    if (widget.orderType == TouchRippleRenderOrderType.background) {
+      backgroundPainter = painter;
+    } else {
+      foregroundPainter = painter;
+    }
+
     return CustomPaint(
-      painter: TouchRipplePainter(controller: widget.controller),
+      foregroundPainter: foregroundPainter,
+      painter: backgroundPainter,
       child: widget.child,
     );
   }

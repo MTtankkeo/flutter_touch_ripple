@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:flutter/material.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
@@ -52,8 +54,16 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
     assert(behavior.fadeInDuration != null);
     assert(behavior.fadeInCurve != null);
-    _fadeAnimation = AnimationController(vsync: vsync, duration: behavior.fadeInDuration!);
-    _fadeCurved = CurvedAnimation(parent: _fadeAnimation, curve: behavior.fadeInCurve!);
+    _fadeAnimation = AnimationController(
+      vsync: vsync,
+      duration: behavior.fadeInDuration!,
+      reverseDuration: behavior.fadeOutDuration!
+    );
+    _fadeCurved = CurvedAnimation(
+      parent: _fadeAnimation,
+      curve: behavior.fadeInCurve!,
+      reverseCurve: behavior.fadeOutCurve!
+    );
 
     _fadeAnimation.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) dispose();
@@ -69,7 +79,6 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   late final AnimationController _spreadAnimation;
   late final CurvedAnimation _spreadCurved;
-
   late final AnimationController _fadeAnimation;
   late final CurvedAnimation _fadeCurved;
 
@@ -119,6 +128,16 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     _fadeAnimation.reverse();
   }
 
+  /// If the gesture could be rejected and is eventually accepted,
+  /// please call the corresponding function.
+  void onAccepted() {
+    assert(isRejectable, 'The gesture has already been defined as accepted.');
+    _spreadAnimation.notifyListeners();
+    _spreadAnimation.notifyStatusListeners(_spreadAnimation.status);
+  }
+
+  void onRejected() => cancel();
+
   @override
   paint(TouchRippleContext context, Canvas canvas, Size size) {
     // Returns how far the given offset is from the centre of the canvas size,
@@ -144,16 +163,17 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     // This defines the additional scale that needs to be expanded.
     final centerToRatio = centerToRatioOf(baseOffset);
 
-    // temp
-    final blur = 0.0;
+    // The background color of a spread ripple effect.
     final color = context.rippleColor;
+
+    // Return the radius pixels of a blur filter to touch ripple.
+    final blurRadius = context.rippleBlurRadius;
 
     // This defines the additional touch ripple size.
     final distance = Offset(
-          sizeToOffset(size).dx * centerToRatio.dx,
-          sizeToOffset(size).dy * centerToRatio.dy,
-        ).distance +
-        (blur * 2);
+      sizeToOffset(size).dx * centerToRatio.dx,
+      sizeToOffset(size).dy * centerToRatio.dy,
+    ).distance + (blurRadius * 2);
 
     final paintSize = (centerDistance + distance) * spreadPercent;
     final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());
@@ -161,8 +181,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       ..color = paintColor
       ..style = PaintingStyle.fill;
 
-    if (blur != 0) {
-      paint.maskFilter = MaskFilter.blur(BlurStyle.normal, blur);
+    if (blurRadius != 0) {
+      paint.maskFilter = MaskFilter.blur(BlurStyle.normal, blurRadius);
     }
 
     canvas.drawCircle(baseOffset, paintSize * context.rippleScale, paint);

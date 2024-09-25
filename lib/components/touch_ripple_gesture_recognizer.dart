@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -46,12 +47,13 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   bool rejectByOffset(Offset offset) {
     if (rejectBehavior == TouchRippleRejectBehavior.none) return false;
     if (rejectBehavior == TouchRippleRejectBehavior.leave) {
-      final isPointerHit = _renderBox.hitTest(BoxHitTestResult(), position: offset);
-      return !isPointerHit;
+      // is pointer hited.
+      return !_renderBox.hitTest(BoxHitTestResult(), position: offset);
     }
 
     // is TouchRippleCancalBehavior.touchSlop
-    return pointerMoveDistance.dx.abs() > kTouchSlop || pointerMoveDistance.dy.abs() > kTouchSlop;
+    return pointerMoveDistance.dx.abs() > kTouchSlop
+        || pointerMoveDistance.dy.abs() > kTouchSlop;
   }
 
   /// Defines the values needed to process the gesture and
@@ -73,8 +75,12 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
     /// Calls the callback function corresponding to the given event.
     if (event is PointerDownEvent) onPointerDown(event);
     if (event is PointerMoveEvent) {
-      final isRejectable = rejectByOffset(currentPointerOffset);
-      isRejectable ? reject() : onPointerMove(event);
+      if (rejectByOffset(currentPointerOffset)) {
+        // is must be rejecting
+        reject();
+      } else {
+        onPointerMove(event);
+      }
     }
     if (event is PointerUpEvent) onPointerUp(event);
     if (event is PointerCancelEvent) onPointerCancel(event);
@@ -82,6 +88,7 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
 
   @override
   void didStopTrackingLastPointer(int pointer) {
+    this.dispose();
     onDispose?.call(this);
   }
 
@@ -92,6 +99,22 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
 
   void accept() => resolve(GestureDisposition.accepted);
   void reject() => resolve(GestureDisposition.rejected);
+
+  @override
+  void acceptGesture(int pointer) {
+    super.acceptGesture(pointer);
+
+    // Since the gesture was accepted, call the function below to allow it to be disposed.
+    didStopTrackingLastPointer(pointer);
+  }
+
+  @override
+  void rejectGesture(int pointer) {
+    super.rejectGesture(pointer);
+
+    // Since the gesture was rejected, call the function below to allow it to be disposed.
+    didStopTrackingLastPointer(pointer);
+  }
 }
 
 /// The mixin provides functionality to continuously track the defined
@@ -164,7 +187,9 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
     required this.onTap,
     required this.onTapRejectable,
     required this.onTapReject,
-    required this.onTapAccept
+    required this.onTapAccept,
+    required this.previewMinDuration,
+    required this.acceptableDuration
   });
 
   /// The callback function is invoked when a gesture recognizer is ultimately accepted.
@@ -172,13 +197,38 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   final TouchRippleCallback onTapRejectable;
   final VoidCallback onTapReject;
   final VoidCallback onTapAccept;
+  final Duration previewMinDuration;
+  final Duration acceptableDuration;
+
+  Timer? _previewTimer;
+  Timer? _rejectsTimer;
+
+  bool isRejectable = false;
 
   @override
-  String get debugLabal => "Touch Ripple Tap";
+  String get debugLabal => "Tap";
+
+  @override
+  void onPointerDown(PointerDownEvent event) {
+    if (previewMinDuration != Duration.zero) {
+      _previewTimer = Timer(previewMinDuration, () {
+        isRejectable = true;
+        onTapRejectable.call(currentPointerOffset);
+      });
+    }
+
+    if (acceptableDuration != Duration.zero) {
+      _rejectsTimer = Timer(acceptableDuration, reject);
+    }
+  }
 
   @override
   void acceptGesture(int pointer) {
     super.acceptGesture(pointer);
+
+    if (isRejectable) {
+      return onTapAccept.call();
+    }
 
     onTap.call(currentPointerOffset);
   }
@@ -187,6 +237,13 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   void rejectGesture(int pointer) {
     super.rejectGesture(pointer);
 
-    print("reject");
+    if (isRejectable) onTapReject.call();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _previewTimer?.cancel();
+    _rejectsTimer?.cancel();
   }
 }
