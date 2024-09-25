@@ -1,25 +1,30 @@
 import 'package:flutter/widgets.dart';
 
+/// The mixin provides necessary information for gesture behaviors
+/// and other rendering processes about touch ripple.
 mixin TouchRippleContext {
-  /// Gets the background color of a spread ripple effect.
+  /// Returns the background color of a spread ripple effect.
   Color get rippleColor;
 
-  /// Gets the background color of a effect when the user hovers.
+  /// Returns the background color of a effect when the user hovers.
   Color get hoverColor;
 
+  /// Returns the behavior that defines when a gesture should be rejected,
+  /// specifying the conditions for rejection.
   TouchRippleRejectBehavior get rejectBehavior;
 }
 
-/// This enumeration defines behavior for which the gesture is rejected.
+/// The enumeration defines when a gesture should be rejected,
+/// specifying the conditions for rejection.
 enum TouchRippleRejectBehavior {
-  /// No specific task is performed when the gesture is canceled.
+  /// Sets the gesture to not be rejected regardless of any action or event.
+  /// However, if the gesture is forcibly rejected due to a scroll gesture,
+  /// the rejection will occur as expected.
   none,
-
-  /// Once the pointer is detected, the event is canceled if the pointer
-  /// movement distance is greater than or equal to [kTouchSlop].
+  /// Sets the gesture to be canceled if the pointer movement distance
+  /// is greater than or equal to [kTouchSlop].
   touchSlop,
-
-  /// Once the pointer is detected, the event is canceled if the pointer position
-  /// is outside the position occupied by the widget.
+  /// Sets the gesture to be canceled if the pointer position is
+  /// outside the area occupied by the widget.
   leave,
 }

@@ -51,7 +51,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
   /// This list defines the instances of currently active [GestureRecognizer].
   final List<GestureRecognizer> _recognizers = <GestureRecognizer>[];
 
-  /// Gets an instance of a given [TouchRippleController] as this widget reference.
+  /// Returns an instance of a given [TouchRippleController] as this widget reference.
   TouchRippleController get controller => widget.controller;
 
   // Initializes gesture recognizer builders.
@@ -66,13 +66,18 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
           onTapRejectable: () => print("Tap Rejectable"),
           onTapReject: () => print("Tap Reject"),
           onTapAccept: () => print("Tap Accept"),
-        )..onDispose = _builders.remove
+        )
+        // Called when this gesture recognizer disposed.
+        ..onDispose = _builders.remove
       );
     }
   }
 
   _handlePointerDown(PointerDownEvent event) {
+    // Recreates the necessary gesture recognizer to forward to
+    // a new lifecycle when no gesture recognizer has been assigned.
     if (_recognizers.isEmpty) {
+      _recognizers.addAll([HoldingGestureRecognizer()]);
       _recognizers.addAll(_builders.map((builder) => builder.call()));
     }
 

@@ -5,20 +5,19 @@ import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 /// added or when the state of the touch ripple controller changes.
 typedef TouchRippleListener = VoidCallback;
 
-/// Defines and manages states, listeners, a context and other values related to
-/// touch ripple, ensuring that each state exists uniquely within the controller. 
+/// The class efines and manages states, listeners, a context and other values related
+/// to touch ripple, ensuring that each state exists uniquely within the controller. 
 /// 
 /// See Also, An instance of this class can be referenced and accessed
 /// externally to attach or detach states or related values.
-/// 
 class TouchRippleController extends Listenable {
   late final TouchRippleContext context;
 
-  /// This list defines the listeners for a touch ripple state related.
+  /// The list defines the listeners for a touch ripple state related.
   final _listeners = ObserverList<TouchRippleListener>();
 
-  /// This list defines the value for a state that represents a touch ripple effect.
-  final List<TouchRippleEffect> _states = [];
+  /// The list defines the value for a state that represents a touch ripple effect.
+  final _states = <TouchRippleEffect>[];
 
   /// Delegates the task of adding a touch ripple effect to this controller
   /// to ensure it can be reliably detached and disposed later.

@@ -6,7 +6,7 @@ import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 /// Signature for the callback function that is called when a [GestureRecognizer] disposed.
 typedef GestureRecognizerDisposeCallback = void Function(GestureRecognizer instance);
 
-/// An abstract class that defines the touch ripple gesture base behavior,
+/// The abstract class that defines the touch ripple gesture base behavior,
 /// which is a basic and essential behavior.
 abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer {
   TouchRippleGestureRecognizer({
@@ -65,6 +65,7 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
     if (event is PointerDownEvent) {
       _pointerDownOffset = localPosition;
     }
+
     // Is current pointer move event
     _pointerMoveOffset = localPosition;
 
@@ -92,7 +93,7 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   void reject() => resolve(GestureDisposition.rejected);
 }
 
-/// This mixin provides functionality to continuously track the defined
+/// The mixin provides functionality to continuously track the defined
 /// pointers to prevent the gesture from being rejected.
 ///
 /// Example:
@@ -142,7 +143,20 @@ mixin HoldableGestureRecognizerMixin on OneSequenceGestureRecognizer {
   }
 }
 
-class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer with HoldableGestureRecognizerMixin {
+class HoldingGestureRecognizer extends OneSequenceGestureRecognizer {
+  @override
+  String get debugDescription => "Holding";
+
+  @override
+  void didStopTrackingLastPointer(int pointer) {}
+
+  @override
+  void handleEvent(PointerEvent event) {
+    if (event is PointerUpEvent) resolve(GestureDisposition.rejected);
+  }
+}
+
+class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   TouchRippleTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
@@ -152,7 +166,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer with 
     required this.onTapAccept
   });
 
-  /// This callback function is invoked when a gesture recognizer is ultimately accepted.
+  /// The callback function is invoked when a gesture recognizer is ultimately accepted.
   final VoidCallback onTap;
   final VoidCallback onTapRejectable;
   final VoidCallback onTapReject;
@@ -162,12 +176,16 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer with 
   String get debugLabal => "Touch Ripple Tap";
 
   @override
-  void onPointerDown(PointerDownEvent event) {
-    hold();
+  void acceptGesture(int pointer) {
+    super.acceptGesture(pointer);
+
+    onTap.call();
   }
 
   @override
-  void onPointerUp(PointerUpEvent event) {
-    onTap.call();
+  void rejectGesture(int pointer) {
+    super.rejectGesture(pointer);
+
+    print("reject");
   }
 }
