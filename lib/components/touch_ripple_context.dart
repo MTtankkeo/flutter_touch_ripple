@@ -34,6 +34,18 @@ mixin TouchRippleContext {
   /// gesture will be rejected.
   Duration get tappableDuration;
 
+  /// Returns the minimum duration used to distinguish between a tap and
+  /// a double-tap. If the user does not perform a second tap within
+  /// this duration, it is considered just a single-tap.
+  Duration get doubleTappableDuration;
+
+  /// Returns the duration until double-tap deactivation. During this period,
+  /// any single tap is still considered a double-tap without requiring
+  /// continuous double-tapping.
+  /// 
+  /// See Also, If the callback returns false, the duration will not be utilized,
+  Duration get doubleTapAliveDuration;
+
   /// Returns the behavior applied to the touch ripple effect when tapped.
   TouchRippleBehavior get tapBehavior;
 

@@ -18,12 +18,16 @@ class TouchRipple extends StatefulWidget {
     this.rippleScale,
     this.rippleBlurRadius,
     this.rippleBorderRadius,
+    this.previewDuration,
+    this.tappableDuration,
+    this.doubleTappableDuration,
+    this.doubleTapAliveDuration,
     this.tapBehavior,
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
     this.controller,
-    required this.child,
+    required this.child
   }) : assert(rippleScale == null || rippleScale != 0);
 
   /// The callback function is called when the user taps or clicks.
@@ -53,6 +57,29 @@ class TouchRipple extends StatefulWidget {
   /// The instance of a border radius for a ripple effect.
   final BorderRadius? rippleBorderRadius;
 
+  /// The duration for which the ripple effect is previewed even
+  /// if the gesture is not finalized, allowing the user to see
+  /// the effect while the pointer is down or moving.
+  final Duration? previewDuration;
+
+  /// The duration after which the gesture is considered rejected
+  /// if the pointer is still down and no tap is completed.
+  /// If this duration elapses without a successful gesture,
+  /// the gesture will be rejected.
+  final Duration? tappableDuration;
+
+  /// The minimum duration used to distinguish between a tap and a double-tap.
+  /// If the user does not perform a second tap within this duration,
+  /// it is considered just a single-tap.
+  final Duration? doubleTappableDuration;
+
+  /// The duration until double-tap deactivation. During this period,
+  /// any single tap is still considered a double-tap without requiring
+  /// continuous double-tapping.
+  /// 
+  /// See Also, If the callback returns false, the duration will not be utilized,
+  final Duration? doubleTapAliveDuration;
+
   /// The behavior applied to the touch ripple effect when tapped.
   final TouchRippleBehavior? tapBehavior;
 
@@ -77,8 +104,12 @@ class TouchRipple extends StatefulWidget {
 }
 
 class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, TickerProviderStateMixin {
+  /// The value defines a unique instance of [TouchRippleController]
+  /// to manage the state of the touch ripple in this widget.
   late TouchRippleController _controller = widget.controller ?? TouchRippleController();
 
+  /// Returns the instance of [TouchRippleStyle] inherited widget,
+  /// and if it does not exist, returns null.
   TouchRippleStyle? get style => TouchRippleStyle.maybeOf(context);
 
   @override
@@ -152,10 +183,24 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   }
 
   @override
-  Duration get previewDuration => Duration(milliseconds: 100);
+  Duration get previewDuration {
+    return widget.previewDuration ?? style?.previewDuration ?? Duration(milliseconds: 100);
+  }
 
   @override
-  Duration get tappableDuration => Duration.zero;
+  Duration get tappableDuration {
+    return widget.tappableDuration ?? style?.tappableDuration ?? Duration.zero;
+  }
+
+  @override
+  Duration get doubleTappableDuration {
+    return widget.doubleTappableDuration ?? style?.doubleTappableDuration ?? Duration(milliseconds: 300);
+  }
+
+  @override
+  Duration get doubleTapAliveDuration {
+    return widget.doubleTapAliveDuration ?? style?.doubleTapAliveDuration ?? Duration(milliseconds: 500);
+  }
 
   @override
   TouchRippleBehavior get tapBehavior {

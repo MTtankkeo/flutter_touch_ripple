@@ -3,8 +3,8 @@ import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
-/// This inherited widget globally provides the style information for touch ripple
-/// effects to all descendant widgets in the widget tree.
+/// This inherited widget globally provides the style information for
+/// touch ripple effects to all descendant widgets in the widget tree.
 class TouchRippleStyle extends InheritedWidget {
   const TouchRippleStyle({
     super.key,
@@ -14,6 +14,10 @@ class TouchRippleStyle extends InheritedWidget {
     this.rippleScale,
     this.rippleBlurRadius,
     this.rippleBorderRadius,
+    this.previewDuration,
+    this.tappableDuration,
+    this.doubleTappableDuration,
+    this.doubleTapAliveDuration,
     this.tapBehavior,
     this.rejectBehavior,
     this.overlapBehavior,
@@ -38,6 +42,29 @@ class TouchRippleStyle extends InheritedWidget {
   /// The value defines the behavior applied to the touch ripple effect when tapped.
   final TouchRippleBehavior? tapBehavior;
 
+  /// The value defines the duration for which the ripple effect is previewed
+  /// even if the gesture is not finalized, allowing the user to see
+  /// the effect while the pointer is down or moving.
+  final Duration? previewDuration;
+
+  /// The value defines the duration after which the gesture is considered
+  /// rejected if the pointer is still down and no tap is completed.
+  /// If this duration elapses without a successful gesture, the
+  /// gesture will be rejected.
+  final Duration? tappableDuration;
+
+  /// The value defines the minimum duration used to distinguish between a tap and
+  /// a double-tap. If the user does not perform a second tap within this duration,
+  /// it is considered just a single-tap.
+  final Duration? doubleTappableDuration;
+
+  /// The duration until double-tap deactivation. During this period,
+  /// any single tap is still considered a double-tap without requiring
+  /// continuous double-tapping.
+  /// 
+  /// See Also, If the callback returns false, the duration will not be utilized,
+  final Duration? doubleTapAliveDuration;
+
   /// The value defines the behavior that defines when a gesture should be
   /// rejected, specifying the conditions for rejection.
   final TouchRippleRejectBehavior? rejectBehavior;
@@ -46,8 +73,9 @@ class TouchRippleStyle extends InheritedWidget {
   /// with other ripple effects. (e.g. overlappable, cancel, ignore)
   final TouchRippleOverlapBehavior? overlapBehavior;
 
-  /// The value defines the enumeration specifies the rendering order of the touch
-  /// ripple effect, determining whether it should appear in the foreground or background.
+  /// The value defines the enumeration specifies the rendering order of
+  /// the touch ripple effect, determining whether it should appear
+  /// in the foreground or background.
   final TouchRippleRenderOrderType? renderOrderType;
 
   /// Returns the [TouchRippleStyle] most closely associated with the given
