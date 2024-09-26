@@ -11,6 +11,7 @@ class TouchRippleStyle extends InheritedWidget {
     required super.child,
     this.rippleColor,
     this.hoverColor,
+    this.aliveColor,
     this.rippleScale,
     this.rippleBlurRadius,
     this.rippleBorderRadius,
@@ -30,6 +31,10 @@ class TouchRippleStyle extends InheritedWidget {
 
   /// The value defines the background color of a effect when the user hovers.
   final Color? hoverColor;
+
+  /// The value defines the background color of the solid effect when a
+  /// consecutive (e.g. about double-tap and long-tap) event state occurs.
+  final Color? aliveColor;
 
   /// The value defines the scale percentage value of a ripple effect.
   final double? rippleScale;

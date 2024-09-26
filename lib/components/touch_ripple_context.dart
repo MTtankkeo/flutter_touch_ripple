@@ -11,8 +11,12 @@ mixin TouchRippleContext {
   /// Returns the background color of the spread ripple effect.
   Color get rippleColor;
 
-  /// Returns the background color of the effect when the user hovers.
+  /// Returns the background color of the solid effect when a user hovers.
   Color get hoverColor;
+
+  /// Returns the background color of the solid effect when a consecutive
+  /// (e.g. about double-tap and long-tap) event state occurs.
+  Color get aliveColor;
 
   /// Returns the scale percentage value of the ripple effect.
   double get rippleScale;

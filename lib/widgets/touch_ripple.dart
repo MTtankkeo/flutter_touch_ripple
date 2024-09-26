@@ -22,6 +22,7 @@ class TouchRipple extends StatefulWidget {
     this.behavior,
     this.rippleColor,
     this.hoverColor,
+    this.aliveColor,
     this.rippleScale,
     this.rippleBlurRadius,
     this.rippleBorderRadius,
@@ -93,6 +94,10 @@ class TouchRipple extends StatefulWidget {
 
   /// The background color of a effect when the user hovers.
   final Color? hoverColor;
+
+  /// The background color of the solid effect when a consecutive
+  /// (e.g. about double-tap and long-tap) event state occurs.
+  final Color? aliveColor;
 
   /// The scale percentage value of a ripple effect.
   final double? rippleScale;
@@ -217,47 +222,72 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
 
   @override
   Color get rippleColor {
-    return widget.rippleColor ?? style?.rippleColor ?? const Color.fromRGBO(0, 0, 0, 0.2);
+    return widget.rippleColor // 1 priority
+        ?? style?.rippleColor // 2 priority
+        ?? const Color.fromRGBO(0, 0, 0, 0.2); // default
   }
 
   @override
   Color get hoverColor {
-    return widget.hoverColor ?? style?.hoverColor ?? const Color.fromRGBO(0, 0, 0, 0.1);
+    return widget.hoverColor // 1 priority
+        ?? style?.hoverColor // 2 priortiy
+        ?? TouchRippleColor.withAlphaOf(rippleColor, 0.5); // default
+  }
+
+  @override
+  Color get aliveColor {
+    return widget.aliveColor // 1 priority
+        ?? style?.aliveColor // 2 priority
+        ?? TouchRippleColor.withAlphaOf(rippleColor, 0.5); // default
   }
 
   @override
   double get rippleScale {
-    return widget.rippleScale ?? style?.rippleScale ?? 1;
+    return widget.rippleScale // 1 priority
+        ?? style?.rippleScale // 2 priority
+        ?? 1; // default
   }
 
   @override
   double get rippleBlurRadius {
-    return widget.rippleBlurRadius ?? style?.rippleBlurRadius ?? 0;
+    return widget.rippleBlurRadius // 1 priority
+        ?? style?.rippleBlurRadius // 2 priority
+        ?? 0; // default
   }
 
   @override
   BorderRadius get rippleBorderRadius {
-    return widget.rippleBorderRadius ?? style?.rippleBorderRadius ?? BorderRadius.zero;
+    return widget.rippleBorderRadius // 1 priority
+        ?? style?.rippleBorderRadius // 2 priority
+        ?? BorderRadius.zero; // default
   }
 
   @override
   Duration get previewDuration {
-    return widget.previewDuration ?? style?.previewDuration ?? Duration(milliseconds: 100);
+    return widget.previewDuration // 1 priority
+        ?? style?.previewDuration // 2 priority
+        ?? Duration(milliseconds: 100); // default
   }
 
   @override
   Duration get tappableDuration {
-    return widget.tappableDuration ?? style?.tappableDuration ?? Duration.zero;
+    return widget.tappableDuration // 1 priority
+        ?? style?.tappableDuration // 2 priority
+        ?? Duration.zero; // default
   }
 
   @override
   Duration get doubleTappableDuration {
-    return widget.doubleTappableDuration ?? style?.doubleTappableDuration ?? Duration(milliseconds: 300);
+    return widget.doubleTappableDuration // 1 priority
+        ?? style?.doubleTappableDuration // 2 priority
+        ?? Duration(milliseconds: 300); // default
   }
 
   @override
   Duration get doubleTapAliveDuration {
-    return widget.doubleTapAliveDuration ?? style?.doubleTapAliveDuration ?? Duration(milliseconds: 500);
+    return widget.doubleTapAliveDuration // 1 priority
+        ?? style?.doubleTapAliveDuration // 2 priority
+        ?? Duration(milliseconds: 500); // default
   }
 
   @override
@@ -278,17 +308,21 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       eventCallBackableMinPercent: 0,
       onlyMainButton: true
     ) // default
-    .merge(style?.tapBehavior)
-    .merge(widget.tapBehavior);
+    .merge(style?.tapBehavior)  // 2 priority
+    .merge(widget.tapBehavior); // 1 priority
   }
 
   @override
   TouchRippleRejectBehavior get rejectBehavior {
-    return widget.rejectBehavior ?? style?.rejectBehavior ?? TouchRippleRejectBehavior.leave;
+    return widget.rejectBehavior // 1 priority
+        ?? style?.rejectBehavior // 2 priority
+        ?? TouchRippleRejectBehavior.leave; // default
   }
 
   @override
   TouchRippleOverlapBehavior get overlapBehavior {
-    return widget.overlapBehavior ?? style?.overlapBehavior ?? TouchRippleOverlapBehavior.overlappable;
+    return widget.overlapBehavior // 1 priority
+        ?? style?.overlapBehavior // 2 priority
+        ?? TouchRippleOverlapBehavior.overlappable; // default
   }
 }

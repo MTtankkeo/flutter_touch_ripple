@@ -17,6 +17,6 @@ typedef TouchRippleContinuableCallback = bool Function(int count);
 /// the occurrence of consecutive touch ripple events.
 /// 
 /// Unlike [TouchRippleContinuableCallback], this callback does not 
-/// determine whether the event should continue; instead, it serves 
+/// determine whether the event should continue instead, it serves 
 /// to inform that a series of consecutive events has occurred.
 typedef TouchRippleConsecutiveCallback = void Function(int count);

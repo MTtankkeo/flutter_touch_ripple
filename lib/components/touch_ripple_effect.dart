@@ -207,3 +207,65 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     _fadeCurved.dispose();
   }
 }
+
+class TouchRippleSolidEffect extends TouchRippleEffect {
+  TouchRippleSolidEffect({
+    required TickerProvider vsync,
+    required Duration fadeInDuration,
+    required Curve fadeInCurve,
+    required Duration? fadeOutDuration,
+    required Curve? fadeOutCurve,
+    required this.color,
+  }) {
+    _fadeAnimation = AnimationController(
+      vsync: vsync,
+      duration: fadeInDuration,
+      reverseDuration: fadeOutDuration,
+    );
+
+    _fadeCurved = CurvedAnimation(
+      parent: _fadeAnimation,
+      curve: Curves.ease
+    );
+  }
+
+  /// The animation controller for the fade in or fade-out animation of
+  /// the touch ripple solid effect for hover and consecutive or others.
+  late final AnimationController _fadeAnimation;
+
+  /// The curved animation controller for the fade in or fade-out animation
+  /// of the touch ripple solid effect for hover and consecutive or others.
+  late final CurvedAnimation _fadeCurved;
+
+  /// The background color of this solid effect.
+  final Color color;
+
+  /// Returns animation progress value of fade animation.
+  double get fadePercent => _fadeCurved.value;
+
+  @override
+  void addListener(VoidCallback listener) {
+    _fadeAnimation.addListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    _fadeAnimation.removeListener(listener);
+  }
+
+  @override
+  void dispose() {
+    _fadeAnimation.dispose();
+    _fadeCurved.dispose();
+  }
+
+  @override
+  void paint(TouchRippleContext context, Canvas canvas, Size size) {
+    final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());
+    final paint = Paint()
+      ..color = paintColor
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPaint(paint);
+  }
+}
