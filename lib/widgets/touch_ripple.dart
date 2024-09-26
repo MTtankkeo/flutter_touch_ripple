@@ -29,10 +29,10 @@ class TouchRipple extends StatefulWidget {
   final VoidCallback? onTap;
 
   /// The callback function is called when the user double taps or double clicks.
-  final VoidCallback? onDoubleTap;
+  final TouchRippleContinuableCallback? onDoubleTap;
 
   /// The callback function is called when the user long presses or long clicks.
-  final VoidCallback? onLongTap;
+  final TouchRippleContinuableCallback? onLongTap;
 
   /// The behavior of hit testing for the child widget.
   final HitTestBehavior? behavior;
