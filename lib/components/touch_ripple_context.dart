@@ -89,3 +89,9 @@ enum TouchRippleOverlapBehavior {
   /// canceling the previous touch effect until it disappears.
   ignore,
 }
+
+enum TouchRippleAliveBehavior {
+  none,
+  preview,
+  started,
+}

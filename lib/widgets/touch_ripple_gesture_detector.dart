@@ -12,7 +12,11 @@ class TouchRippleGestureDetector extends StatefulWidget {
     super.key,
     this.onTap,
     this.onDoubleTap,
+    this.onDoubleTapStart,
+    this.onDoubleTapEnd,
     this.onLongTap,
+    this.onLongTapStart,
+    this.onLongTapEnd,
     this.behavior = HitTestBehavior.translucent,
     required this.controller,
     required this.child,
@@ -24,8 +28,28 @@ class TouchRippleGestureDetector extends StatefulWidget {
   /// The callback function is called when the user double taps or double clicks.
   final TouchRippleContinuableCallback? onDoubleTap;
 
+  /// The callback function is a lifecycle callback for the double-tap event. 
+  /// It is called when a double tap starts, which is useful for handling 
+  /// actions that occur during successive double taps.
+  final VoidCallback? onDoubleTapStart;
+
+  /// The callback function is a lifecycle callback for the double-tap event. 
+  /// It is called when a double tap ends, providing the advantage of knowing 
+  /// when a series of consecutive double taps has finished.
+  final VoidCallback? onDoubleTapEnd;
+
   /// The callback function is called when the user long presses or long clicks.
   final TouchRippleContinuableCallback? onLongTap;
+
+  /// The callback function is a lifecycle callback for the long-tap event. 
+  /// It is called when a long tap starts, which is useful for initiating 
+  /// actions that require a sustained press.
+  final VoidCallback? onLongTapStart;
+
+  /// The callback function is a lifecycle callback for the long-tap event. 
+  /// It is called when a long tap ends, providing the advantage of knowing 
+  /// when a series of consecutive long taps has concluded.
+  final VoidCallback? onLongTapEnd;
 
   /// The defines the behavior of hit testing for the child widget.
   final HitTestBehavior behavior;

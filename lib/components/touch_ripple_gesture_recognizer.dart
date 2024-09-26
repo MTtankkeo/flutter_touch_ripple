@@ -247,3 +247,54 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
     _rejectsTimer?.cancel();
   }
 }
+
+class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer with HoldableGestureRecognizerMixin {
+  TouchRippleDoubleTapGestureRecognizer({
+    required super.context,
+    required super.rejectBehavior,
+    required this.acceptableDuration,
+    required this.aliveDuration
+  });
+
+  @override
+  String get debugLabal => "Double Tap";
+
+  /// Refer to the doubleTappableDuration value of the [TouchRippleContext] for details.
+  final Duration acceptableDuration;
+  final Duration aliveDuration;
+
+  /// The value defines number of taps and updated when a pointer is up.
+  int tapCount = 0;
+
+  Timer? _rejectTimer;
+  Timer? _aliveTimer;
+
+  @override
+  void onPointerDown(PointerDownEvent event) {
+    /// Holds the added pointer to prevent the gesture from being automatically
+    /// accepted in specific or all situations, even when there are no competitors.
+    this.hold();
+  }
+
+  @override
+  void onPointerUp(PointerUpEvent event) {
+    super.onPointerUp(event);
+
+    if (++tapCount >= 2) {
+      assert(_rejectTimer != null, "In the correct, double taps cannot occur without the reject timer is not exists.");
+      assert(_rejectTimer!.isActive, "In the correct, double taps cannot occur without the reject timer is active.");
+      _rejectTimer?.cancel();
+      _aliveTimer?.cancel();
+      _aliveTimer = Timer(aliveDuration, accept);
+    } else {
+      _rejectTimer ??= Timer(acceptableDuration, reject);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _rejectTimer?.cancel();
+    _aliveTimer?.cancel();
+  }
+}
