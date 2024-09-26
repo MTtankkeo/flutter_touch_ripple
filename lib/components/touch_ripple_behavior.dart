@@ -2,7 +2,7 @@ import 'package:flutter/animation.dart';
 
 /// This data class defines the configuration for a touch ripple effect,
 /// including animation durations, curves, and spread/fade percentages.
-/// 
+///
 /// This allows for customization of how the ripple effect behaves,
 /// such as the timing and extent of spread, fade-in, fade-out,
 /// and event callback triggering.
@@ -63,7 +63,30 @@ class TouchRippleBehavior {
   final double? fadeUpperPercent;
 
   /// The minimum percentage of spread at which the event callback is triggered.
-  /// For example, if set to 0.5, the callback is invoked when the ripple effect 
+  /// For example, if set to 0.5, the callback is invoked when the ripple effect
   /// has spread to `50%` of the widget's area.
   final double? eventCallBackableMinPercent;
+
+  /// Merges the current [TouchRippleBehavior] with another, using the provided 
+  /// behavior's values if available. If the other behavior is null or lacks 
+  /// specific values, defaults to the current behavior's values.
+  TouchRippleBehavior merge(TouchRippleBehavior? other) {
+    if (other == null) return this;
+
+    return TouchRippleBehavior(
+      spreadDuration: other.spreadDuration ?? spreadDuration,
+      spreadCurve: other.spreadCurve ?? spreadCurve,
+      fadeInDuration: other.fadeInDuration ?? fadeInDuration,
+      fadeInCurve: other.fadeInCurve ?? fadeInCurve,
+      fadeOutDuration: other.fadeOutDuration ?? fadeOutDuration,
+      fadeOutCurve: other.fadeOutCurve ?? fadeOutCurve,
+      cancelDuration: other.cancelDuration ?? cancelDuration,
+      cancelCurve: other.cancelCurve ?? cancelCurve,
+      lowerPercent: other.lowerPercent ?? lowerPercent,
+      upperPercent: other.upperPercent ?? upperPercent,
+      fadeLowerPercent: other.fadeLowerPercent ?? fadeLowerPercent,
+      fadeUpperPercent: other.fadeUpperPercent ?? fadeUpperPercent,
+      eventCallBackableMinPercent: other.eventCallBackableMinPercent ?? other.eventCallBackableMinPercent
+    );
+  }
 }

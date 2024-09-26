@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
@@ -13,6 +14,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.rippleScale,
     this.rippleBlurRadius,
     this.rippleBorderRadius,
+    this.tapBehavior,
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType
@@ -32,6 +34,9 @@ class TouchRippleStyle extends InheritedWidget {
 
   /// The value defines the instance of a border radius for a ripple effect.
   final BorderRadius? rippleBorderRadius;
+
+  /// The value defines the behavior applied to the touch ripple effect when tapped.
+  final TouchRippleBehavior? tapBehavior;
 
   /// The value defines the behavior that defines when a gesture should be
   /// rejected, specifying the conditions for rejection.

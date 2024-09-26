@@ -18,6 +18,7 @@ class TouchRipple extends StatefulWidget {
     this.rippleScale,
     this.rippleBlurRadius,
     this.rippleBorderRadius,
+    this.tapBehavior,
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
@@ -51,6 +52,9 @@ class TouchRipple extends StatefulWidget {
 
   /// The instance of a border radius for a ripple effect.
   final BorderRadius? rippleBorderRadius;
+
+  /// The behavior applied to the touch ripple effect when tapped.
+  final TouchRippleBehavior? tapBehavior;
 
   /// The behavior that defines when a gesture should be rejected,
   /// specifying the conditions for rejection.
@@ -169,7 +173,9 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       fadeLowerPercent: 0,
       fadeUpperPercent: 1,
       eventCallBackableMinPercent: 0,
-    );
+    ) // default
+    .merge(style?.tapBehavior)
+    .merge(widget.tapBehavior);
   }
 
   @override
