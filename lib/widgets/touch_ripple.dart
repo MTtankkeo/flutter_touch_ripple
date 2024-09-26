@@ -16,6 +16,9 @@ class TouchRipple extends StatefulWidget {
     this.onLongTap,
     this.onLongTapStart,
     this.onLongTapEnd,
+    this.onConsecutive,
+    this.onConsecutiveStart,
+    this.onConsecutiveEnd,
     this.behavior,
     this.rippleColor,
     this.hoverColor,
@@ -30,6 +33,7 @@ class TouchRipple extends StatefulWidget {
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
+    this.onlyMainButton,
     this.controller,
     required this.child
   }) : assert(rippleScale == null || rippleScale != 0);
@@ -62,6 +66,24 @@ class TouchRipple extends StatefulWidget {
   /// It is called when a long tap ends, providing the advantage of knowing 
   /// when a series of consecutive long taps has concluded.
   final VoidCallback? onLongTapEnd;
+
+  /// The callback function is called to indicate the occurrence of consecutive
+  /// touch ripple events. See Also, this function does not determine 
+  /// whether the event should continue rather, it serves to inform 
+  /// that a series of consecutive events has taken place.
+  final TouchRippleConsecutiveCallback? onConsecutive;
+
+  /// The callback function is a lifecycle callback for consecutive touch 
+  /// ripple events. It is called when a consecutive touch event starts, 
+  /// allowing for the initiation of actions based on the beginning of 
+  /// the consecutive event sequence.
+  final VoidCallback? onConsecutiveStart;
+
+  /// The callback function is a lifecycle callback for consecutive touch 
+  /// ripple events. It is called when a consecutive touch event ends, 
+  /// providing the advantage of knowing when a series of consecutive 
+  /// touch ripple events has concluded.
+  final VoidCallback? onConsecutiveEnd;
 
   /// The behavior of hit testing for the child widget.
   final HitTestBehavior? behavior;
@@ -119,6 +141,10 @@ class TouchRipple extends StatefulWidget {
   /// determining whether it should appear in the foreground or background.
   final TouchRippleRenderOrderType? renderOrderType;
 
+  /// The boolean that is whether only the main button is recognized as a gesture
+  /// when the user that is using mouse device clicks on the widget.
+  final bool? onlyMainButton;
+
   final TouchRippleController? controller;
 
   final Widget child;
@@ -172,6 +198,10 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       onLongTap: widget.onLongTap,
       onLongTapStart: widget.onLongTapStart,
       onLongTapEnd: widget.onLongTapEnd,
+      onConsecutive: widget.onConsecutive,
+      onConsecutiveStart: widget.onConsecutiveStart,
+      onConsecutiveEnd: widget.onConsecutiveEnd,
+      onlyMainButton: widget.onlyMainButton,
       behavior: widget.behavior ?? HitTestBehavior.translucent,
       controller: _controller,
       child: TouchRippleRender(
@@ -246,6 +276,7 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       fadeLowerPercent: 0,
       fadeUpperPercent: 1,
       eventCallBackableMinPercent: 0,
+      onlyMainButton: true
     ) // default
     .merge(style?.tapBehavior)
     .merge(widget.tapBehavior);

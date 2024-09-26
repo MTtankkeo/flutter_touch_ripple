@@ -20,7 +20,8 @@ class TouchRippleBehavior {
     this.upperPercent,
     this.fadeLowerPercent,
     this.fadeUpperPercent,
-    this.eventCallBackableMinPercent
+    this.eventCallBackableMinPercent,
+    this.onlyMainButton,
   }) : assert(lowerPercent != null ? lowerPercent >= 0 && lowerPercent <= 1 : true),
        assert(upperPercent != null ? upperPercent >= 0 && upperPercent <= 1 : true),
        assert(fadeLowerPercent != null ? fadeLowerPercent >= 0 && fadeLowerPercent <= 1 : true),
@@ -66,6 +67,10 @@ class TouchRippleBehavior {
   /// For example, if set to 0.5, the callback is invoked when the ripple effect
   /// has spread to `50%` of the widget's area.
   final double? eventCallBackableMinPercent;
+
+  /// The boolean that is whether only the main button is recognized as a gesture
+  /// when the user that is using mouse device clicks on the widget.
+  final bool? onlyMainButton;
 
   /// Merges the current [TouchRippleBehavior] with another, using the provided 
   /// behavior's values if available. If the other behavior is null or lacks 

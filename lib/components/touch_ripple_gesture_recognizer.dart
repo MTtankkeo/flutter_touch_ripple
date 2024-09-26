@@ -14,16 +14,19 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   TouchRippleGestureRecognizer({
     required this.context,
     required this.rejectBehavior,
+    required this.onlyMainbutton,
   });
 
   final BuildContext context;
-
   final TouchRippleRejectBehavior rejectBehavior;
+  final bool onlyMainbutton;
 
+  /// The callback function is called when this gesture recognizer
+  /// disposed in the memory by flutter SDK and library.
   GestureRecognizerDisposeCallback? onDispose;
 
   @override
-  String get debugDescription => 'Touch Ripple Event CallBack: $debugLabal';
+  String get debugDescription => "touch ripple event callBack: $debugLabal";
 
   String get debugLabal;
 
@@ -65,12 +68,8 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   void handleEvent(PointerEvent event) {
     final localPosition = _renderBox.globalToLocal(event.position);
 
-    if (event is PointerDownEvent) {
-      _pointerDownOffset = localPosition;
-    }
-
-    // Is current pointer move event
-    _pointerMoveOffset = localPosition;
+    if (event is PointerDownEvent) _pointerDownOffset = localPosition;
+    if (event is PointerMoveEvent) _pointerMoveOffset = localPosition;
 
     /// Calls the callback function corresponding to the given event.
     if (event is PointerDownEvent) onPointerDown(event);
@@ -169,7 +168,7 @@ mixin HoldableGestureRecognizerMixin on OneSequenceGestureRecognizer {
 
 class HoldingGestureRecognizer extends OneSequenceGestureRecognizer {
   @override
-  String get debugDescription => "Holding";
+  String get debugDescription => "holding";
 
   @override
   void didStopTrackingLastPointer(int pointer) {}
@@ -184,6 +183,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   TouchRippleTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
+    required super.onlyMainbutton,
     required this.onTap,
     required this.onTapRejectable,
     required this.onTapReject,
@@ -206,7 +206,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   bool isRejectable = false;
 
   @override
-  String get debugLabal => "Tap";
+  String get debugLabal => "tap";
 
   @override
   void onPointerDown(PointerDownEvent event) {
@@ -252,12 +252,13 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
   TouchRippleDoubleTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
+    required super.onlyMainbutton,
     required this.acceptableDuration,
     required this.aliveDuration
   });
 
   @override
-  String get debugLabal => "Double Tap";
+  String get debugLabal => "double-tap";
 
   /// Refer to the doubleTappableDuration value of the [TouchRippleContext] for details.
   final Duration acceptableDuration;

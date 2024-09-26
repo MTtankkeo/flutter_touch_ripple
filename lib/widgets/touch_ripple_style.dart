@@ -21,7 +21,8 @@ class TouchRippleStyle extends InheritedWidget {
     this.tapBehavior,
     this.rejectBehavior,
     this.overlapBehavior,
-    this.renderOrderType
+    this.renderOrderType,
+    this.onlyMainButton
   });
 
   /// The value defines the background color of a spread ripple effect.
@@ -77,6 +78,10 @@ class TouchRippleStyle extends InheritedWidget {
   /// the touch ripple effect, determining whether it should appear
   /// in the foreground or background.
   final TouchRippleRenderOrderType? renderOrderType;
+
+  /// The value defines the boolean that is whether only the main button is recognized
+  /// as a gesture when the user that is using mouse device clicks on the widget.
+  final bool? onlyMainButton;
 
   /// Returns the [TouchRippleStyle] most closely associated with the given
   /// context, and returns null if there is no [ScrollController] associated

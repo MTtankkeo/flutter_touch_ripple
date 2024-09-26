@@ -17,6 +17,10 @@ class TouchRippleGestureDetector extends StatefulWidget {
     this.onLongTap,
     this.onLongTapStart,
     this.onLongTapEnd,
+    this.onConsecutive,
+    this.onConsecutiveStart,
+    this.onConsecutiveEnd,
+    this.onlyMainButton,
     this.behavior = HitTestBehavior.translucent,
     required this.controller,
     required this.child,
@@ -50,6 +54,28 @@ class TouchRippleGestureDetector extends StatefulWidget {
   /// It is called when a long tap ends, providing the advantage of knowing 
   /// when a series of consecutive long taps has concluded.
   final VoidCallback? onLongTapEnd;
+
+  /// The callback function is called to indicate the occurrence of consecutive
+  /// touch ripple events. See Also, this function does not determine 
+  /// whether the event should continue rather, it serves to inform 
+  /// that a series of consecutive events has taken place.
+  final TouchRippleConsecutiveCallback? onConsecutive;
+
+  /// The callback function is a lifecycle callback for consecutive touch 
+  /// ripple events. It is called when a consecutive touch event starts, 
+  /// allowing for the initiation of actions based on the beginning of 
+  /// the consecutive event sequence.
+  final VoidCallback? onConsecutiveStart;
+
+  /// The callback function is a lifecycle callback for consecutive touch 
+  /// ripple events. It is called when a consecutive touch event ends, 
+  /// providing the advantage of knowing when a series of consecutive 
+  /// touch ripple events has concluded.
+  final VoidCallback? onConsecutiveEnd;
+
+  /// The boolean that is whether only the main button is recognized as a gesture
+  /// when the user that is using mouse device clicks on the widget.
+  final bool? onlyMainButton;
 
   /// The defines the behavior of hit testing for the child widget.
   final HitTestBehavior behavior;
@@ -88,6 +114,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
         return TouchRippleTapGestureRecognizer(
           context: context,
           rejectBehavior: controller.context.rejectBehavior,
+          onlyMainbutton: widget.onlyMainButton ?? controller.context.tapBehavior.onlyMainButton!,
           previewMinDuration: controller.context.previewDuration,
           acceptableDuration: controller.context.tappableDuration,
           onTap: (offset) {
@@ -135,6 +162,8 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
     }
   }
 
+  _handlePointerHover(PointerHoverEvent event) {}
+
   @override
   void initState() {
     super.initState();
@@ -160,6 +189,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
   Widget build(BuildContext context) {
     return Listener(
       behavior: widget.behavior,
+      onPointerHover: _handlePointerHover,
       onPointerDown: _handlePointerDown,
       child: widget.child,
     );
