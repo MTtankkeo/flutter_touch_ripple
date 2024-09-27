@@ -206,7 +206,7 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       onConsecutive: widget.onConsecutive,
       onConsecutiveStart: widget.onConsecutiveStart,
       onConsecutiveEnd: widget.onConsecutiveEnd,
-      onlyMainButton: widget.onlyMainButton,
+      onlyMainButton: widget.onlyMainButton ?? style?.onlyMainButton,
       behavior: widget.behavior ?? HitTestBehavior.translucent,
       controller: _controller,
       child: TouchRippleRender(

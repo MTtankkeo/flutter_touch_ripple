@@ -45,19 +45,36 @@ class TouchRippleController extends Listenable {
     effect.isAttached = true;
     effect.onDispose = () => detach(effect);
 
-    assert(!_states.contains(effect), "Already exists a given ripple effect");
+    assert(!_states.contains(effect), "Already exists a given ripple effect.");
     _states.add(effect);
   }
 
   /// Delegates the task of detaching and disposing of a touch ripple effect
   /// to ensure consistency with [attach] function.
   detach(TouchRippleEffect effect) {
-    assert(_states.contains(effect), "Already not exists a given ripple effect");
+    assert(_states.contains(effect), "Already not exists a given ripple effect.");
     _states.remove(effect..removeListener(notifyListeners));
   }
 
-  attachAsAlive(String key, TouchRippleEffect effect) {
-    effect.addListener(notifyListeners);
+  /// Delegates the task of adding a touch ripple effect to this controller
+  /// to ensure it can be reliably detached and disposed late by a given key.
+  attachByKey(String key, TouchRippleEffect effect) {
+    assert(!_stateMap.containsKey(key), "Already exists a given ripple effect");
+    _stateMap[key] = effect
+      ..addListener(notifyListeners)
+      ..onDispose = () => detachByKey(key);
+  }
+
+  /// Delegates the task of detaching and disposing of a touch ripple effect
+  /// to ensure consistency with [attachByKey] function by a given key.
+  detachByKey(String key) {
+    assert(_stateMap.containsKey(key), "Already not exists a given ripple effect.");
+    _stateMap.remove(key)?..removeListener(notifyListeners);
+  }
+
+  /// Returns the ripple effect instance corresponding a given key.
+  TouchRippleEffect? getEffectByKey(String key) {
+    return _stateMap[key];
   }
 
   /// Delegates all states and context from a given controller to itself and removes
@@ -73,18 +90,20 @@ class TouchRippleController extends Listenable {
 
   @override
   void addListener(VoidCallback listener) {
-    assert(!_listeners.contains(listener), "Already exists a given listener");
+    assert(!_listeners.contains(listener), "Already exists a given listener.");
     _listeners.add(listener);
   }
 
   @override
   void removeListener(VoidCallback listener) {
-    assert(_listeners.contains(listener), "Already not exists a given listener");
+    assert(_listeners.contains(listener), "Already not exists a given listener.");
     _listeners.remove(listener);
   }
 
+  /// Notifies that the state related to the controller has changed.
   void notifyListeners() => _listeners.forEach((l) => l.call());
 
+  /// Disposes all instances related the controller(e.g. [TouchRippleEffect]).
   dispose() {
     _states.toList().forEach((state) => state.dispose());
     _stateMap.forEach((_, state) => state.dispose());

@@ -91,7 +91,8 @@ class TouchRippleBehavior {
       upperPercent: other.upperPercent ?? upperPercent,
       fadeLowerPercent: other.fadeLowerPercent ?? fadeLowerPercent,
       fadeUpperPercent: other.fadeUpperPercent ?? fadeUpperPercent,
-      eventCallBackableMinPercent: other.eventCallBackableMinPercent ?? other.eventCallBackableMinPercent
+      eventCallBackableMinPercent: other.eventCallBackableMinPercent ?? eventCallBackableMinPercent,
+      onlyMainButton: other.onlyMainButton ?? onlyMainButton
     );
   }
 }

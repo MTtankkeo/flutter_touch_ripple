@@ -14,12 +14,12 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   TouchRippleGestureRecognizer({
     required this.context,
     required this.rejectBehavior,
-    required this.onlyMainbutton,
+    required this.onlyMainButton,
   });
 
   final BuildContext context;
   final TouchRippleRejectBehavior rejectBehavior;
-  final bool onlyMainbutton;
+  final bool onlyMainButton;
 
   /// The callback function is called when this gesture recognizer
   /// disposed in the memory by flutter SDK and library.
@@ -66,12 +66,17 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   /// constantly referencing whether it must be rejected when pointer moved.
   @override
   void handleEvent(PointerEvent event) {
+    // Ignores sub mouse button click events if only the main button is desired.
+    if (onlyMainButton && event.buttons == kSecondaryMouseButton) {
+      return reject();
+    }
+
     final localPosition = _renderBox.globalToLocal(event.position);
 
     if (event is PointerDownEvent) _pointerDownOffset = localPosition;
     if (event is PointerMoveEvent) _pointerMoveOffset = localPosition;
 
-    /// Calls the callback function corresponding to the given event.
+    // Calls the callback function corresponding to the given event.
     if (event is PointerDownEvent) onPointerDown(event);
     if (event is PointerMoveEvent) {
       if (rejectByOffset(currentPointerOffset)) {
@@ -183,7 +188,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   TouchRippleTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
-    required super.onlyMainbutton,
+    required super.onlyMainButton,
     required this.onTap,
     required this.onTapRejectable,
     required this.onTapReject,
@@ -252,7 +257,7 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
   TouchRippleDoubleTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
-    required super.onlyMainbutton,
+    required super.onlyMainButton,
     required this.acceptableDuration,
     required this.aliveDuration
   });

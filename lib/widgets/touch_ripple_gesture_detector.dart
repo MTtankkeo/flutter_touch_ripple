@@ -114,7 +114,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
         return TouchRippleTapGestureRecognizer(
           context: context,
           rejectBehavior: controller.context.rejectBehavior,
-          onlyMainbutton: widget.onlyMainButton ?? controller.context.tapBehavior.onlyMainButton!,
+          onlyMainButton: widget.onlyMainButton ?? controller.context.tapBehavior.onlyMainButton!,
           previewMinDuration: controller.context.previewDuration,
           acceptableDuration: controller.context.tappableDuration,
           onTap: (offset) {

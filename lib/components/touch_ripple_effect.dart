@@ -16,7 +16,10 @@ abstract class TouchRippleEffect extends Listenable {
   /// 
   /// Calling this function resolves errors and memory leaks that may occur
   /// when the widget has been disposed but the effect-related instances remain.
-  void dispose();
+  void dispose() {
+    assert(onDispose != null, "Should be notifying disposed to the touch ripple controller.");
+    onDispose?.call();
+  }
 
   void paint(TouchRippleContext context, Canvas canvas, Size size);
 }
