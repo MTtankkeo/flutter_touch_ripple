@@ -112,7 +112,7 @@ enum TouchRippleOverlapBehavior {
   ignore,
 }
 
-enum TouchRippleAliveBehavior {
+enum TouchRippleFocusBehavior {
   none,
   preview,
   started,
