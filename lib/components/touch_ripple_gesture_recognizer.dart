@@ -258,7 +258,10 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
     required super.rejectBehavior,
     required super.onlyMainButton,
     required this.acceptableDuration,
-    required this.aliveDuration
+    required this.aliveDuration,
+    required this.onDoubleTap,
+    required this.onDoubleTapStart,
+    required this.onDoubleTapEnd
   });
 
   @override
@@ -268,8 +271,18 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
   final Duration acceptableDuration;
   final Duration aliveDuration;
 
+  final TouchRippleConsecutiveCallback onDoubleTap;
+  final VoidCallback? onDoubleTapStart;
+  final VoidCallback? onDoubleTapEnd;
+
   /// The value defines number of taps and updated when a pointer is up.
   int tapCount = 0;
+
+  /// The value defines number of consecutive count for the double tap event.
+  int count = 0;
+
+  /// The value defines whether a double tap has occurred consecutively.
+  bool doneConsecutive = false;
 
   Timer? _rejectTimer;
   Timer? _aliveTimer;
@@ -287,12 +300,34 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
 
     if (++tapCount >= 2) {
       assert(_rejectTimer != null, "In the correct, double taps cannot occur without the reject timer is not exists.");
-      assert(_rejectTimer!.isActive, "In the correct, double taps cannot occur without the reject timer is active.");
+      assert(_rejectTimer!.isActive || doneConsecutive, "In the correct, double taps cannot occur without the reject timer is active.");
       _rejectTimer?.cancel();
-      _aliveTimer?.cancel();
-      _aliveTimer = Timer(aliveDuration, accept);
+
+      if (onDoubleTap(currentPointerOffset, count++)) {
+        // Calls the likecycle callback function that is called when started.
+        if (tapCount == 2) {
+          doneConsecutive = true;
+          onDoubleTapStart?.call();
+        }
+
+        _aliveTimer?.cancel();
+        _aliveTimer = Timer(aliveDuration, accept);
+        return;
+      }
+
+      this.accept();
     } else {
       _rejectTimer ??= Timer(acceptableDuration, reject);
+    }
+  }
+
+  @override
+  void acceptGesture(int pointer) {
+    super.acceptGesture(pointer);
+
+    // Calls the likecycle callback function that is called when ended.
+    if (doneConsecutive && --tapCount == 1) {
+      onDoubleTapEnd?.call();
     }
   }
 

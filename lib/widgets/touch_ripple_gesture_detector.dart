@@ -12,6 +12,7 @@ class TouchRippleGestureDetector extends StatefulWidget {
     super.key,
     this.onTap,
     this.onDoubleTap,
+    this.onDoubleTapConsecutive,
     this.onDoubleTapStart,
     this.onDoubleTapEnd,
     this.onLongTap,
@@ -30,7 +31,12 @@ class TouchRippleGestureDetector extends StatefulWidget {
   final VoidCallback? onTap;
 
   /// The callback function is called when the user double taps or double clicks.
-  final TouchRippleContinuableCallback? onDoubleTap;
+  final VoidCallback? onDoubleTap;
+
+  /// The callback function is called to determine whether consecutive double taps
+  /// should continue. It returns a [bool] indicating whether the long tap event
+  /// should continue after the initial occurrence.
+  final TouchRippleContinuableCallback? onDoubleTapConsecutive;
 
   /// The callback function is a lifecycle callback for the double-tap event. 
   /// It is called when a double tap starts, which is useful for handling 
@@ -104,21 +110,35 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
   /// Returns an instance of a given [TouchRippleController] as this widget reference.
   TouchRippleController get controller => widget.controller;
 
+  TouchRippleContext get rippleContext => controller.context;
+
   // Initializes gesture recognizer builders.
   initBuilders() {
     _builders.clear();
 
-    if (widget.onTap != null) {
+    final isTappable = widget.onTap != null;
+    final isDoubleTappable = widget.onDoubleTap != null;
+    final isLongTappable = widget.onLongTap != null;
+
+    if (isTappable) {
       _builders.add(() {
         late TouchRippleSpreadingEffect activeEffect;
+
+        assert(rippleContext.tapBehavior.onlyMainButton != null);
         return TouchRippleTapGestureRecognizer(
           context: context,
           rejectBehavior: controller.context.rejectBehavior,
-          onlyMainButton: widget.onlyMainButton ?? controller.context.tapBehavior.onlyMainButton!,
-          previewMinDuration: controller.context.previewDuration,
+          onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
+
+          /// If there is a gesture competitor other than itself,
+          /// the effect cannot be previewed for tap effect.
+          previewMinDuration: isDoubleTappable || isLongTappable
+            ? Duration.zero
+            : controller.context.previewDuration,
+
           acceptableDuration: controller.context.tappableDuration,
           onTap: (offset) {
-            activeEffect = TouchRippleSpreadingEffect(
+            activeEffect = TouchRippleSpreadingEffect( 
               vsync: controller.context.vsync,
               callback: widget.onTap!,
               isRejectable: false,
@@ -145,6 +165,38 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
         // Called when this gesture recognizer disposed.
         ..onDispose = _recognizers.remove;
       });
+    }
+
+    if (isDoubleTappable) {
+      _builders.add(() {
+        assert(rippleContext.doubleTapBehavior.onlyMainButton != null);
+        assert(widget.onDoubleTapStart != null ? widget.onDoubleTapConsecutive != null : true);
+        assert(widget.onDoubleTapEnd != null ? widget.onDoubleTapConsecutive != null : true);
+        return TouchRippleDoubleTapGestureRecognizer(
+          context: context,
+          rejectBehavior: controller.context.rejectBehavior,
+          onlyMainButton: widget.onlyMainButton ?? controller.context.doubleTapBehavior.onlyMainButton!,
+          acceptableDuration: controller.context.doubleTappableDuration,
+          aliveDuration: controller.context.doubleTapAliveDuration,
+          onDoubleTap: (offset, count) {
+            controller.attach(TouchRippleSpreadingEffect(
+              vsync: controller.context.vsync,
+              callback: widget.onDoubleTap!,
+              isRejectable: false,
+              baseOffset: offset,
+              behavior: controller.context.doubleTapBehavior
+            )..start());
+
+            return widget.onDoubleTapConsecutive?.call(count) ?? false;
+          },
+          onDoubleTapStart: widget.onDoubleTapStart,
+          onDoubleTapEnd: widget.onDoubleTapEnd
+        )..onDispose = _recognizers.remove;
+      });
+    } else {
+      assert(widget.onDoubleTapConsecutive == null);
+      assert(widget.onDoubleTapStart == null);
+      assert(widget.onDoubleTapEnd == null);
     }
   }
 

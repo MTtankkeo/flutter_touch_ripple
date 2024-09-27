@@ -11,6 +11,7 @@ class TouchRipple extends StatefulWidget {
     super.key,
     this.onTap,
     this.onDoubleTap,
+    this.onDoubleTapConsecutive,
     this.onDoubleTapStart,
     this.onDoubleTapEnd,
     this.onLongTap,
@@ -47,7 +48,12 @@ class TouchRipple extends StatefulWidget {
   final VoidCallback? onTap;
 
   /// The callback function is called when the user double taps or double clicks.
-  final TouchRippleContinuableCallback? onDoubleTap;
+  final VoidCallback? onDoubleTap;
+
+  /// The callback function is called to determine whether consecutive double taps
+  /// should continue. It returns a [bool] indicating whether the long tap event
+  /// should continue after the initial occurrence.
+  final TouchRippleContinuableCallback? onDoubleTapConsecutive;
 
   /// The callback function is a lifecycle callback for the double-tap event. 
   /// It is called when a double tap starts, which is useful for handling 
@@ -220,6 +226,7 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
     return TouchRippleGestureDetector(
       onTap: widget.onTap,
       onDoubleTap: widget.onDoubleTap,
+      onDoubleTapConsecutive: widget.onDoubleTapConsecutive,
       onDoubleTapStart: widget.onDoubleTapStart,
       onDoubleTapEnd: widget.onDoubleTapEnd,
       onLongTap: widget.onLongTap,
@@ -302,7 +309,7 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   Duration get doubleTappableDuration {
     return widget.doubleTappableDuration // 1 priority
         ?? style?.doubleTappableDuration // 2 priority
-        ?? Duration(milliseconds: 300); // default
+        ?? Duration(milliseconds: 200); // default
   }
 
   @override

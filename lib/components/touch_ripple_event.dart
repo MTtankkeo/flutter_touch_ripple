@@ -13,10 +13,12 @@ typedef TouchRippleCallback = void Function(Offset offset);
 /// the continuable touch ripple event should continue.
 typedef TouchRippleContinuableCallback = bool Function(int count);
 
-/// Signature for the callback function that is called to indicate 
-/// the occurrence of consecutive touch ripple events.
+/// Signature for the callback function that is called when a consecutive
+/// touch ripple event occurs, combining both the behavior of
+/// [TouchRippleCallback] and [TouchRippleContinuableCallback].
 /// 
-/// Unlike [TouchRippleContinuableCallback], this callback does not 
-/// determine whether the event should continue instead, it serves 
-/// to inform that a series of consecutive events has occurred.
-typedef TouchRippleConsecutiveCallback = void Function(int count);
+/// The [offset] parameter provides the position of the touch event relative to
+/// the widget coordinate system, and the [count] parameter indicates how many
+/// times the event has occurred consecutively. The returned [bool] specifies
+/// whether the event should continue after the consecutive occurrence.
+typedef TouchRippleConsecutiveCallback = bool Function(Offset offset, int count);
