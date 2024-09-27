@@ -25,6 +25,8 @@ class TouchRippleStyle extends InheritedWidget {
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
+    this.useHoverEffect,
+    this.useFocusEffect,
     this.onlyMainButton
   });
 
@@ -95,6 +97,15 @@ class TouchRippleStyle extends InheritedWidget {
   /// in the foreground or background.
   final TouchRippleRenderOrderType? renderOrderType;
 
+  /// The value defines whether the hover effect is enabled for touch ripple
+  /// animations. If true, a solid hover effect is applied when the user hovers.
+  final bool? useHoverEffect;
+
+  /// The value defines whether the focus effect is enabled for touch ripple
+  /// animations. If true, a solid focus color effect is applied for
+  /// consecutive events like double-tap and long-tap or others.
+  final bool? useFocusEffect;
+
   /// The value defines the boolean that is whether only the main button is recognized
   /// as a gesture when the user that is using mouse device clicks on the widget.
   final bool? onlyMainButton;
@@ -122,6 +133,8 @@ class TouchRippleStyle extends InheritedWidget {
         || rejectBehavior != oldWidget.rejectBehavior
         || overlapBehavior != oldWidget.overlapBehavior
         || renderOrderType != oldWidget.renderOrderType
+        || useHoverEffect != oldWidget.useHoverEffect
+        || useFocusEffect != oldWidget.useFocusEffect
         || onlyMainButton != oldWidget.onlyMainButton;
   }
 }

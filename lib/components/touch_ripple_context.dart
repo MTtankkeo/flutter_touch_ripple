@@ -69,6 +69,15 @@ mixin TouchRippleContext {
   /// Return the behavior of a touch ripple when it overlaps with
   /// other ripple effects. (e.g. overlappable, cancel, ignore)
   TouchRippleOverlapBehavior get overlapBehavior;
+
+  /// Returns whether the hover effect is enabled for touch ripple animations.
+  /// If true, a solid hover effect is applied when the user hovers.
+  bool get useHoverEffect;
+
+  /// Returns whether the focus effect is enabled for touch ripple animations.
+  /// If true, a solid focus color effect is applied for consecutive events
+  /// like double-tap and long-tap or others.
+  bool get useFocusEffect;
 }
 
 /// The enumeration defines when a gesture should be rejected,

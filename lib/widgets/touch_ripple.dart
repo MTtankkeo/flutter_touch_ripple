@@ -36,6 +36,8 @@ class TouchRipple extends StatefulWidget {
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
+    this.useHoverEffect,
+    this.useFocusEffect,
     this.onlyMainButton,
     this.controller,
     required this.child
@@ -160,6 +162,15 @@ class TouchRipple extends StatefulWidget {
   /// The boolean that is whether only the main button is recognized as a gesture
   /// when the user that is using mouse device clicks on the widget.
   final bool? onlyMainButton;
+
+  /// Whether the hover effect is enabled for touch ripple animations.
+  /// If true, a solid hover effect is applied when the user hovers.
+  final bool? useHoverEffect;
+
+  /// Whether the focus effect is enabled for touch ripple animations.
+  /// If true, a solid focus color effect is applied for consecutive
+  /// events like double-tap and long-tap or others.
+  final bool? useFocusEffect;
 
   final TouchRippleController? controller;
 
@@ -356,5 +367,19 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
     return widget.overlapBehavior // 1 priority
         ?? style?.overlapBehavior // 2 priority
         ?? TouchRippleOverlapBehavior.overlappable; // default
+  }
+
+  @override
+  bool get useHoverEffect {
+    return widget.useHoverEffect // 1 priority
+        ?? style?.useHoverEffect // 2 priority
+        ?? true; // default
+  }
+
+  @override
+  bool get useFocusEffect {
+    return widget.useFocusEffect // 1 priority
+        ?? style?.useFocusEffect // 2 priority
+        ?? true; // default
   }
 }
