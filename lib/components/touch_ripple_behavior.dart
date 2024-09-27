@@ -25,7 +25,10 @@ class TouchRippleBehavior {
   }) : assert(lowerPercent != null ? lowerPercent >= 0 && lowerPercent <= 1 : true),
        assert(upperPercent != null ? upperPercent >= 0 && upperPercent <= 1 : true),
        assert(fadeLowerPercent != null ? fadeLowerPercent >= 0 && fadeLowerPercent <= 1 : true),
-       assert(fadeUpperPercent != null ? fadeUpperPercent >= 0 && fadeUpperPercent <= 1 : true);
+       assert(fadeUpperPercent != null ? fadeUpperPercent >= 0 && fadeUpperPercent <= 1 : true),
+       assert(eventCallBackableMinPercent != null
+            ? eventCallBackableMinPercent >= 0
+           && eventCallBackableMinPercent <= 1 : true);
 
   /// The duration of a touch ripple spreading animation.
   final Duration? spreadDuration;

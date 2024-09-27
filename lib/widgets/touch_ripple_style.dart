@@ -11,7 +11,7 @@ class TouchRippleStyle extends InheritedWidget {
     required super.child,
     this.rippleColor,
     this.hoverColor,
-    this.aliveColor,
+    this.focusColor,
     this.rippleScale,
     this.rippleBlurRadius,
     this.rippleBorderRadius,
@@ -20,6 +20,8 @@ class TouchRippleStyle extends InheritedWidget {
     this.doubleTappableDuration,
     this.doubleTapAliveDuration,
     this.tapBehavior,
+    this.doubleTapBehavior,
+    this.longTapBehavior,
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
@@ -34,7 +36,7 @@ class TouchRippleStyle extends InheritedWidget {
 
   /// The value defines the background color of the solid effect when a
   /// consecutive (e.g. about double-tap and long-tap) event state occurs.
-  final Color? aliveColor;
+  final Color? focusColor;
 
   /// The value defines the scale percentage value of a ripple effect.
   final double? rippleScale;
@@ -45,8 +47,17 @@ class TouchRippleStyle extends InheritedWidget {
   /// The value defines the instance of a border radius for a ripple effect.
   final BorderRadius? rippleBorderRadius;
 
-  /// The value defines the behavior applied to the touch ripple effect when tapped.
+  /// The value defines the touch ripple behavior applied to the touch ripple
+  /// effect for tapped or clicked.
   final TouchRippleBehavior? tapBehavior;
+
+  /// The value defines the touch ripple behavior applied to the touch ripple
+  /// effect for double tapped or double clicked.
+  final TouchRippleBehavior? doubleTapBehavior;
+
+  /// The value defines the touch ripple behavior applied to the touch ripple
+  /// effect for long tapped or long pressed and long clicked.
+  final TouchRippleBehavior? longTapBehavior;
 
   /// The value defines the duration for which the ripple effect is previewed
   /// even if the gesture is not finalized, allowing the user to see
@@ -97,6 +108,20 @@ class TouchRippleStyle extends InheritedWidget {
 
   @override
   bool updateShouldNotify(TouchRippleStyle oldWidget) {
-    return rippleColor != oldWidget.rippleColor || hoverColor != oldWidget.hoverColor;
+    return rippleColor != oldWidget.rippleColor
+        || hoverColor != oldWidget.hoverColor
+        || focusColor != oldWidget.focusColor
+        || rippleScale != oldWidget.rippleScale
+        || rippleBlurRadius != oldWidget.rippleBlurRadius
+        || rippleBorderRadius != oldWidget.rippleBorderRadius
+        || tapBehavior != oldWidget.tapBehavior
+        || previewDuration != oldWidget.previewDuration
+        || tappableDuration != oldWidget.tappableDuration
+        || doubleTappableDuration != oldWidget.doubleTappableDuration
+        || doubleTapAliveDuration != oldWidget.doubleTapAliveDuration
+        || rejectBehavior != oldWidget.rejectBehavior
+        || overlapBehavior != oldWidget.overlapBehavior
+        || renderOrderType != oldWidget.renderOrderType
+        || onlyMainButton != oldWidget.onlyMainButton;
   }
 }

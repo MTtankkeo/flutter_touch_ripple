@@ -66,7 +66,7 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   /// constantly referencing whether it must be rejected when pointer moved.
   @override
   void handleEvent(PointerEvent event) {
-    // Ignores sub mouse button click events if only the main button is desired.
+    // Ignores right mouse button click events if only the left button is desired.
     if (onlyMainButton && event.buttons == kSecondaryMouseButton) {
       return reject();
     }
@@ -79,8 +79,7 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
     // Calls the callback function corresponding to the given event.
     if (event is PointerDownEvent) onPointerDown(event);
     if (event is PointerMoveEvent) {
-      if (rejectByOffset(currentPointerOffset)) {
-        // is must be rejecting
+      if (rejectByOffset(currentPointerOffset)) { // is must be rejecting
         reject();
       } else {
         onPointerMove(event);

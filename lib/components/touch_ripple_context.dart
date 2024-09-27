@@ -16,7 +16,7 @@ mixin TouchRippleContext {
 
   /// Returns the background color of the solid effect when a consecutive
   /// (e.g. about double-tap and long-tap) event state occurs.
-  Color get aliveColor;
+  Color get focusColor;
 
   /// Returns the scale percentage value of the ripple effect.
   double get rippleScale;
@@ -50,8 +50,17 @@ mixin TouchRippleContext {
   /// See Also, If the callback returns false, the duration will not be utilized,
   Duration get doubleTapAliveDuration;
 
-  /// Returns the behavior applied to the touch ripple effect when tapped.
+  /// Returns the touch ripple behavior applied to the touch ripple
+  /// effect for tapped or clicked.
   TouchRippleBehavior get tapBehavior;
+
+  /// Returns the touch ripple behavior applied to the touch ripple
+  /// effect for double tapped or double clicked.
+  TouchRippleBehavior get doubleTapBehavior;
+
+  /// Returns the touch ripple behavior applied to the touch ripple
+  /// effect for long tapped or long pressed and long clicked.
+  TouchRippleBehavior get longTapBehavior;
 
   /// Returns the behavior that defines when a gesture should be rejected,
   /// specifying the conditions for rejection.

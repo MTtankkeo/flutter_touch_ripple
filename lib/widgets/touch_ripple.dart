@@ -22,7 +22,7 @@ class TouchRipple extends StatefulWidget {
     this.behavior,
     this.rippleColor,
     this.hoverColor,
-    this.aliveColor,
+    this.focusColor,
     this.rippleScale,
     this.rippleBlurRadius,
     this.rippleBorderRadius,
@@ -31,6 +31,8 @@ class TouchRipple extends StatefulWidget {
     this.doubleTappableDuration,
     this.doubleTapAliveDuration,
     this.tapBehavior,
+    this.doubleTapBehavior,
+    this.longTapBehavior,
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
@@ -97,7 +99,7 @@ class TouchRipple extends StatefulWidget {
 
   /// The background color of the solid effect when a consecutive
   /// (e.g. about double-tap and long-tap) event state occurs.
-  final Color? aliveColor;
+  final Color? focusColor;
 
   /// The scale percentage value of a ripple effect.
   final double? rippleScale;
@@ -131,8 +133,17 @@ class TouchRipple extends StatefulWidget {
   /// See Also, If the callback returns false, the duration will not be utilized,
   final Duration? doubleTapAliveDuration;
 
-  /// The behavior applied to the touch ripple effect when tapped.
+  /// The touch ripple behavior applied to the touch ripple effect
+  /// for tapped or clicked.
   final TouchRippleBehavior? tapBehavior;
+
+  /// The touch ripple behavior applied to the touch ripple effect
+  /// for double tapped or double clicked.
+  final TouchRippleBehavior? doubleTapBehavior;
+
+  /// The touch ripple behavior applied to the touch ripple effect
+  /// for long tapped or long pressed and long clicked.
+  final TouchRippleBehavior? longTapBehavior;
 
   /// The behavior that defines when a gesture should be rejected,
   /// specifying the conditions for rejection.
@@ -235,9 +246,9 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   }
 
   @override
-  Color get aliveColor {
-    return widget.aliveColor // 1 priority
-        ?? style?.aliveColor // 2 priority
+  Color get focusColor {
+    return widget.focusColor // 1 priority
+        ?? style?.focusColor // 2 priority
         ?? TouchRippleColor.withAlphaOf(rippleColor, 0.5); // default
   }
 
@@ -292,7 +303,7 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
 
   @override
   TouchRippleBehavior get tapBehavior {
-    return TouchRippleBehavior(
+    return const TouchRippleBehavior( // default
       lowerPercent: 0.3,
       upperPercent: 1,
       spreadDuration: Duration(milliseconds: 300),
@@ -307,9 +318,30 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       fadeUpperPercent: 1,
       eventCallBackableMinPercent: 0,
       onlyMainButton: true
-    ) // default
+    )
     .merge(style?.tapBehavior)  // 2 priority
     .merge(widget.tapBehavior); // 1 priority
+  }
+
+  @override
+  TouchRippleBehavior get doubleTapBehavior {
+    return tapBehavior
+      .merge(style?.doubleTapBehavior)
+      .merge(widget.doubleTapBehavior);
+  }
+
+  @override
+  TouchRippleBehavior get longTapBehavior {
+    return tapBehavior
+      .merge(const TouchRippleBehavior( // default
+        lowerPercent: 0,
+        upperPercent: 1,
+        spreadDuration: Duration(milliseconds: 1000),
+        spreadCurve: Curves.linear,
+        fadeInDuration: Duration(milliseconds: 500),
+      ))
+      .merge(style?.longTapBehavior)  // 2 priority
+      .merge(widget.longTapBehavior); // 1 priority
   }
 
   @override
