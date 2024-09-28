@@ -47,9 +47,17 @@ mixin TouchRippleContext {
   /// Returns the duration until double-tap deactivation. During this period,
   /// any single tap is still considered a double-tap without requiring
   /// continuous double-tapping.
-  /// 
-  /// See Also, If the callback returns false, the duration will not be utilized,
   Duration get doubleTapAliveDuration;
+
+  /// Returns the minimum duration used to distinguish between a tap and
+  /// a long-tap. After this duration has passed, the long-tap effect
+  /// starts to be displayed to the user.
+  Duration get longTappableDuration;
+
+  /// Returns the duration until long-tap deactivation. During this period, any
+  /// pointer down and move is still considered a long-tap without requiring
+  /// the continuous process of pointer-up followed by pointer-down.
+  Duration get longTapAliveDuration;
 
   /// Returns the touch ripple behavior applied to the touch ripple
   /// effect for tapped or clicked.

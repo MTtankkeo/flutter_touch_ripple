@@ -372,3 +372,16 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
     _aliveTimer?.cancel();
   }
 }
+
+class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer {
+  TouchRippleLongTapGestureRecognizer({
+    required super.context,
+    required super.rejectBehavior,
+    required super.onlyMainButton
+  });
+
+  @override
+  String get debugLabal => "long-tap";
+
+  
+}
