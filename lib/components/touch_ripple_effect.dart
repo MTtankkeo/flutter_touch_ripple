@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'package:flutter/material.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 
@@ -214,22 +215,24 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 class TouchRippleSolidEffect extends TouchRippleEffect {
   TouchRippleSolidEffect({
     required TickerProvider vsync,
-    required Duration fadeInDuration,
-    required Curve fadeInCurve,
-    required Duration? fadeOutDuration,
-    required Curve? fadeOutCurve,
+    required TouchRippleAnimation animation,
     required this.color,
   }) {
     _fadeAnimation = AnimationController(
       vsync: vsync,
-      duration: fadeInDuration,
-      reverseDuration: fadeOutDuration,
+      duration: animation.fadeInDuration,
+      reverseDuration: animation.fadeOutDuration,
     );
 
     _fadeCurved = CurvedAnimation(
       parent: _fadeAnimation,
-      curve: Curves.ease
+      curve: animation.fadeInCurve!,
+      reverseCurve: animation.fadeOutCurve
     );
+
+    _fadeCurved.addStatusListener((status) {
+      if (status == AnimationStatus.dismissed) onDispose?.call();
+    });
   }
 
   /// The animation controller for the fade in or fade-out animation of
@@ -261,6 +264,9 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
     _fadeAnimation.dispose();
     _fadeCurved.dispose();
   }
+
+  fadeIn() => _fadeAnimation.forward();
+  fadeOut() => _fadeAnimation.reverse();
 
   @override
   void paint(TouchRippleContext context, Canvas canvas, Size size) {

@@ -112,6 +112,26 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
 
   TouchRippleContext get rippleContext => controller.context;
 
+  onFocusStart() {
+    var effect = controller.getEffectByKey("focus") as TouchRippleSolidEffect?;
+    if (effect == null && rippleContext.useFocusEffect) {
+      effect = TouchRippleSolidEffect(
+        vsync: rippleContext.vsync,
+        color: controller.context.focusColor,
+        animation: rippleContext.focusAnimation,
+      );
+
+      controller.attachByKey("focus", effect);
+    }
+
+    effect!.fadeIn();
+  }
+
+  onFocusEnd() {
+    final effect = controller.getEffectByKey("focus") as TouchRippleSolidEffect?;
+    effect?.fadeOut();
+  }
+
   // Initializes gesture recognizer builders.
   initBuilders() {
     _builders.clear();
@@ -127,34 +147,34 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
         assert(rippleContext.tapBehavior.onlyMainButton != null);
         return TouchRippleTapGestureRecognizer(
           context: context,
-          rejectBehavior: controller.context.rejectBehavior,
+          rejectBehavior: rippleContext.rejectBehavior,
           onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
 
           /// If there is a gesture competitor other than itself,
           /// the effect cannot be previewed for tap effect.
           previewMinDuration: isDoubleTappable || isLongTappable
             ? Duration.zero
-            : controller.context.previewDuration,
+            : rippleContext.previewDuration,
 
-          acceptableDuration: controller.context.tappableDuration,
+          acceptableDuration: rippleContext.tappableDuration,
           onTap: (offset) {
             activeEffect = TouchRippleSpreadingEffect( 
-              vsync: controller.context.vsync,
+              vsync: rippleContext.vsync,
               callback: widget.onTap!,
               isRejectable: false,
               baseOffset: offset,
-              behavior: controller.context.tapBehavior
+              behavior: rippleContext.tapBehavior
             );
 
             controller.attach(activeEffect..start());
           },
           onTapRejectable: (offset) {
             activeEffect = TouchRippleSpreadingEffect(
-              vsync: controller.context.vsync,
+              vsync: rippleContext.vsync,
               callback: widget.onTap!,
               isRejectable: true,
               baseOffset: offset,
-              behavior: controller.context.tapBehavior
+              behavior: rippleContext.tapBehavior
             );
 
             controller.attach(activeEffect..start());
@@ -174,24 +194,27 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
         assert(widget.onDoubleTapEnd != null ? widget.onDoubleTapConsecutive != null : true);
         return TouchRippleDoubleTapGestureRecognizer(
           context: context,
-          rejectBehavior: controller.context.rejectBehavior,
-          onlyMainButton: widget.onlyMainButton ?? controller.context.doubleTapBehavior.onlyMainButton!,
-          acceptableDuration: controller.context.doubleTappableDuration,
-          aliveDuration: controller.context.doubleTapAliveDuration,
+          rejectBehavior: rippleContext.rejectBehavior,
+          onlyMainButton: widget.onlyMainButton ?? rippleContext.doubleTapBehavior.onlyMainButton!,
+          acceptableDuration: rippleContext.doubleTappableDuration,
+          aliveDuration: rippleContext.doubleTapAliveDuration,
           onDoubleTap: (offset, count) {
             controller.attach(TouchRippleSpreadingEffect(
-              vsync: controller.context.vsync,
+              vsync: rippleContext.vsync,
               callback: widget.onDoubleTap!,
               isRejectable: false,
               baseOffset: offset,
-              behavior: controller.context.doubleTapBehavior
+              behavior: rippleContext.doubleTapBehavior
             )..start());
 
             return widget.onDoubleTapConsecutive?.call(count) ?? false;
           },
           onDoubleTapStart: widget.onDoubleTapStart,
           onDoubleTapEnd: widget.onDoubleTapEnd
-        )..onDispose = _recognizers.remove;
+        )
+        ..onFocusStart = onFocusStart
+        ..onFocusEnd = onFocusEnd
+        ..onDispose = _recognizers.remove;
       });
     } else {
       assert(widget.onDoubleTapConsecutive == null);

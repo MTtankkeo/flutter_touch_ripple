@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 
 /// The mixin provides necessary information for gesture behaviors
@@ -69,6 +70,14 @@ mixin TouchRippleContext {
   /// Return the behavior of a touch ripple when it overlaps with
   /// other ripple effects. (e.g. overlappable, cancel, ignore)
   TouchRippleOverlapBehavior get overlapBehavior;
+
+  /// Returns the instance of the fade animation for the touch ripple effect
+  /// when the hover effect is triggered.
+  TouchRippleAnimation get hoverAnimation;
+
+  /// Returns the instance of the fade animation for the touch ripple effect
+  /// when the focus effect is triggered.
+  TouchRippleAnimation get focusAnimation;
 
   /// Returns whether the hover effect is enabled for touch ripple animations.
   /// If true, a solid hover effect is applied when the user hovers.

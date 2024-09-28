@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
@@ -316,7 +317,7 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   Duration get doubleTapAliveDuration {
     return widget.doubleTapAliveDuration // 1 priority
         ?? style?.doubleTapAliveDuration // 2 priority
-        ?? Duration(milliseconds: 500); // default
+        ?? Duration(milliseconds: 1000); // default
   }
 
   @override
@@ -374,6 +375,19 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
     return widget.overlapBehavior // 1 priority
         ?? style?.overlapBehavior // 2 priority
         ?? TouchRippleOverlapBehavior.overlappable; // default
+  }
+
+  @override
+  TouchRippleAnimation get hoverAnimation => throw UnimplementedError();
+
+  @override
+  TouchRippleAnimation get focusAnimation {
+    return TouchRippleAnimation(
+      fadeInDuration: Duration(milliseconds: 300),
+      fadeInCurve: Curves.easeOut,
+      fadeOutDuration: Duration(milliseconds: 300),
+      fadeOutCurve: Curves.easeIn
+    );
   }
 
   @override

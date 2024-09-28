@@ -170,13 +170,42 @@ mixin HoldableGestureRecognizerMixin on OneSequenceGestureRecognizer {
   }
 }
 
+/// The mixin that adds focus gesture recognition to [OneSequenceGestureRecognizer].
+/// Provides callbacks for when a focus gesture starts or ends.
+mixin FocusableGestureRecognizerMixin on OneSequenceGestureRecognizer {
+  VoidCallback? onFocusStart;
+  VoidCallback? onFocusEnd;
+
+  /// Invokes the [onFocusStart] callback when a focus gesture is initiated.
+  /// Therefore, this method should be called when consecutive events started.
+  void focusStart() {
+    onFocusStart?.call();
+  }
+
+  /// Invokes the [onFocusEnd] callback when a focus gesture is finished.
+  /// Therefore, this method should be called whena consecutive events ended.
+  void focusEnd() {
+    onFocusEnd?.call();
+  }
+}
+
+/// The gesture recognizer that tracks holding gestures, defined as when a pointer
+/// is pressed but not yet released. It resolves the gesture if the pointer
+/// is lifted.
+/// 
+/// Primarily used to prevent a tap gesture from being immediately
+/// recognized on pointer down when there are no competing gestures.
 class HoldingGestureRecognizer extends OneSequenceGestureRecognizer {
   @override
   String get debugDescription => "holding";
 
+  /// Called when the recognizer stops tracking the last pointer.
+  /// This method is empty since no specific action is needed when the last pointer is stopped.
   @override
   void didStopTrackingLastPointer(int pointer) {}
 
+  /// Handles the incoming pointer events. If a [PointerUpEvent] is detected,
+  /// the gesture is rejected for the acceptance of other gestures. (e.g. tap)
   @override
   void handleEvent(PointerEvent event) {
     if (event is PointerUpEvent) resolve(GestureDisposition.rejected);
@@ -252,7 +281,10 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   }
 }
 
-class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer with HoldableGestureRecognizerMixin {
+class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
+    with HoldableGestureRecognizerMixin,
+         FocusableGestureRecognizerMixin {
+
   TouchRippleDoubleTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
@@ -308,6 +340,7 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
         if (tapCount == 2) {
           doneConsecutive = true;
           onDoubleTapStart?.call();
+          focusStart();
         }
 
         _aliveTimer?.cancel();
@@ -328,6 +361,7 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
     // Calls the likecycle callback function that is called when ended.
     if (doneConsecutive && --tapCount == 1) {
       onDoubleTapEnd?.call();
+      focusEnd();
     }
   }
 

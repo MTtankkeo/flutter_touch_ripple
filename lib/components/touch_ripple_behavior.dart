@@ -76,8 +76,8 @@ class TouchRippleBehavior {
   final bool? onlyMainButton;
 
   /// Merges the current [TouchRippleBehavior] with another, using the provided 
-  /// behavior's values if available. If the other behavior is null or lacks 
-  /// specific values, defaults to the current behavior's values.
+  /// behavior values if available. If the other behavior is null or lacks 
+  /// specific values, defaults to the current behavior values.
   TouchRippleBehavior merge(TouchRippleBehavior? other) {
     if (other == null) return this;
 
