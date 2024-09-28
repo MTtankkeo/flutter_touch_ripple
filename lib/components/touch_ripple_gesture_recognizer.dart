@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -51,7 +50,6 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   bool rejectByOffset(Offset offset) {
     if (rejectBehavior == TouchRippleRejectBehavior.none) return false;
     if (rejectBehavior == TouchRippleRejectBehavior.leave) {
-      // is pointer hited.
       return !_renderBox.hitTest(BoxHitTestResult(), position: offset);
     }
 
@@ -80,7 +78,7 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
     // Calls the callback function corresponding to the given event.
     if (event is PointerDownEvent) onPointerDown(event);
     if (event is PointerMoveEvent) {
-      if (rejectByOffset(currentPointerOffset)) { // is must be rejecting
+      if (rejectByOffset(currentPointerOffset)) {
         reject();
       } else {
         onPointerMove(event);
@@ -177,15 +175,20 @@ mixin FocusableGestureRecognizerMixin on OneSequenceGestureRecognizer {
   VoidCallback? onFocusStart;
   VoidCallback? onFocusEnd;
 
+  /// The value defines whether the current focus is active.
+  bool isFocusActive = false;
+
   /// Invokes the [onFocusStart] callback when a focus gesture is initiated.
   /// Therefore, this method should be called when consecutive events started.
   void focusStart() {
+    isFocusActive = true;
     onFocusStart?.call();
   }
 
   /// Invokes the [onFocusEnd] callback when a focus gesture is finished.
   /// Therefore, this method should be called whena consecutive events ended.
   void focusEnd() {
+    isFocusActive = false;
     onFocusEnd?.call();
   }
 }
@@ -311,14 +314,23 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
   /// The value defines number of taps and updated when a pointer is up.
   int tapCount = 0;
 
-  /// The value defines number of consecutive count for the double tap event.
+  /// The value defines number of consecutive count for the double-tap event.
   int count = 0;
-
-  /// The value defines whether a double tap has occurred consecutively.
-  bool doneConsecutive = false;
 
   Timer? _rejectTimer;
   Timer? _aliveTimer;
+
+  @override
+  void focusStart() {
+    super.focusStart();
+    onDoubleTapStart?.call();
+  }
+
+  @override
+  void focusEnd() {
+    super.focusEnd();
+    onDoubleTapEnd?.call();
+  }
 
   @override
   void onPointerDown(PointerDownEvent event) {
@@ -333,14 +345,12 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
 
     if (++tapCount >= 2) {
       assert(_rejectTimer != null, "In the correct, double taps cannot occur without the reject timer is not exists.");
-      assert(_rejectTimer!.isActive || doneConsecutive, "In the correct, double taps cannot occur without the reject timer is active.");
+      assert(_rejectTimer!.isActive || isFocusActive, "In the correct, double taps cannot occur without the reject timer is active.");
       _rejectTimer?.cancel();
 
       if (onDoubleTap(currentPointerOffset, count++)) {
         // Calls the likecycle callback function that is called when started.
         if (tapCount == 2) {
-          doneConsecutive = true;
-          onDoubleTapStart?.call();
           focusStart();
         }
 
@@ -360,8 +370,7 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
     super.acceptGesture(pointer);
 
     // Calls the likecycle callback function that is called when ended.
-    if (doneConsecutive && --tapCount == 1) {
-      onDoubleTapEnd?.call();
+    if (isFocusActive && --tapCount == 1) {
       focusEnd();
     }
   }
@@ -374,22 +383,128 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
   }
 }
 
-class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer {
+class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer with FocusableGestureRecognizerMixin {
   TouchRippleLongTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
     required super.onlyMainButton,
+    required this.delayDuration,
+    required this.cycleDuration,
+    required this.acceptableDuration,
     required this.onLongTap,
+    required this.onLongTapRejectable,
     required this.onLongTapReject,
+    required this.onLongTapAccept,
     required this.onLongTapStart,
-    required this.onLongTapEnd
+    required this.onLongTapEnd,
   });
 
   @override
   String get debugLabal => "long-tap";
 
-  final VoidCallback onLongTap;
+  final Duration delayDuration;
+  final Duration cycleDuration;
+  final Duration acceptableDuration;
+
+  final TouchRippleContinuableCallback onLongTap;
+  final TouchRippleCallback onLongTapRejectable;
   final VoidCallback onLongTapReject;
+  final VoidCallback onLongTapAccept;
   final VoidCallback? onLongTapStart;
   final VoidCallback? onLongTapEnd;
+
+  Timer? delayTimer;
+  Timer? cycleTimer;
+  Timer? acceptTimer;
+
+  /// The value defines number of consecutive count for the long-tap event.
+  int count = 0;
+
+  /// the value defines wheter a long-tap current is rejectable effect.
+  bool isRejectable = false;
+
+  @override
+  void onPointerDown(PointerDownEvent event) {
+    delayTimer = Timer(delayDuration, () {
+      isRejectable = true;
+      onLongTapRejectable.call(currentPointerOffset);
+
+      assert(acceptTimer == null);
+      acceptTimer = Timer(acceptableDuration, accept);
+    });
+  }
+
+  @override
+  void onPointerUp(PointerUpEvent event) {
+    if (count == 0) {
+      reject();
+    } else {
+      // Need to call the reject callback function separately only when current is rejectable.
+      if (isRejectable) onLongTapReject.call();
+
+      cycleTimer?.cancel();
+      acceptTimer?.cancel();
+      didStopTrackingLastPointer(event.pointer);
+      focusEnd();
+    }
+  }
+
+  @override
+  void focusStart() {
+    super.focusStart();
+    onLongTapStart?.call();
+  }
+
+  @override
+  void focusEnd() {
+    super.focusEnd();
+    onLongTapEnd?.call();
+  }
+
+  void onConsecutive(int pointer) {
+    isRejectable = false;
+    cycleTimer?.cancel();
+    cycleTimer = Timer(cycleDuration, () {
+      isRejectable = true;
+      onLongTapRejectable.call(currentPointerOffset);
+
+      // Perform delayed recursive as async about this consecutive task.
+      acceptTimer = Timer(acceptableDuration, () => checkConsecutive(pointer));
+    });
+  }
+
+  /// Check if the long-tap gesture is currently can be consecutive.
+  void checkConsecutive(int pointer) {
+    onLongTapAccept.call();
+    if (onLongTap.call(count++)) {
+      onConsecutive(pointer);
+      focusStart();
+    } else {
+      didStopTrackingLastPointer(pointer);
+    }
+  }
+
+  @override
+  void acceptGesture(int pointer) {
+    this.checkConsecutive(pointer);
+  }
+
+  @override
+  void rejectGesture(int pointer) {
+    super.rejectGesture(pointer);
+
+    if (isRejectable) {
+      onLongTapReject.call();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    delayTimer?.cancel();
+    cycleTimer?.cancel();
+    acceptTimer?.cancel();
+
+    print("disposed");
+  }
 }

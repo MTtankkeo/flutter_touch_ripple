@@ -32,7 +32,7 @@ class TouchRipple extends StatefulWidget {
     this.doubleTappableDuration,
     this.doubleTapAliveDuration,
     this.longTappableDuration,
-    this.longTapAliveDuration,
+    this.longTapCycleDuration,
     this.tapBehavior,
     this.doubleTapBehavior,
     this.longTapBehavior,
@@ -138,10 +138,10 @@ class TouchRipple extends StatefulWidget {
   /// displayed to the user.
   final Duration? longTappableDuration;
 
-  /// The duration until long-tap deactivation. During this period, any pointer down
+  /// The duration until long-tap reactivation. After this period, any pointer down
   /// and move is still considered a long-tap without requiring the continuous
   /// process of pointer-up followed by pointer-down.
-  final Duration? longTapAliveDuration;
+  final Duration? longTapCycleDuration;
 
   /// The touch ripple behavior applied to the touch ripple effect
   /// for tapped or clicked.
@@ -326,10 +326,10 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   }
 
   @override
-  Duration get longTapAliveDuration {
-    return widget.longTapAliveDuration // 1 priority
-        ?? style?.longTapAliveDuration // 2 priority
-        ?? longTappableDuration;
+  Duration get longTapCycleDuration {
+    return widget.longTapCycleDuration // 1 priority
+        ?? style?.longTapCycleDuration // 2 priority
+        ?? Duration(milliseconds: 500);
   }
 
   @override

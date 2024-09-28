@@ -54,10 +54,10 @@ mixin TouchRippleContext {
   /// starts to be displayed to the user.
   Duration get longTappableDuration;
 
-  /// Returns the duration until long-tap deactivation. During this period, any
+  /// Returns the duration until long-tap reactivation. After this period, any
   /// pointer down and move is still considered a long-tap without requiring
   /// the continuous process of pointer-up followed by pointer-down.
-  Duration get longTapAliveDuration;
+  Duration get longTapCycleDuration;
 
   /// Returns the touch ripple behavior applied to the touch ripple
   /// effect for tapped or clicked.

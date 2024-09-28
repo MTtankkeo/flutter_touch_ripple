@@ -20,6 +20,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.doubleTappableDuration,
     this.doubleTapAliveDuration,
     this.longTappableDuration,
+    this.longTapCycleDuration,
     this.tapBehavior,
     this.doubleTapBehavior,
     this.longTapBehavior,
@@ -88,6 +89,11 @@ class TouchRippleStyle extends InheritedWidget {
   /// displayed to the user.
   final Duration? longTappableDuration;
 
+  /// The value defines the duration until long-tap reactivation. After this period,
+  /// any pointer down and move is still considered a long-tap without requiring
+  /// the continuous process of pointer-up followed by pointer-down.
+  final Duration? longTapCycleDuration;
+
   /// The value defines the behavior that defines when a gesture should be
   /// rejected, specifying the conditions for rejection.
   final TouchRippleRejectBehavior? rejectBehavior;
@@ -135,6 +141,7 @@ class TouchRippleStyle extends InheritedWidget {
         || doubleTappableDuration != oldWidget.doubleTappableDuration
         || doubleTapAliveDuration != oldWidget.doubleTapAliveDuration
         || longTappableDuration != oldWidget.longTappableDuration
+        || longTapCycleDuration != oldWidget.longTapCycleDuration
         || rejectBehavior != oldWidget.rejectBehavior
         || overlapBehavior != oldWidget.overlapBehavior
         || renderOrderType != oldWidget.renderOrderType

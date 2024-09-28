@@ -1,6 +1,5 @@
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
-import "package:flutter_touch_ripple/components/touch_ripple_gesture_recognizer.dart";
 import "package:flutter_touch_ripple/flutter_touch_ripple.dart";
 
 /// Signature for the builder function that creates an instance of [GestureRecognizer].
@@ -214,6 +213,42 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
       assert(widget.onDoubleTapConsecutive == null);
       assert(widget.onDoubleTapStart == null);
       assert(widget.onDoubleTapEnd == null);
+    }
+
+    if (isLongTappable) {
+      _builders.add(() {
+        late TouchRippleSpreadingEffect activeEffect;
+
+        assert(rippleContext.longTapBehavior.onlyMainButton != null);
+        assert(rippleContext.longTapBehavior.eventCallBackableMinPercent == 0);
+        return TouchRippleLongTapGestureRecognizer(
+          context: context,
+          rejectBehavior: rippleContext.rejectBehavior,
+          onlyMainButton: widget.onlyMainButton ?? rippleContext.longTapBehavior.onlyMainButton!,
+          delayDuration: rippleContext.longTappableDuration,
+          cycleDuration: rippleContext.longTapCycleDuration,
+          acceptableDuration: rippleContext.longTapBehavior.spreadDuration!,
+          onLongTap: widget.onLongTap!,
+          onLongTapRejectable: (offset) {
+            activeEffect = TouchRippleSpreadingEffect(
+              vsync: rippleContext.vsync,
+              callback: () {},
+              isRejectable: true,
+              baseOffset: offset,
+              behavior: rippleContext.longTapBehavior
+            );
+
+            controller.attach(activeEffect..start());
+          },
+          onLongTapReject: () => activeEffect.onRejected(),
+          onLongTapAccept: () => activeEffect.onAccepted(),
+          onLongTapStart: widget.onLongTapStart,
+          onLongTapEnd: widget.onLongTapEnd
+        )
+        ..onFocusStart = onFocusStart
+        ..onFocusEnd = onFocusEnd
+        ..onDispose = _recognizers.remove;
+      });
     }
   }
 

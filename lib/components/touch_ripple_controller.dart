@@ -74,7 +74,7 @@ class TouchRippleController extends Listenable {
 
   /// Returns the ripple effect instance corresponding a given key.
   T? getEffectByKey<T extends TouchRippleEffect>(String key) {
-    return _stateMap[key] as T;
+    return _stateMap[key] as T?;
   }
 
   /// Delegates all states and context from a given controller to itself and removes
