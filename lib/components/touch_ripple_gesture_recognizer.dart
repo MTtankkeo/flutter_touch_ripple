@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -377,11 +378,18 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer {
   TouchRippleLongTapGestureRecognizer({
     required super.context,
     required super.rejectBehavior,
-    required super.onlyMainButton
+    required super.onlyMainButton,
+    required this.onLongTap,
+    required this.onLongTapReject,
+    required this.onLongTapStart,
+    required this.onLongTapEnd
   });
 
   @override
   String get debugLabal => "long-tap";
 
-  
+  final VoidCallback onLongTap;
+  final VoidCallback onLongTapReject;
+  final VoidCallback? onLongTapStart;
+  final VoidCallback? onLongTapEnd;
 }

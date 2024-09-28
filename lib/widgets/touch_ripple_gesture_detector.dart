@@ -1,5 +1,6 @@
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
+import "package:flutter_touch_ripple/components/touch_ripple_gesture_recognizer.dart";
 import "package:flutter_touch_ripple/flutter_touch_ripple.dart";
 
 /// Signature for the builder function that creates an instance of [GestureRecognizer].
@@ -18,9 +19,8 @@ class TouchRippleGestureDetector extends StatefulWidget {
     this.onLongTap,
     this.onLongTapStart,
     this.onLongTapEnd,
-    this.onConsecutive,
-    this.onConsecutiveStart,
-    this.onConsecutiveEnd,
+    this.onFocusEnd,
+    this.onFocusStart,
     this.onlyMainButton,
     this.behavior = HitTestBehavior.translucent,
     required this.controller,
@@ -61,23 +61,15 @@ class TouchRippleGestureDetector extends StatefulWidget {
   /// when a series of consecutive long taps has concluded.
   final VoidCallback? onLongTapEnd;
 
-  /// The callback function is called to indicate the occurrence of consecutive
-  /// touch ripple events. See Also, this function does not determine 
-  /// whether the event should continue rather, it serves to inform 
-  /// that a series of consecutive events has taken place.
-  final TouchRippleConsecutiveCallback? onConsecutive;
+  /// The callback function is a lifecycle callback for focus touch ripple events.
+  /// It is called when a focus touch event starts, allowing for the initiation
+  /// of actions based on the beginning of the focus event sequence.
+  final VoidCallback? onFocusStart;
 
-  /// The callback function is a lifecycle callback for consecutive touch 
-  /// ripple events. It is called when a consecutive touch event starts, 
-  /// allowing for the initiation of actions based on the beginning of 
-  /// the consecutive event sequence.
-  final VoidCallback? onConsecutiveStart;
-
-  /// The callback function is a lifecycle callback for consecutive touch 
-  /// ripple events. It is called when a consecutive touch event ends, 
-  /// providing the advantage of knowing when a series of consecutive 
-  /// touch ripple events has concluded.
-  final VoidCallback? onConsecutiveEnd;
+  /// The callback function is a lifecycle callback for focus touch ripple events.
+  /// It is called when a focus touch event ends, providing the advantage of
+  /// knowing when a series of focus touch ripple events has concluded.
+  final VoidCallback? onFocusEnd;
 
   /// The boolean that is whether only the main button is recognized as a gesture
   /// when the user that is using mouse device clicks on the widget.
@@ -113,7 +105,9 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
   TouchRippleContext get rippleContext => controller.context;
 
   onFocusStart() {
-    var effect = controller.getEffectByKey("focus") as TouchRippleSolidEffect?;
+    widget.onFocusStart?.call();
+
+    var effect = controller.getEffectByKey<TouchRippleSolidEffect>("focus");
     if (effect == null && rippleContext.useFocusEffect) {
       effect = TouchRippleSolidEffect(
         vsync: rippleContext.vsync,
@@ -128,8 +122,8 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
   }
 
   onFocusEnd() {
-    final effect = controller.getEffectByKey("focus") as TouchRippleSolidEffect?;
-    effect?.fadeOut();
+    widget.onFocusEnd?.call();
+    controller.getEffectByKey<TouchRippleSolidEffect>("focus")?.fadeOut();
   }
 
   // Initializes gesture recognizer builders.

@@ -18,9 +18,8 @@ class TouchRipple extends StatefulWidget {
     this.onLongTap,
     this.onLongTapStart,
     this.onLongTapEnd,
-    this.onConsecutive,
-    this.onConsecutiveStart,
-    this.onConsecutiveEnd,
+    this.onFocusStart,
+    this.onFocusEnd,
     this.behavior,
     this.rippleColor,
     this.hoverColor,
@@ -81,23 +80,15 @@ class TouchRipple extends StatefulWidget {
   /// when a series of consecutive long taps has concluded.
   final VoidCallback? onLongTapEnd;
 
-  /// The callback function is called to indicate the occurrence of consecutive
-  /// touch ripple events. See Also, this function does not determine 
-  /// whether the event should continue rather, it serves to inform 
-  /// that a series of consecutive events has taken place.
-  final TouchRippleConsecutiveCallback? onConsecutive;
+  /// The callback function is a lifecycle callback for focus touch ripple events.
+  /// It is called when a focus touch event starts, allowing for the initiation
+  /// of actions based on the beginning of the focus event sequence.
+  final VoidCallback? onFocusStart;
 
-  /// The callback function is a lifecycle callback for consecutive touch 
-  /// ripple events. It is called when a consecutive touch event starts, 
-  /// allowing for the initiation of actions based on the beginning of 
-  /// the consecutive event sequence.
-  final VoidCallback? onConsecutiveStart;
-
-  /// The callback function is a lifecycle callback for consecutive touch 
-  /// ripple events. It is called when a consecutive touch event ends, 
-  /// providing the advantage of knowing when a series of consecutive 
-  /// touch ripple events has concluded.
-  final VoidCallback? onConsecutiveEnd;
+  /// The callback function is a lifecycle callback for focus touch ripple events.
+  /// It is called when a focus touch event ends, providing the advantage of
+  /// knowing when a series of focus touch ripple events has concluded.
+  final VoidCallback? onFocusEnd;
 
   /// The behavior of hit testing for the child widget.
   final HitTestBehavior? behavior;
@@ -243,9 +234,6 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       onLongTap: widget.onLongTap,
       onLongTapStart: widget.onLongTapStart,
       onLongTapEnd: widget.onLongTapEnd,
-      onConsecutive: widget.onConsecutive,
-      onConsecutiveStart: widget.onConsecutiveStart,
-      onConsecutiveEnd: widget.onConsecutiveEnd,
       onlyMainButton: widget.onlyMainButton ?? style?.onlyMainButton,
       behavior: widget.behavior ?? HitTestBehavior.translucent,
       controller: _controller,
