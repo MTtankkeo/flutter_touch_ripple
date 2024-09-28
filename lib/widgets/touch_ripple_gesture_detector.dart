@@ -124,7 +124,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
       controller.attachByKey("focus", effect);
     }
 
-    effect!.fadeIn();
+    effect?.fadeIn();
   }
 
   onFocusEnd() {
