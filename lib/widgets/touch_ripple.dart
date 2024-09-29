@@ -4,9 +4,22 @@ import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
+/// ### Introduction
 /// This widget, inspired by Google Material's ripple effect, visualizes
-/// various gestures such as tap, double tap, and long press through
+/// various gestures such as tap(and async), double tap, and long press through
 /// ripple effects.
+/// 
+/// please refer to [GitHub](https://github.com/MTtankkeo/flutter_touch_ripple)
+/// when you want to know more about it.
+/// 
+/// ### How to apply ripple effect?
+/// ```dart
+/// TouchRipple(
+///   // Called when the user taps or clicks.
+///   onTap: () => print("Hello, World!"),
+///   child: ... // <- this your widget
+/// ),
+/// ```
 class TouchRipple<T extends dynamic> extends StatefulWidget {
   const TouchRipple({
     super.key,
@@ -231,6 +244,9 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   State<TouchRipple> createState() => _TouchRippleState();
 }
 
+/// The widget state implements [TouchRippleContext], allowing it to merge various option
+/// in priority order to provide the appropriate style, behavior, and information necessary
+/// for rendering the touch ripple effect.
 class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, TickerProviderStateMixin {
   /// The value defines a unique instance of [TouchRippleController]
   /// to manage the state of the touch ripple in this widget.
@@ -264,8 +280,8 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   @override
   Widget build(BuildContext context) {
     final _renderOrderType =
-         widget.renderOrderType // 1
-      ?? style?.renderOrderType // 2
+         widget.renderOrderType
+      ?? style?.renderOrderType
       ?? TouchRippleRenderOrderType.background;
 
     return TouchRippleGestureDetector(
@@ -297,91 +313,91 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
 
   @override
   Color get rippleColor {
-    return widget.rippleColor // 1 priority
-        ?? style?.rippleColor // 2 priority
+    return widget.rippleColor
+        ?? style?.rippleColor
         ?? const Color.fromRGBO(0, 0, 0, 0.2);
   }
 
   @override
   Color get hoverColor {
-    return widget.hoverColor // 1 priority
-        ?? style?.hoverColor // 2 priortiy
+    return widget.hoverColor
+        ?? style?.hoverColor
         ?? TouchRippleColor.withAlphaOf(rippleColor, 0.5);
   }
 
   @override
   Color get focusColor {
-    return widget.focusColor // 1 priority
-        ?? style?.focusColor // 2 priority
+    return widget.focusColor
+        ?? style?.focusColor
         ?? TouchRippleColor.withAlphaOf(rippleColor, 0.5);
   }
 
   @override
   double get rippleScale {
-    return widget.rippleScale // 1 priority
-        ?? style?.rippleScale // 2 priority
+    return widget.rippleScale
+        ?? style?.rippleScale
         ?? 1;
   }
 
   @override
   double get rippleBlurRadius {
-    return widget.rippleBlurRadius // 1 priority
-        ?? style?.rippleBlurRadius // 2 priority
+    return widget.rippleBlurRadius
+        ?? style?.rippleBlurRadius
         ?? 0;
   }
 
   @override
   BorderRadius get rippleBorderRadius {
-    return widget.rippleBorderRadius // 1 priority
-        ?? style?.rippleBorderRadius // 2 priority
+    return widget.rippleBorderRadius
+        ?? style?.rippleBorderRadius
         ?? BorderRadius.zero;
   }
 
   @override
   Duration get previewDuration {
-    return widget.previewDuration // 1 priority
-        ?? style?.previewDuration // 2 priority
+    return widget.previewDuration
+        ?? style?.previewDuration
         ?? Duration(milliseconds: 100);
   }
 
   @override
   Duration get tappableDuration {
-    return widget.tappableDuration // 1 priority
-        ?? style?.tappableDuration // 2 priority
+    return widget.tappableDuration
+        ?? style?.tappableDuration
         ?? Duration.zero;
   }
 
   @override
   Duration get doubleTappableDuration {
-    return widget.doubleTappableDuration // 1 priority
-        ?? style?.doubleTappableDuration // 2 priority
+    return widget.doubleTappableDuration
+        ?? style?.doubleTappableDuration
         ?? Duration(milliseconds: 200);
   }
 
   @override
   Duration get doubleTapAliveDuration {
-    return widget.doubleTapAliveDuration // 1 priority
-        ?? style?.doubleTapAliveDuration // 2 priority
+    return widget.doubleTapAliveDuration
+        ?? style?.doubleTapAliveDuration
         ?? Duration(milliseconds: 1000);
   }
 
   @override
   Duration get longTappableDuration {
-    return widget.longTappableDuration // 1 priority
-        ?? style?.longTappableDuration // 2 priority
+    return widget.longTappableDuration
+        ?? style?.longTappableDuration
         ?? Duration(milliseconds: 200);
   }
 
   @override
   Duration get longTapCycleDuration {
-    return widget.longTapCycleDuration // 1 priority
-        ?? style?.longTapCycleDuration // 2 priority
+    return widget.longTapCycleDuration
+        ?? style?.longTapCycleDuration
         ?? Duration(milliseconds: 500);
   }
 
   @override
   TouchRippleBehavior get tapBehavior {
-    return const TouchRippleBehavior( // default
+    return const TouchRippleBehavior(
       lowerPercent: 0.3,
       upperPercent: 1,
       spreadDuration: Duration(milliseconds: 300),
@@ -397,8 +413,8 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       eventCallBackableMinPercent: 0,
       onlyMainButton: true
     )
-    .merge(style?.tapBehavior)  // 2 priority
-    .merge(widget.tapBehavior); // 1 priority
+    .merge(style?.tapBehavior)
+    .merge(widget.tapBehavior);
   }
 
   @override
@@ -411,28 +427,28 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   @override
   TouchRippleBehavior get longTapBehavior {
     return tapBehavior
-      .merge(const TouchRippleBehavior( // default
+      .merge(const TouchRippleBehavior(
         lowerPercent: 0,
         upperPercent: 1,
         spreadDuration: Duration(milliseconds: 1000),
         spreadCurve: Curves.linear,
         fadeInDuration: Duration(milliseconds: 500),
       ))
-      .merge(style?.longTapBehavior)  // 2 priority
-      .merge(widget.longTapBehavior); // 1 priority
+      .merge(style?.longTapBehavior)
+      .merge(widget.longTapBehavior);
   }
 
   @override
   TouchRippleRejectBehavior get rejectBehavior {
-    return widget.rejectBehavior // 1 priority
-        ?? style?.rejectBehavior // 2 priority
+    return widget.rejectBehavior
+        ?? style?.rejectBehavior
         ?? TouchRippleRejectBehavior.leave;
   }
 
   @override
   TouchRippleOverlapBehavior get overlapBehavior {
-    return widget.overlapBehavior // 1 priority
-        ?? style?.overlapBehavior // 2 priority
+    return widget.overlapBehavior
+        ?? style?.overlapBehavior
         ?? TouchRippleOverlapBehavior.overlappable;
   }
 
@@ -469,15 +485,15 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
 
   @override
   bool get useHoverEffect {
-    return widget.useHoverEffect // 1 priority
-        ?? style?.useHoverEffect // 2 priority
+    return widget.useHoverEffect
+        ?? style?.useHoverEffect
         ?? true;
   }
 
   @override
   bool get useFocusEffect {
-    return widget.useFocusEffect // 1 priority
-        ?? style?.useFocusEffect // 2 priority
+    return widget.useFocusEffect
+        ?? style?.useFocusEffect
         ?? true;
   }
 }
