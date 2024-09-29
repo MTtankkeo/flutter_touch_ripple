@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
@@ -28,6 +29,8 @@ class TouchRippleStyle extends InheritedWidget {
     this.overlapBehavior,
     this.renderOrderType,
     this.focusTiming,
+    this.focusAnimation,
+    this.hoverAnimation,
     this.useHoverEffect,
     this.useFocusEffect,
     this.onlyMainButton
@@ -112,6 +115,14 @@ class TouchRippleStyle extends InheritedWidget {
   /// should start, specifying the priority based on timing conditions.
   final TouchRippleFocusTiming? focusTiming;
 
+  /// The value defines the instance of the fade animation for the touch ripple
+  /// effect when the hover effect is triggered.
+  final TouchRippleAnimation? hoverAnimation;
+
+  /// The value defines the instance of the fade animation for the touch ripple
+  /// effect when the focus effect is triggered.
+  final TouchRippleAnimation? focusAnimation;
+
   /// The value defines whether the hover effect is enabled for touch ripple
   /// animations. If true, a solid hover effect is applied when the user hovers.
   final bool? useHoverEffect;
@@ -151,6 +162,8 @@ class TouchRippleStyle extends InheritedWidget {
         || overlapBehavior != oldWidget.overlapBehavior
         || renderOrderType != oldWidget.renderOrderType
         || focusTiming != oldWidget.focusTiming
+        || hoverAnimation != oldWidget.hoverAnimation
+        || focusAnimation != oldWidget.focusAnimation
         || useHoverEffect != oldWidget.useHoverEffect
         || useFocusEffect != oldWidget.useFocusEffect
         || onlyMainButton != oldWidget.onlyMainButton;

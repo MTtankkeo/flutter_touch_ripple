@@ -7,10 +7,13 @@ import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 /// This widget, inspired by Google Material's ripple effect, visualizes
 /// various gestures such as tap, double tap, and long press through
 /// ripple effects.
-class TouchRipple extends StatefulWidget {
+class TouchRipple<T extends dynamic> extends StatefulWidget {
   const TouchRipple({
     super.key,
     this.onTap,
+    this.onTapAsync,
+    this.onTapAsyncStart,
+    this.onTapAsyncEnd,
     this.onDoubleTap,
     this.onDoubleTapConsecutive,
     this.onDoubleTapStart,
@@ -20,6 +23,8 @@ class TouchRipple extends StatefulWidget {
     this.onLongTapEnd,
     this.onFocusStart,
     this.onFocusEnd,
+    this.onHoverStart,
+    this.onHoverEnd,
     this.behavior,
     this.rippleColor,
     this.hoverColor,
@@ -40,6 +45,8 @@ class TouchRipple extends StatefulWidget {
     this.overlapBehavior,
     this.renderOrderType,
     this.focusTiming,
+    this.hoverAnimation,
+    this.focusAnimation,
     this.useHoverEffect,
     this.useFocusEffect,
     this.onlyMainButton,
@@ -49,6 +56,19 @@ class TouchRipple extends StatefulWidget {
 
   /// The callback function is called when the user taps or clicks.
   final VoidCallback? onTap;
+
+  /// The callback function is called when the user taps or clicks. but this function
+  /// ensures that the touch ripple effect remains visible until the asynchronous
+  /// operation is completed and prevents additional events during that time.
+  final TouchRippleAsyncCallback<T>? onTapAsync;
+
+  /// The callback function is called when an asynchronous operation is initiated by
+  /// a tap. It provides the associated Future instance for the ongoing operation.
+  final TouchRippleAsyncNotifyCallback<T>? onTapAsyncStart;
+
+  /// The callback function is called when the result of the asynchronous operation
+  /// is ready. It allows handling the result once the operation is complete.
+  final TouchRippleAsyncResultCallback<T>? onTapAsyncEnd;
 
   /// The callback function is called when the user double taps or double clicks.
   final VoidCallback? onDoubleTap;
@@ -90,6 +110,16 @@ class TouchRipple extends StatefulWidget {
   /// It is called when a focus touch event ends, providing the advantage of
   /// knowing when a series of focus touch ripple events has concluded.
   final VoidCallback? onFocusEnd;
+
+  /// The callback function called when the cursor begins hovering over the widget. (by [MouseRegion])
+  /// This function allows for the initiation of actions based on the hover interaction.
+  /// This function is not called in touch-based environments yet.
+  final VoidCallback? onHoverStart;
+
+  /// The callback function called when the cursor begins to leave the widget. (by [MouseRegion])
+  /// This function allows for actions to be executed based on the end of the hover interaction.
+  /// This function is not called in touch-based environments yet.
+  final VoidCallback? onHoverEnd;
 
   /// The behavior of hit testing for the child widget.
   final HitTestBehavior? behavior;
@@ -172,6 +202,14 @@ class TouchRipple extends StatefulWidget {
   /// specifying the priority based on timing conditions.
   final TouchRippleFocusTiming? focusTiming;
 
+  /// The instance of the fade animation for the touch ripple effect
+  /// when the hover effect is triggered.
+  final TouchRippleAnimation? hoverAnimation;
+
+  /// The instance of the fade animation for the touch ripple effect
+  /// when the focus effect is triggered.
+  final TouchRippleAnimation? focusAnimation;
+
   /// The boolean that is whether only the main button is recognized as a gesture
   /// when the user that is using mouse device clicks on the widget.
   final bool? onlyMainButton;
@@ -239,6 +277,10 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       onLongTap: widget.onLongTap,
       onLongTapStart: widget.onLongTapStart,
       onLongTapEnd: widget.onLongTapEnd,
+      onFocusStart: widget.onFocusStart,
+      onFocusEnd: widget.onFocusEnd,
+      onHoverStart: widget.onHoverStart,
+      onHoverEnd: widget.onHoverEnd,
       onlyMainButton: widget.onlyMainButton ?? style?.onlyMainButton,
       behavior: widget.behavior ?? HitTestBehavior.translucent,
       controller: _controller,
@@ -395,7 +437,16 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   }
 
   @override
-  TouchRippleAnimation get hoverAnimation => throw UnimplementedError();
+  TouchRippleAnimation get hoverAnimation {
+    return TouchRippleAnimation(
+      fadeInDuration: Duration(milliseconds: 150),
+      fadeInCurve: Curves.easeOut,
+      fadeOutDuration: Duration(milliseconds: 150),
+      fadeOutCurve: Curves.easeIn
+    )
+    ..merge(style?.hoverAnimation)
+    ..merge(widget.hoverAnimation);
+  }
 
   @override
   TouchRippleAnimation get focusAnimation {
@@ -404,7 +455,9 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       fadeInCurve: Curves.easeOut,
       fadeOutDuration: Duration(milliseconds: 300),
       fadeOutCurve: Curves.easeIn
-    );
+    )
+    ..merge(style?.focusAnimation)
+    ..merge(widget.focusAnimation);
   }
 
   @override

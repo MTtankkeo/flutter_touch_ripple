@@ -16,7 +16,9 @@ class TouchRippleAnimation {
   /// Merges the current [TouchRippleAnimation] with another, using the provided 
   /// animation values if available. If the other behavior is null or lacks 
   /// specific values, defaults to the current animation values.
-  TouchRippleAnimation merge(TouchRippleAnimation other) {
+  TouchRippleAnimation merge(TouchRippleAnimation? other) {
+    if (other == null) return this;
+
     return TouchRippleAnimation(
       fadeInDuration: other.fadeInDuration ?? fadeInDuration,
       fadeInCurve: other.fadeInCurve ?? fadeInCurve,

@@ -87,6 +87,8 @@ mixin TouchRippleContext {
   /// when the focus effect is triggered.
   TouchRippleAnimation get focusAnimation;
 
+  /// Returns the the enumeration defines when the focus of a touch ripple
+  /// should start, specifying the priority based on timing conditions.
   TouchRippleFocusTiming get focusTiming;
 
   /// Returns whether the hover effect is enabled for touch ripple animations.

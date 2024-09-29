@@ -1,3 +1,4 @@
+import "dart:io";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_touch_ripple/flutter_touch_ripple.dart";
@@ -7,10 +8,13 @@ typedef GestureRecognizerBuilder<T extends GestureRecognizer> = T Function();
 
 /// This widget detects user gestures, notifies the relevant controller that
 /// manages touch ripple effects, and delegates the handling to it.
-class TouchRippleGestureDetector extends StatefulWidget {
+class TouchRippleGestureDetector<T extends dynamic> extends StatefulWidget {
   const TouchRippleGestureDetector({
     super.key,
     this.onTap,
+    this.onTapAsync,
+    this.onTapAsyncStart,
+    this.onTapAsyncEnd,
     this.onDoubleTap,
     this.onDoubleTapConsecutive,
     this.onDoubleTapStart,
@@ -18,16 +22,32 @@ class TouchRippleGestureDetector extends StatefulWidget {
     this.onLongTap,
     this.onLongTapStart,
     this.onLongTapEnd,
-    this.onFocusEnd,
     this.onFocusStart,
+    this.onFocusEnd,
+    this.onHoverStart,
+    this.onHoverEnd,
     this.onlyMainButton,
     this.behavior = HitTestBehavior.translucent,
+    this.cursor = MouseCursor.defer,
     required this.controller,
     required this.child,
-  });
+  }) : assert(onTap != null ? onTapAsync == null : true);
 
   /// The callback function is called when the user taps or clicks.
   final VoidCallback? onTap;
+
+  /// The callback function is called when the user taps or clicks. but this function
+  /// ensures that the touch ripple effect remains visible until the asynchronous
+  /// operation is completed and prevents additional events during that time.
+  final TouchRippleAsyncCallback<T>? onTapAsync;
+
+  /// The callback function is called when an asynchronous operation is initiated by
+  /// a tap. It provides the associated Future instance for the ongoing operation.
+  final TouchRippleAsyncNotifyCallback<T>? onTapAsyncStart;
+
+  /// The callback function is called when the result of the asynchronous operation
+  /// is ready. It allows handling the result once the operation is complete.
+  final TouchRippleAsyncResultCallback<T>? onTapAsyncEnd;
 
   /// The callback function is called when the user double taps or double clicks.
   final VoidCallback? onDoubleTap;
@@ -70,12 +90,25 @@ class TouchRippleGestureDetector extends StatefulWidget {
   /// knowing when a series of focus touch ripple events has concluded.
   final VoidCallback? onFocusEnd;
 
+  /// The callback function called when the cursor begins hovering over the widget. (by [MouseRegion])
+  /// This function allows for the initiation of actions based on the hover interaction.
+  /// This function is not called in touch-based environments yet.
+  final VoidCallback? onHoverStart;
+
+  /// The callback function called when the cursor begins to leave the widget. (by [MouseRegion])
+  /// This function allows for actions to be executed based on the end of the hover interaction.
+  /// This function is not called in touch-based environments yet.
+  final VoidCallback? onHoverEnd;
+
   /// The boolean that is whether only the main button is recognized as a gesture
   /// when the user that is using mouse device clicks on the widget.
   final bool? onlyMainButton;
 
   /// The defines the behavior of hit testing for the child widget.
   final HitTestBehavior behavior;
+
+  /// The hover mouse cursor type, and default value is [MouseCursor.defer].
+  final MouseCursor cursor;
 
   /// The controller that manages ripple effects triggered by user gestures.
   final TouchRippleController controller;
@@ -98,11 +131,13 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
   /// The list defines the instances of currently active [GestureRecognizer].
   final List<GestureRecognizer> _recognizers = <GestureRecognizer>[];
 
-  /// Returns an instance of a given [TouchRippleController] as this widget reference.
+  /// Returns the instance of a given [TouchRippleController] as this widget reference.
   TouchRippleController get controller => widget.controller;
 
+  /// Returns the instance of [TouchRippleContext] of a given [controller].
   TouchRippleContext get rippleContext => controller.context;
 
+  /// Called when the focus is started by the gesture recognizers.
   onFocusStart() {
     widget.onFocusStart?.call();
 
@@ -120,9 +155,34 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
     effect?.fadeIn();
   }
 
+  /// Called when the focus is ended by the gesture recognizers that are focus active.
   onFocusEnd() {
     widget.onFocusEnd?.call();
     controller.getEffectByKey<TouchRippleSolidEffect>("focus")?.fadeOut();
+  }
+
+  /// Called when the hover is started by [MouseRegion] widget.
+  onHoverStart() {
+    widget.onHoverStart?.call();
+
+    var effect = controller.getEffectByKey<TouchRippleSolidEffect>("hover");
+    if (effect == null && rippleContext.useHoverEffect) {
+      effect = TouchRippleSolidEffect(
+        vsync: rippleContext.vsync,
+        color: controller.context.hoverColor,
+        animation: rippleContext.hoverAnimation,
+      );
+
+      controller.attachByKey("hover", effect);
+    }
+
+    effect?.fadeIn();
+  }
+
+  /// Called when the hover is ended by [MouseRegion] widget.
+  onHoverEnd() {
+    widget.onHoverEnd?.call();
+    controller.getEffectByKey<TouchRippleSolidEffect>("hover")?.fadeOut();
   }
 
   // Initializes gesture recognizer builders.
@@ -267,8 +327,6 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
     }
   }
 
-  _handlePointerHover(PointerHoverEvent event) {}
-
   @override
   void initState() {
     super.initState();
@@ -292,11 +350,24 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
+    final listener = Listener(
       behavior: widget.behavior,
-      onPointerHover: _handlePointerHover,
       onPointerDown: _handlePointerDown,
       child: widget.child,
+    );
+
+    /// If a user is a touch-based device, not need to define a MouseRegion widget.
+    /// because flutter does not yet provide the life cycle about hover event of
+    /// touch-based environments.
+    if (Platform.isFuchsia || Platform.isAndroid || Platform.isIOS) {
+      return listener;
+    }
+
+    return MouseRegion(
+      onEnter: (_) => onHoverStart(),
+      onExit: (_) => onHoverEnd(),
+      cursor: widget.cursor,
+      child: listener,
     );
   }
 }

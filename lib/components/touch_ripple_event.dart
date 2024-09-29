@@ -5,6 +5,19 @@ import 'package:flutter/animation.dart';
 /// event relative to a widget coordinate system.
 typedef TouchRippleCallback = void Function(Offset offset);
 
+/// Signature for the function that returns a Future of type [T]
+/// that represents the data type returned asynchronously.
+typedef TouchRippleAsyncCallback<T> = Future<T> Function();
+
+/// Signature for the function that indicates the start of an asynchronous operation.
+/// It includes a parameter to provide the associated Future instance.
+typedef TouchRippleAsyncNotifyCallback<T> = void Function(Future<T> data);
+
+/// Signature for the function that takes a parameter of type [T]
+/// that represents the result of an asynchronous operation,
+/// passed to the function when the operation is completed.
+typedef TouchRippleAsyncResultCallback<T> = void Function(T result);
+
 /// Signature for the callback function that is called to determine
 /// whether a continuable touch ripple event should continue.
 /// 
