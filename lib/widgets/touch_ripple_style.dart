@@ -27,6 +27,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
+    this.focusTiming,
     this.useHoverEffect,
     this.useFocusEffect,
     this.onlyMainButton
@@ -107,6 +108,10 @@ class TouchRippleStyle extends InheritedWidget {
   /// in the foreground or background.
   final TouchRippleRenderOrderType? renderOrderType;
 
+  /// The value defines the enumeration defines when the focus of a touch ripple
+  /// should start, specifying the priority based on timing conditions.
+  final TouchRippleFocusTiming? focusTiming;
+
   /// The value defines whether the hover effect is enabled for touch ripple
   /// animations. If true, a solid hover effect is applied when the user hovers.
   final bool? useHoverEffect;
@@ -145,6 +150,7 @@ class TouchRippleStyle extends InheritedWidget {
         || rejectBehavior != oldWidget.rejectBehavior
         || overlapBehavior != oldWidget.overlapBehavior
         || renderOrderType != oldWidget.renderOrderType
+        || focusTiming != oldWidget.focusTiming
         || useHoverEffect != oldWidget.useHoverEffect
         || useFocusEffect != oldWidget.useFocusEffect
         || onlyMainButton != oldWidget.onlyMainButton;

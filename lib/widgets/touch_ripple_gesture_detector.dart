@@ -227,6 +227,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
           onlyMainButton: widget.onlyMainButton ?? rippleContext.longTapBehavior.onlyMainButton!,
           delayDuration: rippleContext.longTappableDuration,
           cycleDuration: rippleContext.longTapCycleDuration,
+          focusTiming: rippleContext.focusTiming,
           acceptableDuration: rippleContext.longTapBehavior.spreadDuration!,
           onLongTap: widget.onLongTap!,
           onLongTapRejectable: (offset) {

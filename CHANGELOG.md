@@ -38,3 +38,4 @@
 * Added onTapAsync, onTapAsyncStart, onTapAsyncEnd of touch ripple event.
 
 ## 2.0.0
+- All code for greater flexibility and maintainability, and tested. Added a TouchRippleStyle inherited widget, similar to PrimaryScrollController. The gesture-recognizing widget was separated to render the touch ripple effect independently.

@@ -87,6 +87,8 @@ mixin TouchRippleContext {
   /// when the focus effect is triggered.
   TouchRippleAnimation get focusAnimation;
 
+  TouchRippleFocusTiming get focusTiming;
+
   /// Returns whether the hover effect is enabled for touch ripple animations.
   /// If true, a solid hover effect is applied when the user hovers.
   bool get useHoverEffect;
@@ -114,8 +116,8 @@ enum TouchRippleRejectBehavior {
   leave,
 }
 
-/// The enumeration defines the behavior of a touch ripple
-/// when it overlaps with other ripple effects.
+/// The enumeration defines the behavior of a touch ripple when
+/// it overlaps with other ripple effects.
 enum TouchRippleOverlapBehavior {
   /// Sets the touch ripples to be allowed to overlap with each other.
   overlappable,
@@ -129,8 +131,16 @@ enum TouchRippleOverlapBehavior {
   ignore,
 }
 
-enum TouchRippleFocusBehavior {
-  none,
-  preview,
-  started,
+/// The enumeration defines when the focus of a touch ripple should start,
+/// specifying the priority based on timing conditions.
+enum TouchRippleFocusTiming {
+  /// Sets the focus event to start when the ripple is in a rejectable state,
+  /// meaning the gesture has not yet been fully accepted, but the effect
+  /// is visible and can be canceled.
+  rejectable,
+
+  /// Sets the focus event to start when multiple ripple effects occur in rapid
+  /// succession. This setting prevents the focus from being triggered prematurely 
+  /// when in a rejectable state.
+  consecutive,
 }

@@ -39,6 +39,7 @@ class TouchRipple extends StatefulWidget {
     this.rejectBehavior,
     this.overlapBehavior,
     this.renderOrderType,
+    this.focusTiming,
     this.useHoverEffect,
     this.useFocusEffect,
     this.onlyMainButton,
@@ -166,6 +167,10 @@ class TouchRipple extends StatefulWidget {
   /// The enumeration specifies the rendering order of the touch ripple effect,
   /// determining whether it should appear in the foreground or background.
   final TouchRippleRenderOrderType? renderOrderType;
+
+  /// The enumeration defines when the focus of a touch ripple should start,
+  /// specifying the priority based on timing conditions.
+  final TouchRippleFocusTiming? focusTiming;
 
   /// The boolean that is whether only the main button is recognized as a gesture
   /// when the user that is using mouse device clicks on the widget.
@@ -400,6 +405,13 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       fadeOutDuration: Duration(milliseconds: 300),
       fadeOutCurve: Curves.easeIn
     );
+  }
+
+  @override
+  TouchRippleFocusTiming get focusTiming {
+    return widget.focusTiming
+        ?? style?.focusTiming
+        ?? TouchRippleFocusTiming.rejectable;
   }
 
   @override

@@ -391,6 +391,7 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
     required this.delayDuration,
     required this.cycleDuration,
     required this.acceptableDuration,
+    required this.focusTiming,
     required this.onLongTap,
     required this.onLongTapRejectable,
     required this.onLongTapReject,
@@ -405,6 +406,7 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
   final Duration delayDuration;
   final Duration cycleDuration;
   final Duration acceptableDuration;
+  final TouchRippleFocusTiming focusTiming;
 
   final TouchRippleContinuableCallback onLongTap;
   final TouchRippleCallback onLongTapRejectable;
@@ -504,7 +506,5 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
     delayTimer?.cancel();
     cycleTimer?.cancel();
     acceptTimer?.cancel();
-
-    print("disposed");
   }
 }
