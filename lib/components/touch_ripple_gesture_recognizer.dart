@@ -181,6 +181,7 @@ mixin FocusableGestureRecognizerMixin on OneSequenceGestureRecognizer {
   /// Invokes the [onFocusStart] callback when a focus gesture is initiated.
   /// Therefore, this method should be called when consecutive events started.
   void focusStart() {
+    assert(isFocusActive == false, "Already focus is enabled.");
     isFocusActive = true;
     onFocusStart?.call();
   }
@@ -188,6 +189,7 @@ mixin FocusableGestureRecognizerMixin on OneSequenceGestureRecognizer {
   /// Invokes the [onFocusEnd] callback when a focus gesture is finished.
   /// Therefore, this method should be called whena consecutive events ended.
   void focusEnd() {
+    assert(isFocusActive, "Already focus is not enabled.");
     isFocusActive = false;
     onFocusEnd?.call();
   }
@@ -431,6 +433,10 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
       isRejectable = true;
       onLongTapRejectable.call(currentPointerOffset);
 
+      if (focusTiming == TouchRippleFocusTiming.rejectable) {
+        focusStart();
+      }
+
       assert(acceptTimer == null);
       acceptTimer = Timer(acceptableDuration, accept);
     });
@@ -444,23 +450,12 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
       // Need to call the reject callback function separately only when current is rejectable.
       if (isRejectable) onLongTapReject.call();
 
+      onLongTapEnd?.call();
       cycleTimer?.cancel();
       acceptTimer?.cancel();
       didStopTrackingLastPointer(event.pointer);
       focusEnd();
     }
-  }
-
-  @override
-  void focusStart() {
-    super.focusStart();
-    onLongTapStart?.call();
-  }
-
-  @override
-  void focusEnd() {
-    super.focusEnd();
-    onLongTapEnd?.call();
   }
 
   void onConsecutive(int pointer) {
@@ -479,15 +474,22 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
   void checkConsecutive(int pointer) {
     onLongTapAccept.call();
     if (onLongTap.call(count++)) {
+      // If the [count] is 1, it means the first consecutive cycle.
+      if (count == 1) onLongTapStart?.call();
+
       onConsecutive(pointer);
-      focusStart();
     } else {
       didStopTrackingLastPointer(pointer);
+      focusEnd();
     }
   }
 
   @override
   void acceptGesture(int pointer) {
+    if (focusTiming == TouchRippleFocusTiming.consecutive) {
+      focusStart();
+    }
+
     this.checkConsecutive(pointer);
   }
 
@@ -497,6 +499,10 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
 
     if (isRejectable) {
       onLongTapReject.call();
+
+      if (focusTiming == TouchRippleFocusTiming.rejectable) {
+        focusEnd();
+      }
     }
   }
 
