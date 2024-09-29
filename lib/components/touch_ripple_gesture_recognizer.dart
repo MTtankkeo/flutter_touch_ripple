@@ -193,6 +193,13 @@ mixin FocusableGestureRecognizerMixin on OneSequenceGestureRecognizer {
     isFocusActive = false;
     onFocusEnd?.call();
   }
+
+  /// Ensures that focus is deactivated if it is currently active.
+  /// This method guarantees that focus will be properly ended in
+  /// situations where it remains active.
+  void ensureFocusEnd() {
+    if (isFocusActive) focusEnd();
+  }
 }
 
 /// The gesture recognizer that tracks holding gestures, defined as when a pointer
@@ -488,7 +495,7 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
       if (isConsecutive) onLongTapEnd?.call();
 
       didStopTrackingLastPointer(pointer);
-      focusEnd();
+      ensureFocusEnd();
     }
   }
 
@@ -498,7 +505,8 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
       focusStart();
     }
 
-    this.checkConsecutive(pointer);
+    // Need to checks about a consecutive behavior first.
+    checkConsecutive(pointer);
   }
 
   @override
