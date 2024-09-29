@@ -55,6 +55,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.doubleTapBehavior,
     this.longTapBehavior,
     this.rejectBehavior,
+    this.cancelBehavior,
     this.overlapBehavior,
     this.renderOrderType,
     this.focusTiming,
@@ -203,6 +204,10 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// specifying the conditions for rejection.
   final TouchRippleRejectBehavior? rejectBehavior;
 
+  /// The behavior that defines the touch ripple spread animation
+  /// when the touch ripple effect is canceled.
+  final TouchRippleCancelBehavior? cancelBehavior;
+
   /// The behavior of a touch ripple when it overlaps with other
   /// ripple effects. (e.g. overlappable, cancel, ignore)
   final TouchRippleOverlapBehavior? overlapBehavior;
@@ -236,8 +241,11 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// events like double-tap and long-tap or others.
   final bool? useFocusEffect;
 
+  /// The controller defines and manages states, listeners, a context and other values related
+  /// to touch ripple, ensuring that each state exists uniquely within the controller. 
   final TouchRippleController? controller;
 
+  /// The widget that is target to apply touch ripple related effects.
   final Widget child;
 
   @override
@@ -443,6 +451,13 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
     return widget.rejectBehavior
         ?? style?.rejectBehavior
         ?? TouchRippleRejectBehavior.leave;
+  }
+
+  @override
+  TouchRippleCancelBehavior get cancelBehavior {
+    return widget.cancelBehavior
+        ?? style?.cancelBehavior
+        ?? TouchRippleCancelBehavior.none;
   }
 
   @override

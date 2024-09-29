@@ -212,7 +212,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
           acceptableDuration: rippleContext.tappableDuration,
           onTap: (offset) {
             activeEffect = TouchRippleSpreadingEffect( 
-              vsync: rippleContext.vsync,
+              context: rippleContext,
               callback: widget.onTap!,
               isRejectable: false,
               baseOffset: offset,
@@ -223,7 +223,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
           },
           onTapRejectable: (offset) {
             activeEffect = TouchRippleSpreadingEffect(
-              vsync: rippleContext.vsync,
+              context: rippleContext,
               callback: widget.onTap!,
               isRejectable: true,
               baseOffset: offset,
@@ -253,7 +253,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
           aliveDuration: rippleContext.doubleTapAliveDuration,
           onDoubleTap: (offset, count) {
             controller.attach(TouchRippleSpreadingEffect(
-              vsync: rippleContext.vsync,
+              context: rippleContext,
               callback: widget.onDoubleTap!,
               isRejectable: false,
               baseOffset: offset,
@@ -292,7 +292,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
           onLongTap: widget.onLongTap!,
           onLongTapRejectable: (offset) {
             activeEffect = TouchRippleSpreadingEffect(
-              vsync: rippleContext.vsync,
+              context: rippleContext,
               callback: () {},
               isRejectable: true,
               baseOffset: offset,

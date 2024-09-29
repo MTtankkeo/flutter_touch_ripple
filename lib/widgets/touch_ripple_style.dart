@@ -26,6 +26,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.doubleTapBehavior,
     this.longTapBehavior,
     this.rejectBehavior,
+    this.cancelBehavior,
     this.overlapBehavior,
     this.renderOrderType,
     this.focusTiming,
@@ -102,6 +103,10 @@ class TouchRippleStyle extends InheritedWidget {
   /// rejected, specifying the conditions for rejection.
   final TouchRippleRejectBehavior? rejectBehavior;
 
+  /// The value defines the behavior that defines the touch ripple spread
+  /// animation when the touch ripple effect is canceled.
+  final TouchRippleCancelBehavior? cancelBehavior;
+
   /// The value defines the behavior of a touch ripple when it overlaps
   /// with other ripple effects. (e.g. overlappable, cancel, ignore)
   final TouchRippleOverlapBehavior? overlapBehavior;
@@ -159,6 +164,7 @@ class TouchRippleStyle extends InheritedWidget {
         || longTappableDuration != oldWidget.longTappableDuration
         || longTapCycleDuration != oldWidget.longTapCycleDuration
         || rejectBehavior != oldWidget.rejectBehavior
+        || cancelBehavior != oldWidget.cancelBehavior
         || overlapBehavior != oldWidget.overlapBehavior
         || renderOrderType != oldWidget.renderOrderType
         || focusTiming != oldWidget.focusTiming

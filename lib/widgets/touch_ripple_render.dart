@@ -5,12 +5,12 @@ import 'package:flutter_touch_ripple/components/touch_ripple_effect.dart';
 /// The enumeration specifies the rendering order of the touch ripple effect,
 /// determining whether it should appear in the foreground or background.
 enum TouchRippleRenderOrderType {
-  /// Specifies that the touch ripple should be drawn in the foreground,
-  /// meaning it will appear above all other visual widgets in the interface.
+  /// Sets the behavior to draw the touch ripple in the foreground, meaning
+  /// it will appear above all other visual widgets in the interface.
   foreground,
 
-  /// Specifies that the touch ripple should be drawn in the background,
-  /// ensuring it appears beneath all other visual widgets in the interface.
+  /// Sets the behavior to draw the touch ripple in the background, ensuring
+  /// it appears beneath all other visual widgets in the interface.
   background,
 }
 
@@ -35,9 +35,7 @@ class _TouchRippleRenderState extends State<TouchRippleRender> {
   TouchRippleController get controller => widget.controller;
 
   /// Called when the touch ripple state updated.
-  void onUpdated() {
-    setState(() {});
-  }
+  void onUpdated() => setState(() {});
 
   @override
   void initState() {

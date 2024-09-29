@@ -75,6 +75,10 @@ mixin TouchRippleContext {
   /// specifying the conditions for rejection.
   TouchRippleRejectBehavior get rejectBehavior;
 
+  /// Returns the behavior that defines the touch ripple spread animation
+  /// when the touch ripple effect is canceled.
+  TouchRippleCancelBehavior get cancelBehavior;
+
   /// Return the behavior of a touch ripple when it overlaps with
   /// other ripple effects. (e.g. overlappable, cancel, ignore)
   TouchRippleOverlapBehavior get overlapBehavior;
@@ -116,6 +120,19 @@ enum TouchRippleRejectBehavior {
   /// Sets the gesture to be canceled if the pointer position is
   /// outside the area occupied by the widget.
   leave,
+}
+
+/// The enumeration defines the behavior that defines the touch ripple
+/// spread animation when the touch ripple effect is canceled.
+enum TouchRippleCancelBehavior {
+  /// Sets the behavior to perform no action when the effect is canceled.
+  none,
+  /// Sets the behavior to stop the spread animation of the touch ripple
+  /// effect when the effect is canceled.
+  stop,
+  /// Sets the behavior to reverse the spread animation of the touch ripple
+  /// effect when the effect is canceled.
+  reverse,
 }
 
 /// The enumeration defines the behavior of a touch ripple when

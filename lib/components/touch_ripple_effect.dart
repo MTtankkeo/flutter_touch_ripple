@@ -27,15 +27,15 @@ abstract class TouchRippleEffect extends Listenable {
 
 class TouchRippleSpreadingEffect extends TouchRippleEffect {
   TouchRippleSpreadingEffect({
-    required TickerProvider vsync,
-    required VoidCallback callback,
+    required this.context,
+    required this.callback,
     required this.isRejectable,
     required this.baseOffset,
     required this.behavior,
   }) {
     assert(behavior.spreadDuration != null);
     assert(behavior.spreadCurve != null);
-    _spreadAnimation = AnimationController(vsync: vsync, duration: behavior.spreadDuration!);
+    _spreadAnimation = AnimationController(vsync: context.vsync, duration: behavior.spreadDuration!);
     _spreadCurved = CurvedAnimation(parent: _spreadAnimation, curve: behavior.spreadCurve!);
 
     // Calls the event callback function when the current animation
@@ -68,7 +68,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     assert(behavior.fadeInDuration != null);
     assert(behavior.fadeInCurve != null);
     _fadeAnimation = AnimationController(
-      vsync: vsync,
+      vsync: context.vsync,
       duration: behavior.fadeInDuration!,
       reverseDuration: behavior.fadeOutDuration!
     );
@@ -85,7 +85,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   // The offset that serves as the reference point for a spread ripple effect.
   final Offset baseOffset;
-
+  final VoidCallback callback;
+  final TouchRippleContext context;
   final TouchRippleBehavior behavior;
 
   bool isRejectable;
@@ -139,6 +140,13 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     _fadeAnimation.duration = behavior.cancelDuration;
     _fadeCurved.curve = behavior.cancelCurve!;
     _fadeAnimation.reverse();
+
+    switch (context.cancelBehavior) {
+      case TouchRippleCancelBehavior.none: break;
+      case TouchRippleCancelBehavior.stop: _spreadAnimation.stop(); break;
+      case TouchRippleCancelBehavior.reverse: _spreadAnimation.reverse(); break;
+      default: assert(true, "No corresponding task for declared enumeration value.");
+    }
   }
 
   /// If the gesture could be rejected and is eventually accepted,

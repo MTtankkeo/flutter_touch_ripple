@@ -47,3 +47,14 @@ TouchRipple<String>(
     // ... skip
 );
 ```
+
+## The Properties of TouchRipple
+
+| Name | Description | Type |
+| ------------- | ----------- | ---- |
+| child | The widget that is target to apply touch ripple related effects. | Widget |
+| controller | The controller defines and manages states, listeners, a context and other values related to touch ripple, ensuring that each state exists uniquely within the controller. | TouchRippleController? |
+| onTap | The callback function is called when the user taps or clicks. | VoidCallback?
+| onTapAsync | The callback function is called when the user taps or clicks. but this function ensures that the touch ripple effect remains visible until the asynchronous operation is completed and prevents additional events during that time. | TouchRippleAsyncCallback\<T\>? |
+| onTapAsyncStart | The callback function is called when an asynchronous operation is initiated by a tap. It provides the associated Future instance for the ongoing operation. | TouchRippleAsyncNotifyCallback\<T\>? |
+| onTapAsyncEnd | The callback function is called when the result of the asynchronous operation is ready. It allows handling the result once the operation is complete. | TouchRippleAsyncResultCallback\<T\>? |

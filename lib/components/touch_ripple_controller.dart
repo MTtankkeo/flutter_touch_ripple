@@ -7,7 +7,7 @@ import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 /// added or when the state of the touch ripple controller changes.
 typedef TouchRippleListener = VoidCallback;
 
-/// The class efines and manages states, listeners, a context and other values related
+/// The class defines and manages states, listeners, a context and other values related
 /// to touch ripple, ensuring that each state exists uniquely within the controller. 
 /// 
 /// See Also, An instance of this class can be referenced and accessed
