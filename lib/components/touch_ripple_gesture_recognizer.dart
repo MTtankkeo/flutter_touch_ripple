@@ -427,6 +427,8 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
   /// the value defines wheter a long-tap current is rejectable effect.
   bool isRejectable = false;
 
+  bool get isConsecutive => count > 0;
+
   @override
   void onPointerDown(PointerDownEvent event) {
     delayTimer = Timer(delayDuration, () {
@@ -473,12 +475,18 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
   /// Check if the long-tap gesture is currently can be consecutive.
   void checkConsecutive(int pointer) {
     onLongTapAccept.call();
-    if (onLongTap.call(count++)) {
-      // If the [count] is 1, it means the first consecutive cycle.
-      if (count == 1) onLongTapStart?.call();
+    if (onLongTap.call(count)) {
+      // If the [count] is 0, it means the first consecutive cycle, Therefore calls
+      // the lifecycle callback function that is called when consecutive gesture started.
+      if (count == 0) onLongTapStart?.call();
 
+      count += 1;
       onConsecutive(pointer);
     } else {
+      // If the current is consecutive status, Need to separately calls the
+      // lifecycle callback function that is called when consecutive gesture ended.
+      if (isConsecutive) onLongTapEnd?.call();
+
       didStopTrackingLastPointer(pointer);
       focusEnd();
     }
