@@ -444,8 +444,8 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       fadeOutDuration: Duration(milliseconds: 150),
       fadeOutCurve: Curves.easeIn
     )
-    ..merge(style?.hoverAnimation)
-    ..merge(widget.hoverAnimation);
+    .merge(style?.hoverAnimation)
+    .merge(widget.hoverAnimation);
   }
 
   @override
@@ -456,8 +456,8 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       fadeOutDuration: Duration(milliseconds: 300),
       fadeOutCurve: Curves.easeIn
     )
-    ..merge(style?.focusAnimation)
-    ..merge(widget.focusAnimation);
+    .merge(style?.focusAnimation)
+    .merge(widget.focusAnimation);
   }
 
   @override
