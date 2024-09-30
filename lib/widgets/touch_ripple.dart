@@ -249,13 +249,13 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   final Widget child;
 
   @override
-  State<TouchRipple> createState() => _TouchRippleState();
+  State<TouchRipple> createState() => _TouchRippleState<T>();
 }
 
 /// The widget state implements [TouchRippleContext], allowing it to merge various option
 /// in priority order to provide the appropriate style, behavior, and information necessary
 /// for rendering the touch ripple effect.
-class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, TickerProviderStateMixin {
+class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext, TickerProviderStateMixin {
   /// The value defines a unique instance of [TouchRippleController]
   /// to manage the state of the touch ripple in this widget.
   late TouchRippleController _controller = widget.controller ?? TouchRippleController();
@@ -277,7 +277,7 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
   }
 
   @override
-  void didUpdateWidget(covariant TouchRipple oldWidget) {
+  void didUpdateWidget(TouchRipple<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.controller != null && oldWidget.controller != widget.controller) {
@@ -292,8 +292,11 @@ class _TouchRippleState extends State<TouchRipple> with TouchRippleContext, Tick
       ?? style?.renderOrderType
       ?? TouchRippleRenderOrderType.background;
 
-    return TouchRippleGestureDetector(
+    return TouchRippleGestureDetector<T>(
       onTap: widget.onTap,
+      onTapAsync: widget.onTapAsync,
+      onTapAsyncStart: widget.onTapAsyncStart,
+      onTapAsyncEnd: widget.onTapAsyncEnd,
       onDoubleTap: widget.onDoubleTap,
       onDoubleTapConsecutive: widget.onDoubleTapConsecutive,
       onDoubleTapStart: widget.onDoubleTapStart,

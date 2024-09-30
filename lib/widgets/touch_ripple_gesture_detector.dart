@@ -117,10 +117,10 @@ class TouchRippleGestureDetector<T extends dynamic> extends StatefulWidget {
   final Widget child;
 
   @override
-  State<TouchRippleGestureDetector> createState() => _TouchRippleGestureDetectorState();
+  State<TouchRippleGestureDetector> createState() => _TouchRippleGestureDetectorState<T>();
 }
 
-class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector> {
+class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetector<T>> {
   /// The list defines instances of a builder function that creates GestureRecognizer objects.
   /// Instances of [GestureRecognizer] should be added and removed according to the lifecycle
   /// of the gesture detector.
@@ -190,8 +190,15 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
     _builders.clear();
 
     final isTappable = widget.onTap != null;
+    final isTapAsyncable = widget.onTapAsync != null;
     final isDoubleTappable = widget.onDoubleTap != null;
     final isLongTappable = widget.onLongTap != null;
+
+    // If there is a gesture competitor other than itself,
+    // the effect cannot be previewed for tap effect.
+    final previewMinDuration = isDoubleTappable || isLongTappable
+        ? Duration.zero
+        : rippleContext.previewDuration;
 
     if (isTappable) {
       _builders.add(() {
@@ -202,13 +209,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
           context: context,
           rejectBehavior: rippleContext.rejectBehavior,
           onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
-
-          /// If there is a gesture competitor other than itself,
-          /// the effect cannot be previewed for tap effect.
-          previewMinDuration: isDoubleTappable || isLongTappable
-            ? Duration.zero
-            : rippleContext.previewDuration,
-
+          previewMinDuration: previewMinDuration,
           acceptableDuration: rippleContext.tappableDuration,
           onTap: (offset) {
             activeEffect = TouchRippleSpreadingEffect( 
@@ -234,6 +235,58 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
           },
           onTapReject: () => activeEffect.onRejected(),
           onTapAccept: () => activeEffect.onAccepted(),
+        )
+        // Called when this gesture recognizer disposed.
+        ..onDispose = _recognizers.remove;
+      });
+    }
+
+    if (isTapAsyncable) {
+      _builders.add(() {
+        late TouchRippleSpreadingEffect activeEffect;
+
+        // The asynchronous processing result.
+        late T result;
+
+        // The ripple effect will not fade-out until the asynchronous process is complete (by rejectable),
+        // And the effect instance delegates the invocation of the callback function to delay the
+        // lifecycle callback function call based on the `eventCallBackableMinPercent` option.
+        void attachEffect(Offset offset) {
+          activeEffect = TouchRippleSpreadingEffect( 
+            context: rippleContext,
+            callback: () => widget.onTapAsyncEnd?.call(result),
+            isRejectable: true,
+            baseOffset: offset,
+            behavior: rippleContext.tapBehavior
+          );
+
+          controller.attach(activeEffect..start());
+        }
+
+        // Starts asynchronous processing about a given callback.
+        void performAsync() {
+          final instance = widget.onTapAsync!()..then((_result) {
+            result = _result;
+            activeEffect.onAccepted();
+          });
+
+          widget.onTapAsyncStart?.call(instance);
+        }
+
+        assert(rippleContext.tapBehavior.onlyMainButton != null);
+        return TouchRippleTapGestureRecognizer(
+          context: context,
+          rejectBehavior: rippleContext.rejectBehavior,
+          onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
+          previewMinDuration: previewMinDuration,
+          acceptableDuration: rippleContext.tappableDuration,
+          onTap: (offset) {
+            attachEffect(offset);
+            performAsync();
+          },
+          onTapRejectable: attachEffect,
+          onTapReject: () => activeEffect.onRejected(),
+          onTapAccept: performAsync,
         )
         // Called when this gesture recognizer disposed.
         ..onDispose = _recognizers.remove;
@@ -336,7 +389,7 @@ class _TouchRippleGestureDetectorState extends State<TouchRippleGestureDetector>
   }
 
   @override
-  void didUpdateWidget(covariant TouchRippleGestureDetector oldWidget) {
+  void didUpdateWidget(covariant TouchRippleGestureDetector<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     // The gesture recognizer builders needs to be rebuilt
