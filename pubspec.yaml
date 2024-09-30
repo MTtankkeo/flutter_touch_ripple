@@ -1,6 +1,8 @@
 name: flutter_touch_ripple
-description: "This flutter package is customizable touch ripple effect widget for flutter, very flexible and performant, providing smooth touch effect animations."
-version: 2.0.0
+description: >
+  This flutter package is customizable touch ripple effect widget for flutter,
+  very flexible and performant, providing smooth touch effect animations.
+version: 2.0.1
 publisher: ttankkeo112@gmail.com
 repository: https://github.com/MTtankkeo/flutter_touch_ripple
 
@@ -10,10 +12,6 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter
-
-dev_dependencies:
-  flutter_test:
     sdk: flutter
 
 flutter:

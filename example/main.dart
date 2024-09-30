@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const RootApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class RootApp extends StatelessWidget {
+  const RootApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +14,7 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: TouchRipple(
+            // Called when the user taps or clicks.
             onTap: () => print("Hello, Tap!"),
             child: const Padding(
               padding: EdgeInsets.all(20),
