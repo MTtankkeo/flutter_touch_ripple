@@ -179,5 +179,21 @@ The enumeration defines when the focus of a touch ripple should start, specifyin
 | consecutive | Sets the focus event to start when multiple ripple effects occur in rapid succession. This setting prevents the focus from being triggered prematurely when in a rejectable state. |
 
 ### When TouchRippleFocusTiming.rejectable
+![rejectable](https://github.com/user-attachments/assets/08cbed37-100a-42dc-a4cd-2126eeeb73a7)
 
 ### When TouchRippleFocusTiming.consecutive
+![consecutive](https://github.com/user-attachments/assets/6e262eda-3d80-4b71-8b90-6af6a45bb6c3)
+
+## The Properties of TouchRippleRenderOrderType
+The enumeration specifies the rendering order of the touch ripple effect, determining whether it should appear in the foreground or background.
+
+| Name | Description |
+| ---- | ----------- |
+| foreground | Sets the behavior to draw the touch ripple in the foreground, meaning it will appear above all other visual widgets in the interface. |
+| background | Sets the behavior to draw the touch ripple in the background, ensuring it appears beneath all other visual widgets in the interface. |
+
+### When TouchRippleRenderOrderType.foreground
+![foreground](https://github.com/user-attachments/assets/544059c6-5859-40d7-995d-067d731ff10f)
+
+### When TouchRippleRenderOrderType.background
+![background](https://github.com/user-attachments/assets/5e61b4a6-943f-4818-9bb7-13c9e4dc24bf)
