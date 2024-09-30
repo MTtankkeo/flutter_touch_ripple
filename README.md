@@ -126,10 +126,13 @@ The enumeration defines when a gesture should be rejected, specifying the condit
 | leave | Sets the gesture to be canceled if the pointer position is outside the area occupied by the widget. |
 
 ### When TouchRippleRejectBehavior.none
+![none](https://github.com/user-attachments/assets/c9b791c6-c824-4b5c-9130-d18b99dc5eef)
 
 ### When TouchRippleRejectBehavior.touchSlop
+![touchSlop](https://github.com/user-attachments/assets/446cab04-2bd2-4a30-8c57-5bd9526820c4)
 
 ### When TouchRippleRejectBehavior.leave
+![leave](https://github.com/user-attachments/assets/91bcd5b3-1ef8-4130-a6f8-011ccc53f529)
 
 ## The Properties of TouchRippleOverlapBehavior
 The enumeration defines the behavior of a touch ripple when it overlaps with other ripple effects.
@@ -159,10 +162,13 @@ The enumeration defines the behavior that defines the touch ripple spread animat
 | reverse | Sets the behavior to reverse the spread animation of the touch ripple effect when the effect is canceled. |
 
 ### When TouchRippleCancelBehavior.none
+![none](https://github.com/user-attachments/assets/bed7716d-0b1c-4c7c-a1c2-99d2d9b0aac1)
 
 ### When TouchRippleCancelBehavior.stop
+![stop](https://github.com/user-attachments/assets/7822a182-a068-4011-8ac8-16f9e4d288ed)
 
 ### When TouchRippleCancelBehavior.reverse
+![reverse](https://github.com/user-attachments/assets/6ad1cef6-17cb-4e9b-95b6-7fcc5dd3ad2e)
 
 ## The Properties of TouchRippleFocusTiming
 The enumeration defines when the focus of a touch ripple should start, specifying the priority based on timing conditions.
