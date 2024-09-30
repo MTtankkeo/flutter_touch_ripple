@@ -38,7 +38,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.onFocusEnd,
     this.onHoverStart,
     this.onHoverEnd,
-    this.behavior,
+    this.hitBehavior,
     this.rippleColor,
     this.hoverColor,
     this.focusColor,
@@ -136,7 +136,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   final VoidCallback? onHoverEnd;
 
   /// The behavior of hit testing for the child widget.
-  final HitTestBehavior? behavior;
+  final HitTestBehavior? hitBehavior;
 
   /// The background color of a spread ripple effect.
   final Color? rippleColor;
@@ -148,24 +148,25 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// (e.g. about double-tap and long-tap) event state occurs.
   final Color? focusColor;
 
-  /// The scale percentage value of a ripple effect.
+  /// The scale percentage value of a ripple effect and by default
+  /// the origin position is center.
   final double? rippleScale;
 
-  /// The radius pixels of a blur filter to touch ripple.
+  /// The radius pixels of a blur filter for spread ripple effect. It cannot be negative
+  /// and as the value increases, the edge of the spread ripple effect becomes blurrier.
   final double? rippleBlurRadius;
 
-  /// The instance of a border radius for a ripple effect.
+  /// The instance of a border radius for a ripple effect. For reference, this option
+  /// can be replaced with a widget like [ClipRRect] depending on the situation.
   final BorderRadius? rippleBorderRadius;
 
-  /// The duration for which the ripple effect is previewed even
-  /// if the gesture is not finalized, allowing the user to see
-  /// the effect while the pointer is down or moving.
+  /// The duration for which the ripple effect is previewed even if the gesture is not
+  /// finalized, allowing the user to see the effect while the pointer is down or moving.
   final Duration? previewDuration;
 
-  /// The duration after which the gesture is considered rejected
-  /// if the pointer is still down and no tap is completed.
-  /// If this duration elapses without a successful gesture,
-  /// the gesture will be rejected.
+  /// The duration after which the gesture is considered rejected if the pointer
+  /// is still down and no tap is completed. If this duration elapses without
+  /// a successful gesture, the gesture will be rejected.
   final Duration? tappableDuration;
 
   /// The minimum duration used to distinguish between a tap and a double-tap.
@@ -173,8 +174,8 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// it is considered just a single-tap.
   final Duration? doubleTappableDuration;
 
-  /// The duration until double-tap deactivation. During this period,
-  /// any single tap is still considered a double-tap without requiring
+  /// The duration until double-tap deactivation. During this period, any
+  /// single tap is still considered a double-tap without requiring
   /// continuous double-tapping.
   final Duration? doubleTapAliveDuration;
 
@@ -228,8 +229,8 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// when the focus effect is triggered.
   final TouchRippleAnimation? focusAnimation;
 
-  /// The boolean that is whether only the main button is recognized as a gesture
-  /// when the user that is using mouse device clicks on the widget.
+  /// The boolean that is whether only the main button is recognized as
+  /// a gesture when the user that is using mouse device clicks on the widget.
   final bool? onlyMainButton;
 
   /// Whether the hover effect is enabled for touch ripple animations.
@@ -241,8 +242,9 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// events like double-tap and long-tap or others.
   final bool? useFocusEffect;
 
-  /// The controller defines and manages states, listeners, a context and other values related
-  /// to touch ripple, ensuring that each state exists uniquely within the controller. 
+  /// The controller defines and manages states, listeners, a context and
+  /// other values related to touch ripple, ensuring that each state
+  /// exists uniquely within the controller.
   final TouchRippleController? controller;
 
   /// The widget that is target to apply touch ripple related effects.
@@ -309,7 +311,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       onHoverStart: widget.onHoverStart,
       onHoverEnd: widget.onHoverEnd,
       onlyMainButton: widget.onlyMainButton ?? style?.onlyMainButton,
-      behavior: widget.behavior ?? HitTestBehavior.translucent,
+      behavior: widget.hitBehavior ?? HitTestBehavior.translucent,
       controller: _controller,
       child: TouchRippleRender(
         controller: _controller,

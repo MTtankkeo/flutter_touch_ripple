@@ -19,29 +19,32 @@ mixin TouchRippleContext {
   /// (e.g. about double-tap and long-tap) event state occurs.
   Color get focusColor;
 
-  /// Returns the scale percentage value of the ripple effect.
+  /// Returns the scale percentage value of a ripple effect and by default
+  /// the origin position is center.
   double get rippleScale;
 
-  /// Return the radius pixels of a blur filter to the touch ripple.
+  /// Returns the radius pixels of a blur filter for spread ripple effect. It cannot
+  /// be negative and as the value increases, the edge of the spread ripple effect
+  /// becomes blurrier.
   double get rippleBlurRadius;
 
-  /// Return the instance of a border radius for the ripple effect.
+  /// Returns the instance of a border radius for a ripple effect. For reference,
+  /// this option can be replaced with a widget like ClipRRect depending on
+  /// the situation.
   BorderRadius get rippleBorderRadius;
 
-  /// Returns the duration for which the ripple effect is previewed
-  /// even if the gesture is not finalized, allowing the user to see
-  /// the effect while the pointer is down or moving.
+  /// Returns the duration for which the ripple effect is previewed even if the gesture
+  /// is not finalized, allowing the user to see the effect while the pointer is down or moving.
   Duration get previewDuration;
 
-  /// Returns the duration after which the gesture is considered
-  /// rejected if the pointer is still down and no tap is completed.
-  /// If this duration elapses without a successful gesture, the
-  /// gesture will be rejected.
+  /// Returns the duration after which the gesture is considered rejected if the pointer
+  /// is still down and no tap is completed. If this duration elapses without
+  /// a successful gesture, the gesture will be rejected.
   Duration get tappableDuration;
 
-  /// Returns the minimum duration used to distinguish between a tap and
-  /// a double-tap. If the user does not perform a second tap within
-  /// this duration, it is considered just a single-tap.
+  /// Returns the minimum duration used to distinguish between a tap and a double-tap.
+  /// If the user does not perform a second tap within this duration, it is considered
+  /// just a single-tap.
   Duration get doubleTappableDuration;
 
   /// Returns the duration until double-tap deactivation. During this period,
