@@ -137,8 +137,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   /// to the defined action and forces the effect to fade out.
   /// In some cases, it cancels the effect altogether.
   void cancel() {
-    _fadeAnimation.duration = behavior.cancelDuration;
-    _fadeCurved.curve = behavior.cancelCurve!;
+    _fadeAnimation.reverseDuration = behavior.cancelDuration;
+    _fadeCurved.reverseCurve = behavior.cancelCurve!;
     _fadeAnimation.reverse();
 
     switch (context.cancelBehavior) {

@@ -356,7 +356,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
   double get rippleBlurRadius {
     return widget.rippleBlurRadius
         ?? style?.rippleBlurRadius
-        ?? 0;
+        ?? 10;
   }
 
   @override
@@ -416,11 +416,11 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       spreadDuration: Duration(milliseconds: 300),
       spreadCurve: Curves.ease,
       fadeInDuration: Duration(milliseconds: 100),
-      fadeInCurve: Curves.ease,
+      fadeInCurve: Curves.easeOut,
       fadeOutDuration: Duration(milliseconds: 200),
-      fadeOutCurve: Curves.ease,
-      cancelDuration: Duration.zero,
-      cancelCurve: Curves.linear,
+      fadeOutCurve: Curves.easeIn,
+      cancelDuration: Duration(milliseconds: 100),
+      cancelCurve: Curves.easeIn,
       fadeLowerPercent: 0,
       fadeUpperPercent: 1,
       eventCallBackableMinPercent: 0,
@@ -445,7 +445,8 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
         upperPercent: 1,
         spreadDuration: Duration(milliseconds: 1000),
         spreadCurve: Curves.linear,
-        fadeInDuration: Duration(milliseconds: 500),
+        fadeInDuration: Duration(milliseconds: 1000),
+        fadeInCurve: Curves.linear
       ))
       .merge(style?.longTapBehavior)
       .merge(widget.longTapBehavior);
