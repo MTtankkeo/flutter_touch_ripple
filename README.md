@@ -21,6 +21,11 @@ This Flutter package allows developer to customize most of the behaviors and ani
 | Long Tap   | When the user long tap or long press. | 🔴 | 🟢 |
 | Drag(V, H) | Not support yet. | 🟡 | 🟡 |
 
+## Preview
+The gif image below may appear distorted and choppy due to compression.
+
+![preview](https://github.com/user-attachments/assets/2ddc204f-12d2-4c1e-b353-c7d11ebc6fc2)
+
 ## Usage
 The following explains the basic usage of this package.
 
