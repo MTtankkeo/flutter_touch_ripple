@@ -53,10 +53,25 @@ TouchRipple<String>(
 );
 ```
 
+### How to define the style globally.
+TouchRippleStyle defines the style of its descendant touch ripple widgets, similar to how PrimaryScrollController defines the controller for its descendant widgets.
+
+```dart
+TouchRippleStyle(
+  rippleColor: Colors.blue.withAlpha(50),
+  rippleBorderRadius: BorderRadius.circular(10),
+  overlapBehavior: TouchRippleOverlapBehavior.ignore,
+  cancelBehavior: TouchRippleCancelBehavior.none,
+  onlyMainButton: false,
+  tapBehavior: TouchRippleBehavior(...),
+  child: ...
+),
+```
+
 ## The Properties of TouchRipple
 
 | Name | Description | Type |
-| ------------- | ----------- | ---- |
+| ---- | ----------- | ---- |
 | onTap | The callback function is called when the user taps or clicks. | VoidCallback?
 | onTapAsync | The callback function is called when the user taps or clicks. but this function ensures that the touch ripple effect remains visible until the asynchronous operation is completed and prevents additional events during that time. | TouchRippleAsyncCallback\<T\>? |
 | onTapAsyncStart | The callback function is called when an asynchronous operation is initiated by a tap. It provides the associated Future instance for the ongoing operation. | TouchRippleAsyncNotifyCallback\<T\>? |
@@ -100,3 +115,60 @@ TouchRipple<String>(
 | useFocusEffect | Whether the focus effect is enabled for touch ripple animations. If true, a solid focus color effect is applied for consecutive events like double-tap and long-tap or others. | bool? |
 | controller | The controller defines and manages states, listeners, a context and other values related to touch ripple, ensuring that each state exists uniquely within the controller. | TouchRippleController? |
 | child | The widget that is target to apply touch ripple related effects. | Widget |
+
+## The Properties of TouchRippleRejectBehavior
+The enumeration defines when a gesture should be rejected, specifying the conditions for rejection.
+
+| Name | Description |
+| ---- | ----------- |
+| none | Sets the gesture to not be rejected regardless of any action or event. However, if the gesture is forcibly rejected due to a scroll gesture, the rejection will occur as expected. |
+| touchSlop | Sets the gesture to be canceled if the pointer movement distance is greater than or equal to [kTouchSlop]. |
+| leave | Sets the gesture to be canceled if the pointer position is outside the area occupied by the widget. |
+
+### When TouchRippleRejectBehavior.none
+
+### When TouchRippleRejectBehavior.touchSlop
+
+### When TouchRippleRejectBehavior.leave
+
+## The Properties of TouchRippleOverlapBehavior
+The enumeration defines the behavior of a touch ripple when it overlaps with other ripple effects.
+
+| Name | Description |
+| ---- | ----------- |
+| overlappable | Sets the touch ripples to be allowed to overlap with each other. |
+| cancel | Sets the touch ripple to be canceled if the effects overlap, with the new effect being added to the stack. |
+| ignore | Sets the event to be ignored if the effects overlap, canceling the previous touch effect until it disappears. |
+
+### When TouchRippleOverlapBehavior.overlappable
+
+### When TouchRippleOverlapBehavior.cancel
+
+### When TouchRippleOverlapBehavior.ignore
+
+## The Properties of TouchRippleCancelBehavior
+The enumeration defines the behavior that defines the touch ripple spread animation when the touch ripple effect is canceled.
+
+| Name | Description |
+| ---- | ----------- |
+| none | Sets the behavior to perform no action when the effect is canceled. |
+| stop | Sets the behavior to stop the spread animation of the touch ripple effect when the effect is canceled. |
+| reverse | Sets the behavior to reverse the spread animation of the touch ripple effect when the effect is canceled. |
+
+### When TouchRippleCancelBehavior.none
+
+### When TouchRippleCancelBehavior.stop
+
+### When TouchRippleCancelBehavior.reverse
+
+## The Properties of TouchRippleFocusTiming
+The enumeration defines when the focus of a touch ripple should start, specifying the priority based on timing conditions.
+
+| Name | Description |
+| ---- | ----------- |
+| rejectable | Sets the focus event to start when the ripple is in a rejectable state, meaning the gesture has not yet been fully accepted, but the effect is visible and can be canceled. |
+| consecutive | Sets the focus event to start when multiple ripple effects occur in rapid succession. This setting prevents the focus from being triggered prematurely when in a rejectable state. |
+
+### When TouchRippleFocusTiming.rejectable
+
+### When TouchRippleFocusTiming.consecutive
