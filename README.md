@@ -185,6 +185,24 @@ The enumeration defines when the focus of a touch ripple should start, specifyin
 ### When TouchRippleFocusTiming.consecutive
 ![consecutive](https://github.com/user-attachments/assets/6e262eda-3d80-4b71-8b90-6af6a45bb6c3)
 
+## The Properties of TouchRippleOrigin
+The enumeration defines the starting point of a spread ripple effect, specifying the origin of the ripple based on the user interaction.
+
+| Name | Description |
+| ---- | ----------- |
+| pointer_down | Sets the effect to originate from the point where the pointer-down. |
+| pointer_move | Sets the effect to originate from the point where the pointer-move. |
+| center | Sets the effect to originate from the center of the widget, regardless of the pointer's position. |
+
+### When TouchRippleOrigin.pointer_down
+![pointer_down](https://github.com/user-attachments/assets/1a21cf5a-f3b1-4b55-9835-605ac52d8399)
+
+### When TouchRippleOrigin.pointer_move
+![pointer_move](https://github.com/user-attachments/assets/13d1a2b9-a25f-431b-b01e-e5a0ebac117d)
+
+### When TouchRippleOrigin.center
+![center](https://github.com/user-attachments/assets/3f8e07b4-afa6-48cb-b0ae-82a4d5b857fc)
+
 ## The Properties of TouchRippleRenderOrderType
 The enumeration specifies the rendering order of the touch ripple effect, determining whether it should appear in the foreground or background.
 
