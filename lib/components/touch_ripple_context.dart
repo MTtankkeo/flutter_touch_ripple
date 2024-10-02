@@ -9,6 +9,10 @@ mixin TouchRippleContext {
   /// ripple effects and other animations.
   TickerProvider get vsync;
 
+  /// Returns the instance of the build context for the widget for applying
+  /// the ripple effect.
+  BuildContext get context;
+
   /// Returns the background color of the spread ripple effect.
   Color get rippleColor;
 
@@ -94,9 +98,13 @@ mixin TouchRippleContext {
   /// when the focus effect is triggered.
   TouchRippleAnimation get focusAnimation;
 
-  /// Returns the the enumeration defines when the focus of a touch ripple
+  /// Returns the enumeration defines when the focus of a touch ripple
   /// should start, specifying the priority based on timing conditions.
   TouchRippleFocusTiming get focusTiming;
+
+  /// Returns The enumeration defines the starting point of a spread ripple effect,
+  /// specifying the origin of the ripple based on the user interaction.
+  TouchRippleOrigin get origin;
 
   /// Returns whether the hover effect is enabled for touch ripple animations.
   /// If true, a solid hover effect is applied when the user hovers.
@@ -165,4 +173,18 @@ enum TouchRippleFocusTiming {
   /// succession. This setting prevents the focus from being triggered prematurely 
   /// when in a rejectable state.
   consecutive,
+}
+
+/// The enumeration defines the starting point of a spread ripple effect,
+/// specifying the origin of the ripple based on the user interaction.
+enum TouchRippleOrigin {
+  /// Sets the effect to originate from the point where the pointer-down.
+  pointer_down,
+
+  /// Sets the effect to originate from the point where the pointer-move.
+  pointer_move,
+
+  /// Sets the effect to originate from the center of the widget, regardless
+  /// of the pointer's position.
+  center,
 }

@@ -39,3 +39,9 @@
 
 ## 2.0.0
 - All code for greater flexibility and maintainability, and tested. Added a TouchRippleStyle inherited widget, similar to PrimaryScrollController. The gesture-recognizing widget was separated to render the touch ripple effect independently.
+
+## 2.1.0
+- Added `TouchRippleOrigin` enumeration to define the starting point of a spread ripple effect based on user interaction. It includes the following options:
+  - `pointer_down`: The ripple starts from the point where the pointer touches down.
+  - `pointer_move`: The ripple starts from the point where the pointer moves.
+  - `center`: The ripple starts from the center of the widget, regardless of the pointer's position.

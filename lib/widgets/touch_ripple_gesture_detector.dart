@@ -206,8 +206,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
 
         assert(rippleContext.tapBehavior.onlyMainButton != null);
         return TouchRippleTapGestureRecognizer(
-          context: context,
-          rejectBehavior: rippleContext.rejectBehavior,
+          context: rippleContext,
           onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
           previewMinDuration: previewMinDuration,
           acceptableDuration: rippleContext.tappableDuration,
@@ -275,8 +274,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
 
         assert(rippleContext.tapBehavior.onlyMainButton != null);
         return TouchRippleTapGestureRecognizer(
-          context: context,
-          rejectBehavior: rippleContext.rejectBehavior,
+          context: rippleContext,
           onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
           previewMinDuration: previewMinDuration,
           acceptableDuration: rippleContext.tappableDuration,
@@ -299,8 +297,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         assert(widget.onDoubleTapStart != null ? widget.onDoubleTapConsecutive != null : true);
         assert(widget.onDoubleTapEnd != null ? widget.onDoubleTapConsecutive != null : true);
         return TouchRippleDoubleTapGestureRecognizer(
-          context: context,
-          rejectBehavior: rippleContext.rejectBehavior,
+          context: rippleContext,
           onlyMainButton: widget.onlyMainButton ?? rippleContext.doubleTapBehavior.onlyMainButton!,
           acceptableDuration: rippleContext.doubleTappableDuration,
           aliveDuration: rippleContext.doubleTapAliveDuration,
@@ -335,8 +332,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         assert(rippleContext.longTapBehavior.onlyMainButton != null);
         assert(rippleContext.longTapBehavior.eventCallBackableMinPercent == 0);
         return TouchRippleLongTapGestureRecognizer(
-          context: context,
-          rejectBehavior: rippleContext.rejectBehavior,
+          context: rippleContext,
           onlyMainButton: widget.onlyMainButton ?? rippleContext.longTapBehavior.onlyMainButton!,
           delayDuration: rippleContext.longTappableDuration,
           cycleDuration: rippleContext.longTapCycleDuration,

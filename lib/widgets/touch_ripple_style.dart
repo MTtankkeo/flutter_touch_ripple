@@ -30,6 +30,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.overlapBehavior,
     this.renderOrderType,
     this.focusTiming,
+    this.origin,
     this.focusAnimation,
     this.hoverAnimation,
     this.useHoverEffect,
@@ -120,6 +121,10 @@ class TouchRippleStyle extends InheritedWidget {
   /// should start, specifying the priority based on timing conditions.
   final TouchRippleFocusTiming? focusTiming;
 
+  /// The value defines the enumeration defines the starting point of a spread ripple
+  /// effect, specifying the origin of the ripple based on the user interaction.
+  final TouchRippleOrigin? origin;
+
   /// The value defines the instance of the fade animation for the touch ripple
   /// effect when the hover effect is triggered.
   final TouchRippleAnimation? hoverAnimation;
@@ -168,6 +173,7 @@ class TouchRippleStyle extends InheritedWidget {
         || overlapBehavior != oldWidget.overlapBehavior
         || renderOrderType != oldWidget.renderOrderType
         || focusTiming != oldWidget.focusTiming
+        || origin != oldWidget.origin
         || hoverAnimation != oldWidget.hoverAnimation
         || focusAnimation != oldWidget.focusAnimation
         || useHoverEffect != oldWidget.useHoverEffect

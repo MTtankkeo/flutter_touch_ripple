@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_event.dart';
 
@@ -13,12 +12,13 @@ typedef GestureRecognizerDisposeCallback = void Function(GestureRecognizer insta
 abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer {
   TouchRippleGestureRecognizer({
     required this.context,
-    required this.rejectBehavior,
     required this.onlyMainButton,
   });
 
-  final BuildContext context;
-  final TouchRippleRejectBehavior rejectBehavior;
+  final TouchRippleContext context;
+
+  /// The boolean that is whether only the main button is recognized as a gesture
+  /// when the user that is using mouse device clicks on the widget.
   final bool onlyMainButton;
 
   /// The callback function is called when this gesture recognizer
@@ -39,17 +39,28 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   /// Returns the current referenceable pointer offset.
   Offset get currentPointerOffset => _pointerMoveOffset ?? (_pointerDownOffset ?? Offset.zero);
 
+  Offset get originOffset {
+    switch (context.origin) {
+      case TouchRippleOrigin.pointer_down: return _pointerDownOffset!;
+      case TouchRippleOrigin.pointer_move: return currentPointerOffset;
+      case TouchRippleOrigin.center: return Offset(size.width / 2, size.height / 2);
+    }
+  }
+
   /// Returns the distance the pointer has moved since it was detected.
   Offset get pointerMoveDistance =>
       (_pointerDownOffset ?? Offset.zero) - (_pointerMoveOffset ?? Offset.zero);
 
   /// Returns the render box corresponding to the initialized build context.
-  RenderBox get _renderBox => context.findRenderObject() as RenderBox;
+  RenderBox get _renderBox => context.context.findRenderObject() as RenderBox;
+
+  /// Returns the current intrinsic size of the rendered widget.
+  Size get size => _renderBox.size;
 
   /// Returns whether to reject the gesture based on the given pointer offset.
   bool rejectByOffset(Offset offset) {
-    if (rejectBehavior == TouchRippleRejectBehavior.none) return false;
-    if (rejectBehavior == TouchRippleRejectBehavior.leave) {
+    if (context.rejectBehavior == TouchRippleRejectBehavior.none) return false;
+    if (context.rejectBehavior == TouchRippleRejectBehavior.leave) {
       return !_renderBox.hitTest(BoxHitTestResult(), position: offset);
     }
 
@@ -228,14 +239,13 @@ class HoldingGestureRecognizer extends OneSequenceGestureRecognizer {
 class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   TouchRippleTapGestureRecognizer({
     required super.context,
-    required super.rejectBehavior,
     required super.onlyMainButton,
     required this.onTap,
     required this.onTapRejectable,
     required this.onTapReject,
     required this.onTapAccept,
     required this.previewMinDuration,
-    required this.acceptableDuration
+    required this.acceptableDuration,
   });
 
   /// The callback function is invoked when a gesture recognizer is ultimately accepted.
@@ -259,7 +269,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
     if (previewMinDuration != Duration.zero) {
       _previewTimer = Timer(previewMinDuration, () {
         isRejectable = true;
-        onTapRejectable.call(currentPointerOffset);
+        onTapRejectable.call(originOffset);
       });
     }
 
@@ -276,7 +286,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
       return onTapAccept.call();
     }
 
-    onTap.call(currentPointerOffset);
+    onTap.call(originOffset);
   }
 
   @override
@@ -300,7 +310,6 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
 
   TouchRippleDoubleTapGestureRecognizer({
     required super.context,
-    required super.rejectBehavior,
     required super.onlyMainButton,
     required this.acceptableDuration,
     required this.aliveDuration,
@@ -357,7 +366,7 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
       assert(_rejectTimer!.isActive || isFocusActive, "In the correct, double taps cannot occur without the reject timer is active.");
       _rejectTimer?.cancel();
 
-      if (onDoubleTap(currentPointerOffset, count++)) {
+      if (onDoubleTap(originOffset, count++)) {
         // Calls the likecycle callback function that is called when started.
         if (tapCount == 2) {
           focusStart();
@@ -395,7 +404,6 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
 class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer with FocusableGestureRecognizerMixin {
   TouchRippleLongTapGestureRecognizer({
     required super.context,
-    required super.rejectBehavior,
     required super.onlyMainButton,
     required this.delayDuration,
     required this.cycleDuration,
@@ -440,7 +448,7 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
   void onPointerDown(PointerDownEvent event) {
     delayTimer = Timer(delayDuration, () {
       isRejectable = true;
-      onLongTapRejectable.call(currentPointerOffset);
+      onLongTapRejectable.call(originOffset);
 
       if (focusTiming == TouchRippleFocusTiming.rejectable) {
         focusStart();
@@ -472,7 +480,7 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
     cycleTimer?.cancel();
     cycleTimer = Timer(cycleDuration, () {
       isRejectable = true;
-      onLongTapRejectable.call(currentPointerOffset);
+      onLongTapRejectable.call(originOffset);
 
       // Perform delayed recursive as async about this consecutive task.
       acceptTimer = Timer(acceptableDuration, () => checkConsecutive(pointer));

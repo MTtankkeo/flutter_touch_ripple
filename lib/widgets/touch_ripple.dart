@@ -59,6 +59,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.overlapBehavior,
     this.renderOrderType,
     this.focusTiming,
+    this.origin,
     this.hoverAnimation,
     this.focusAnimation,
     this.useHoverEffect,
@@ -220,6 +221,10 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// The enumeration defines when the focus of a touch ripple should start,
   /// specifying the priority based on timing conditions.
   final TouchRippleFocusTiming? focusTiming;
+
+  /// The enumeration defines the starting point of a spread ripple effect,
+  /// specifying the origin of the ripple based on the user interaction.
+  final TouchRippleOrigin? origin;
 
   /// The instance of the fade animation for the touch ripple effect
   /// when the hover effect is triggered.
@@ -502,6 +507,13 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
     return widget.focusTiming
         ?? style?.focusTiming
         ?? TouchRippleFocusTiming.rejectable;
+  }
+
+  @override
+  TouchRippleOrigin get origin {
+    return widget.origin
+        ?? style?.origin
+        ?? TouchRippleOrigin.pointer_move;
   }
 
   @override

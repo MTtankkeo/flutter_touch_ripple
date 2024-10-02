@@ -5,7 +5,7 @@
         <thead>
           <tr>
             <th>Version</th>
-            <th>v2.0.1</th>
+            <th>v2.1.0</th>
           </tr>
         </tbody>
     </table>
@@ -108,6 +108,7 @@ TouchRippleStyle(
 | overlapBehavior | The behavior of a touch ripple when it overlaps with other ripple effects. (e.g. overlappable, cancel, ignore) | TouchRippleOverlapBehavior? |
 | renderOrderType | The enumeration specifies the rendering order of the touch ripple effect, determining whether it should appear in the foreground or background. | TouchRippleRenderOrderType? |
 | focusTiming | The enumeration defines when the focus of a touch ripple should start, specifying the priority based on timing conditions. | TouchRippleFocusTiming? |
+| origin | The enumeration defines the starting point of a spread ripple effect, specifying the origin of the ripple based on the user interaction. | TouchRippleOrigin? |
 | hoverAnimation | The instance of the fade animation for the touch ripple effect when the hover effect is triggered. | TouchRippleAnimation? |
 | focusAnimation | The instance of the fade animation for the touch ripple effect when the focus effect is triggered. | TouchRippleAnimation? |
 | onlyMainButton | The boolean that is whether only the main button is recognized as a gesture when the user that is using mouse device clicks on the widget. | bool? |
