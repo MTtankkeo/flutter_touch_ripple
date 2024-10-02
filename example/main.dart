@@ -18,7 +18,7 @@ class RootApp extends StatelessWidget {
             onTap: () => print("Hello, Tap!"),
             child: const Padding(
               padding: EdgeInsets.all(20),
-              child: Text("Hello, World!", style: TextStyle(fontSize: 32, color: Colors.white)),
+              child: Text("Hello, World!", style: TextStyle(fontSize: 32)),
             ),
           ),
         )
