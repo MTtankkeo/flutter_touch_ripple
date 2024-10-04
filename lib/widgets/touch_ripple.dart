@@ -60,6 +60,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.renderOrderType,
     this.focusTiming,
     this.origin,
+    this.shape,
     this.hoverAnimation,
     this.focusAnimation,
     this.useHoverEffect,
@@ -226,6 +227,10 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// specifying the origin of the ripple based on the user interaction.
   final TouchRippleOrigin? origin;
 
+  /// The enumeration defines the shape of the ripple effect based on
+  /// the widget layout, specifying how the ripple appears visually.
+  final TouchRippleShape? shape;
+
   /// The instance of the fade animation for the touch ripple effect
   /// when the hover effect is triggered.
   final TouchRippleAnimation? hoverAnimation;
@@ -297,7 +302,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
     final _renderOrderType =
          widget.renderOrderType
       ?? style?.renderOrderType
-      ?? TouchRippleRenderOrderType.background;
+      ?? TouchRippleRenderOrderType.foreground;
 
     return TouchRippleGestureDetector<T>(
       onTap: widget.onTap,
@@ -333,7 +338,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
   Color get rippleColor {
     return widget.rippleColor
         ?? style?.rippleColor
-        ?? const Color.fromRGBO(0, 0, 0, 0.2);
+        ?? const Color.fromRGBO(0, 0, 0, 0.1);
   }
 
   @override
@@ -514,6 +519,13 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
     return widget.origin
         ?? style?.origin
         ?? TouchRippleOrigin.pointer_move;
+  }
+
+  @override
+  TouchRippleShape get shape {
+    return widget.shape
+        ?? style?.shape
+        ?? TouchRippleShape.normal;
   }
 
   @override

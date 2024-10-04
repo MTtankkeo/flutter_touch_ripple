@@ -31,6 +31,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.renderOrderType,
     this.focusTiming,
     this.origin,
+    this.shape,
     this.focusAnimation,
     this.hoverAnimation,
     this.useHoverEffect,
@@ -125,6 +126,10 @@ class TouchRippleStyle extends InheritedWidget {
   /// effect, specifying the origin of the ripple based on the user interaction.
   final TouchRippleOrigin? origin;
 
+  /// The value defines the enumeration defines the shape of the ripple effect
+  /// based on the widget layout, specifying how the ripple appears visually.
+  final TouchRippleShape? shape;
+
   /// The value defines the instance of the fade animation for the touch ripple
   /// effect when the hover effect is triggered.
   final TouchRippleAnimation? hoverAnimation;
@@ -174,6 +179,7 @@ class TouchRippleStyle extends InheritedWidget {
         || renderOrderType != oldWidget.renderOrderType
         || focusTiming != oldWidget.focusTiming
         || origin != oldWidget.origin
+        || shape != oldWidget.shape
         || hoverAnimation != oldWidget.hoverAnimation
         || focusAnimation != oldWidget.focusAnimation
         || useHoverEffect != oldWidget.useHoverEffect

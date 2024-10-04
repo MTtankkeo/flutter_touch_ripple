@@ -38,10 +38,20 @@
 * Added onTapAsync, onTapAsyncStart, onTapAsyncEnd of touch ripple event.
 
 ## 2.0.0
-- All code for greater flexibility and maintainability, and tested. Added a TouchRippleStyle inherited widget, similar to PrimaryScrollController. The gesture-recognizing widget was separated to render the touch ripple effect independently.
+* All code for greater flexibility and maintainability, and tested. Added a TouchRippleStyle inherited widget, similar to PrimaryScrollController. The gesture-recognizing widget was separated to render the touch ripple effect independently.
 
 ## 2.1.0
-- Added `TouchRippleOrigin` enumeration to define the starting point of a spread ripple effect based on user interaction. It includes the following options:
+* Added `TouchRippleOrigin` enumeration to define the starting point of a spread ripple effect based on user interaction. It includes the following options:
   - `pointer_down`: The ripple starts from the point where the pointer touches down.
   - `pointer_move`: The ripple starts from the point where the pointer moves.
   - `center`: The ripple starts from the center of the widget, regardless of the pointer's position.
+
+## 2.2.0
+* Changed the opacity of the default ripple color from `0.2` to `0.1`.
+
+* Changed the default TouchRippleRenderOrderType value from `TouchRippleRenderOrderType.background` to `TouchRippleRenderOrderType.foreground`.
+
+* Added `TouchRippleShape` enumeration defines the shape of the ripple effect based on the widget layout, specifying how the ripple appears visually. It includes the following options:
+  - `normal`: The shape to a square that corresponds to the area occupied by the widget layout.
+  - `inner_circle`: The shape to a circle that remains within the bounds of the widget layout.
+  - `outer_circle`: The shape to a circle that extends beyond the bounds of the widget layout.

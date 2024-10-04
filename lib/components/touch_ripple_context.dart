@@ -3,7 +3,7 @@ import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 
 /// The mixin provides necessary information for gesture behaviors
-/// and other rendering processes about touch ripple.
+/// and other rendering processes about the touch ripple effects.
 mixin TouchRippleContext {
   /// Returns the instance of a [TickerProvider] for playing
   /// ripple effects and other animations.
@@ -102,9 +102,13 @@ mixin TouchRippleContext {
   /// should start, specifying the priority based on timing conditions.
   TouchRippleFocusTiming get focusTiming;
 
-  /// Returns The enumeration defines the starting point of a spread ripple effect,
+  /// Returns the enumeration defines the starting point of a spread ripple effect,
   /// specifying the origin of the ripple based on the user interaction.
   TouchRippleOrigin get origin;
+
+  /// Returns the enumeration defines the shape of the ripple effect based
+  /// on the widget layout, specifying how the ripple appears visually.
+  TouchRippleShape get shape;
 
   /// Returns whether the hover effect is enabled for touch ripple animations.
   /// If true, a solid hover effect is applied when the user hovers.
@@ -187,4 +191,20 @@ enum TouchRippleOrigin {
   /// Sets the effect to originate from the center of the widget, regardless
   /// of the pointer's position.
   center,
+}
+
+/// The enumeration defines the shape of the ripple effect based on
+/// the widget layout, specifying how the ripple appears visually.
+enum TouchRippleShape {
+  /// Sets the shape to a square that corresponds to the area occupied
+  /// by the widget layout.
+  normal,
+
+  /// Sets the shape to a circle that remains within the bounds of 
+  /// the widget layout.
+  inner_circle,
+
+  /// Sets the shape to a circle that extends beyond the bounds of 
+  /// the widget layout.
+  outer_circle,
 }
