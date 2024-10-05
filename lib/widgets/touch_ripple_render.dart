@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_touch_ripple/components/touch_ripple_controller.dart';
-import 'package:flutter_touch_ripple/components/touch_ripple_effect.dart';
+import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 
 /// The enumeration specifies the rendering order of the touch ripple effect,
 /// determining whether it should appear in the foreground or background.
@@ -91,21 +92,47 @@ class TouchRipplePainter extends CustomPainter {
 
   /// Draws a painting corresponding to a given instance of touch ripple effect.
   void paintByState(Canvas canvas, Size size, TouchRippleEffect effect) {
+    effect.paint(controller.context, canvas, size);
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final borderRadius = controller.context.rippleBorderRadius;
+    final clippingType = controller.context.shape;
+
     // Returns a Rect instance corresponding to the current canvas size
     // and calculates it based on the center.
-    Rect getSizeRect() {
+    Rect sizeRectOf(Size size) {
       final scaledSize = size * controller.context.rippleScale;
       final offset = (sizeToOffset(size) - sizeToOffset(scaledSize)) / 2;
 
       return Rect.fromLTWH(offset.dx, offset.dy, scaledSize.width, scaledSize.height);
     }
 
-    canvas.clipRRect(controller.context.rippleBorderRadius.toRRect(getSizeRect()));
-    effect.paint(controller.context, canvas, size);
-  }
+    if (clippingType == TouchRippleShape.normal) {
+      // When the border radius is zero, no RRect operation is required.
+      borderRadius == BorderRadius.zero
+        ? canvas.clipRect(sizeRectOf(size))
+        : canvas.clipRRect(borderRadius.toRRect(sizeRectOf(size)));
+    } else {
+      late double rippleSize;
 
-  @override
-  void paint(Canvas canvas, Size size) {
+      if (clippingType == TouchRippleShape.inner_circle) {
+        rippleSize = max(size.width, size.height);
+      } else {
+        rippleSize = Offset(size.width, size.height).distance;
+      }
+
+      final dx = (size.width - rippleSize) / 2;
+      final dy = (size.height - rippleSize) / 2;
+
+      canvas.clipRRect(
+        BorderRadius.circular(1e10).toRRect(
+          Rect.fromLTWH(dx, dy, rippleSize, rippleSize)
+        ),
+      );
+    }
+
     for (final effect in controller.activeEffects) {
       paintByState(canvas, size, effect);
     }
