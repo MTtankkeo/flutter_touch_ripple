@@ -123,6 +123,9 @@ class TouchRipplePainter extends CustomPainter {
         rippleSize = Offset(size.width, size.height).distance;
       }
 
+      // The post processing for the ripple scale.
+      rippleSize *= controller.context.rippleScale;
+
       final dx = (size.width - rippleSize) / 2;
       final dy = (size.height - rippleSize) / 2;
 
