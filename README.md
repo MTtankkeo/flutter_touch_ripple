@@ -203,6 +203,24 @@ The enumeration defines the starting point of a spread ripple effect, specifying
 ### When TouchRippleOrigin.center
 ![center](https://github.com/user-attachments/assets/3f8e07b4-afa6-48cb-b0ae-82a4d5b857fc)
 
+## The Properties of TouchRippleShape
+The enumeration defines the shape of the ripple effect based on the widget layout, specifying how the ripple appears visually.
+
+| Name | Description |
+| ---- | ----------- |
+| normal | Sets the shape to a square that corresponds to the area occupied by the widget layout. |
+| inner_circle | Sets the shape to a circle that remains within the bounds of the widget layout. |
+| outer_circle | Sets the shape to a circle that extends beyond the bounds of the widget layout. |
+
+### When TouchRippleShape.normal
+![normal](https://github.com/user-attachments/assets/0abdf92a-296d-4f40-b0e2-1149d19f1502)
+
+### When TouchRippleShape.inner_circle
+![inner_circle](https://github.com/user-attachments/assets/2d90b2c1-9a76-4a07-abff-739031b438e5)
+
+### When TouchRippleShape.outer_circle
+![outer_circle](https://github.com/user-attachments/assets/a00a15f9-4846-4c5d-887c-79637d6ac21d)
+
 ## The Properties of TouchRippleRenderOrderType
 The enumeration specifies the rendering order of the touch ripple effect, determining whether it should appear in the foreground or background.
 
