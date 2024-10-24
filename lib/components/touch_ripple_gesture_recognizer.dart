@@ -52,16 +52,16 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
       (_pointerDownOffset ?? Offset.zero) - (_pointerMoveOffset ?? Offset.zero);
 
   /// Returns the render box corresponding to the initialized build context.
-  RenderBox get _renderBox => context.context.findRenderObject() as RenderBox;
+  RenderBox? get _renderBox => context.context.findRenderObject() as RenderBox?;
 
   /// Returns the current intrinsic size of the rendered widget.
-  Size get size => _renderBox.size;
+  Size get size => _renderBox?.size ?? Size.zero;
 
   /// Returns whether to reject the gesture based on the given pointer offset.
   bool rejectByOffset(Offset offset) {
     if (context.rejectBehavior == TouchRippleRejectBehavior.none) return false;
-    if (context.rejectBehavior == TouchRippleRejectBehavior.leave) {
-      return !_renderBox.hitTest(BoxHitTestResult(), position: offset);
+    if (context.rejectBehavior == TouchRippleRejectBehavior.leave && _renderBox != null) {
+      return !_renderBox!.hitTest(BoxHitTestResult(), position: offset);
     }
 
     // is TouchRippleCancalBehavior.touchSlop
@@ -81,10 +81,8 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
       return reject();
     }
 
-    final localPosition = _renderBox.globalToLocal(event.position);
-
-    if (event is PointerDownEvent) _pointerDownOffset = localPosition;
-    if (event is PointerMoveEvent) _pointerMoveOffset = localPosition;
+    if (event is PointerDownEvent) _pointerDownOffset = event.localPosition;
+    if (event is PointerMoveEvent) _pointerMoveOffset = event.localPosition;
 
     // Calls the callback function corresponding to the given event.
     if (event is PointerDownEvent) onPointerDown(event);

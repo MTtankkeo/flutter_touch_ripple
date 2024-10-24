@@ -55,3 +55,6 @@
   - `normal`: The shape to a square that corresponds to the area occupied by the widget layout.
   - `inner_circle`: The shape to a circle that remains within the bounds of the widget layout.
   - `outer_circle`: The shape to a circle that extends beyond the bounds of the widget layout.
+
+## 2.2.2
+* Fixed an issue about [issues/1](https://github.com/MTtankkeo/flutter_touch_ripple/issues/1) for the null-safety exception about RenderBox reference.
