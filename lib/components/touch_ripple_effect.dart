@@ -103,7 +103,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   /// Returns animation progress value of spread animation.
   double get spreadPercent {
-    if (isInitialized) return 0;
+    if (!isInitialized) return 0;
     final lowerPercent = behavior.lowerPercent ?? 0;
     final upperPercent = behavior.upperPercent ?? 1;
 
@@ -112,7 +112,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   /// Returns animation progress value of fade animation.
   double get fadePercent {
-    if (isInitialized) return 0;
+    if (!isInitialized) return 0;
     final lowerPercent = behavior.fadeLowerPercent ?? 0;
     final upperPercent = behavior.fadeUpperPercent ?? 1;
 
