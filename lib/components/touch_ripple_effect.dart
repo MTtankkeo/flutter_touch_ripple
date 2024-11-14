@@ -17,7 +17,7 @@ abstract class TouchRippleEffect extends Listenable {
   bool isInitialized = false;
 
   /// Disposes of the Ticker or related animation instances.
-  /// 
+  ///
   /// Calling this function resolves errors and memory leaks that may occur
   /// when the widget has been disposed but the effect-related instances remain.
   void dispose() {
@@ -103,6 +103,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   /// Returns animation progress value of spread animation.
   double get spreadPercent {
+    if (isInitialized) return 0;
     final lowerPercent = behavior.lowerPercent ?? 0;
     final upperPercent = behavior.upperPercent ?? 1;
 
@@ -111,6 +112,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   /// Returns animation progress value of fade animation.
   double get fadePercent {
+    if (isInitialized) return 0;
     final lowerPercent = behavior.fadeLowerPercent ?? 0;
     final upperPercent = behavior.fadeUpperPercent ?? 1;
 
@@ -119,12 +121,14 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   @override
   void addListener(VoidCallback listener) {
+    assert(isInitialized, "The animation instances has not yet been initialized.");
     _spreadAnimation.addListener(listener);
     _fadeAnimation.addListener(listener);
   }
 
   @override
   void removeListener(VoidCallback listener) {
+    assert(isInitialized, "The animation instances has not yet been initialized.");
     _spreadAnimation.addListener(listener);
     _fadeAnimation.addListener(listener);
   }
@@ -162,7 +166,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   /// If the gesture could be rejected and is eventually accepted,
   /// please call the corresponding function.
   void onAccepted() {
-    assert(isRejectable, 'The gesture has already been defined as accepted.');
+    assert(isInitialized, "The animation instances has not yet been initialized.");
+    assert(isRejectable, "The gesture has already been defined as accepted.");
     isRejectable = false;
     _spreadAnimation.notifyListeners();
     _spreadAnimation.notifyStatusListeners(_spreadAnimation.status);
@@ -223,10 +228,13 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   @override
   void dispose() {
     onDispose?.call();
-    _spreadAnimation.dispose();
-    _spreadCurved.dispose();
-    _fadeAnimation.dispose();
-    _fadeCurved.dispose();
+
+    if (isInitialized) {
+      _spreadAnimation.dispose();
+      _spreadCurved.dispose();
+      _fadeAnimation.dispose();
+      _fadeCurved.dispose();
+    }
   }
 }
 
@@ -271,19 +279,22 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
 
   @override
   void addListener(VoidCallback listener) {
+    assert(isInitialized, "The animation instances has not yet been initialized.");
     _fadeAnimation.addListener(listener);
   }
 
   @override
   void removeListener(VoidCallback listener) {
+    assert(isInitialized, "The animation instances has not yet been initialized.");
     _fadeAnimation.removeListener(listener);
   }
 
   @override
   void dispose() {
-    if (!isInitialized) return;
-    _fadeAnimation.dispose();
-    _fadeCurved.dispose();
+    if (isInitialized) {
+      _fadeAnimation.dispose();
+      _fadeCurved.dispose();
+    }
   }
 
   fadeIn() {
