@@ -13,6 +13,9 @@ abstract class TouchRippleEffect extends Listenable {
   /// Whether the ripple effect is attached to the touch ripple controller.
   bool isAttached = false;
 
+  /// Whether all animation-related instances have been initialized.
+  bool isInitialized = false;
+
   /// Disposes of the Ticker or related animation instances.
   /// 
   /// Calling this function resolves errors and memory leaks that may occur
@@ -81,6 +84,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     _fadeAnimation.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) dispose();
     });
+
+    isInitialized = true;
   }
 
   // The offset that serves as the reference point for a spread ripple effect.
@@ -130,6 +135,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   }
 
   start() {
+    // Cannot perform the animation task without all animation-related instances being initialized.
+    if (!isInitialized) return;
     _spreadAnimation.forward();
   }
 
@@ -137,8 +144,11 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   /// to the defined action and forces the effect to fade out.
   /// In some cases, it cancels the effect altogether.
   void cancel() {
+    // Cannot perform the animation task without all animation-related instances being initialized.
+    if (!isInitialized) return;
+
     _fadeAnimation.reverseDuration = behavior.cancelDuration;
-    _fadeCurved.reverseCurve = behavior.cancelCurve!;
+    _fadeCurved.reverseCurve = behavior.cancelCurve;
     _fadeAnimation.reverse();
 
     switch (context.cancelBehavior) {
@@ -241,6 +251,8 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
     _fadeCurved.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) onDispose?.call();
     });
+
+    isInitialized = true;
   }
 
   /// The animation controller for the fade in or fade-out animation of
@@ -255,7 +267,7 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
   final Color color;
 
   /// Returns animation progress value of fade animation.
-  double get fadePercent => _fadeCurved.value;
+  double get fadePercent => isInitialized ? _fadeCurved.value : 0;
 
   @override
   void addListener(VoidCallback listener) {
@@ -269,12 +281,18 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
 
   @override
   void dispose() {
+    if (!isInitialized) return;
     _fadeAnimation.dispose();
     _fadeCurved.dispose();
   }
 
-  fadeIn() => _fadeAnimation.forward();
-  fadeOut() => _fadeAnimation.reverse();
+  fadeIn() {
+    if (isInitialized) _fadeAnimation.forward();
+  }
+
+  fadeOut() {
+    if (isInitialized) _fadeAnimation.reverse();
+  }
 
   @override
   void paint(TouchRippleContext context, Canvas canvas, Size size) {
