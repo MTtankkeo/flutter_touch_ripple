@@ -59,5 +59,5 @@
 ## 2.2.2
 * Fixed an issue about [issues/1](https://github.com/MTtankkeo/flutter_touch_ripple/issues/1) for the null-safety exception about RenderBox reference.
 
-## 2.2.3 ~ 2.2.31
+## 2.2.3 ~ 2.2.32
 * Fixed an issue related to [issues/1](https://github.com/MTtankkeo/flutter_touch_ripple/issues/1) for the 'Null check operator used on a null value' exception by adopting a verification approach to ensure necessary instances are initialized.

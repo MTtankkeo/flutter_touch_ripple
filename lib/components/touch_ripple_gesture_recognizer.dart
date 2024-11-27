@@ -60,8 +60,8 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   /// Returns whether to reject the gesture based on the given pointer offset.
   bool rejectByOffset(Offset offset) {
     if (context.rejectBehavior == TouchRippleRejectBehavior.none) return false;
-    if (context.rejectBehavior == TouchRippleRejectBehavior.leave && _renderBox != null) {
-      return !_renderBox!.hitTest(BoxHitTestResult(), position: offset);
+    if (context.rejectBehavior == TouchRippleRejectBehavior.leave) {
+      return _renderBox?.hitTest(BoxHitTestResult(), position: offset) ?? true;
     }
 
     // is TouchRippleCancalBehavior.touchSlop
