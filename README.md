@@ -1,16 +1,3 @@
-<div align="center">
-    <img width="200" src="https://github.com/user-attachments/assets/6c330404-34cc-4a66-b6b1-5f4651c4aa85">
-    <h1>Flutter Touch Ripple</h1>
-    <table>
-        <thead>
-          <tr>
-            <th>Version</th>
-            <th>v2.2.32</th>
-          </tr>
-        </tbody>
-    </table>
-</div>
-
 # Introduction
 This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally.
 
