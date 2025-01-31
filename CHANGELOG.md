@@ -63,6 +63,8 @@
 * Fixed an issue related to [issues/1](https://github.com/MTtankkeo/flutter_touch_ripple/issues/1) for the 'Null check operator used on a null value' exception by adopting a verification approach to ensure necessary instances are initialized.
 
 ## 2.3.0
+* Added the `TouchRipplePointerListener` widget for the nested gestures.
+
 * Fixed an issue where the tap effect preview would also occur in parent widgets in a nested touch ripple environment. For more details, refer to the `TouchRipplePointerListener` widget.
 
 * Fixed issues arising from incorrect code logic during the previous exception handling process, where rejection occurred at the wrong time (such as the pointer being rejected before leaving the widget's area).
