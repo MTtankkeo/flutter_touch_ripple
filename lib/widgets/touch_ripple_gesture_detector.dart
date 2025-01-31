@@ -2,6 +2,7 @@ import "dart:io";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_touch_ripple/flutter_touch_ripple.dart";
+import "package:flutter_touch_ripple/widgets/touch_ripple_pointer_listener.dart";
 
 /// Signature for the builder function that creates an instance of [GestureRecognizer].
 typedef GestureRecognizerBuilder<T extends GestureRecognizer> = T Function();
@@ -399,7 +400,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
 
   @override
   Widget build(BuildContext context) {
-    final listener = Listener(
+    final listener = TouchRipplePointerListener(
       behavior: widget.behavior,
       onPointerDown: _handlePointerDown,
       child: widget.child,
