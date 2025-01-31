@@ -159,7 +159,6 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       case TouchRippleCancelBehavior.none: break;
       case TouchRippleCancelBehavior.stop: _spreadAnimation.stop(); break;
       case TouchRippleCancelBehavior.reverse: _spreadAnimation.reverse(); break;
-      default: assert(true, "No corresponding task for declared enumeration value.");
     }
   }
 
