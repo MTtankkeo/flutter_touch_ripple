@@ -321,7 +321,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       onHoverStart: widget.onHoverStart,
       onHoverEnd: widget.onHoverEnd,
       onlyMainButton: widget.onlyMainButton ?? style?.onlyMainButton,
-      behavior: widget.hitBehavior ?? HitTestBehavior.translucent,
+      behavior: widget.hitBehavior ?? HitTestBehavior.opaque,
       controller: _controller,
       child: TouchRippleRender(
         controller: _controller,

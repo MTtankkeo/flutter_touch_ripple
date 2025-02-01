@@ -68,3 +68,6 @@
 * Fixed an issue where the tap effect preview would also occur in parent widgets in a nested touch ripple environment. For more details, refer to the `TouchRipplePointerListener` widget.
 
 * Fixed issues arising from incorrect code logic during the previous exception handling process, where rejection occurred at the wrong time (such as the pointer being rejected before leaving the widget's area).
+
+## 2.3.1
+* Modify the default hit behavior of the touch ripple from `HitTestBehavior.translucent` to `HitTestBehavior.opaque`.

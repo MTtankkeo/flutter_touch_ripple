@@ -28,7 +28,7 @@ class TouchRippleGestureDetector<T extends dynamic> extends StatefulWidget {
     this.onHoverStart,
     this.onHoverEnd,
     this.onlyMainButton,
-    this.behavior = HitTestBehavior.translucent,
+    this.behavior = HitTestBehavior.opaque,
     this.cursor = MouseCursor.defer,
     required this.controller,
     required this.child,
