@@ -1,7 +1,7 @@
 # Introduction
 This Flutter package allows developer to customize most of the behaviors and animations, with excellent performance and a touch effect package that can be controlled externally.
 
-> See Also, If you want the change-log by version for this package. refer to [Change Log](CHANGELOG.md) for details.
+> See Also, If you want to watch the tutorial video for that package. [click to this](https://www.youtube.com/watch?v=tVT3ZOxDGzc), If you want the change-log by version for this package. refer to [Change Log](CHANGELOG.md) for details.
 
 | Event Type | Description | ♾️ Async | ♻️ Consecutive |
 | ---------- | ----------- | ----- | ----------- |
