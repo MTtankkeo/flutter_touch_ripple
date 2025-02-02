@@ -98,6 +98,7 @@ TouchRippleStyle(
 | renderOrderType | The enumeration specifies the rendering order of the touch ripple effect, determining whether it should appear in the foreground or background. | TouchRippleRenderOrderType? |
 | focusTiming | The enumeration defines when the focus of a touch ripple should start, specifying the priority based on timing conditions. | TouchRippleFocusTiming? |
 | origin | The enumeration defines the starting point of a spread ripple effect, specifying the origin of the ripple based on the user interaction. | TouchRippleOrigin? |
+| shape | The enumeration defines the shape of the ripple effect based on the widget layout, specifying how the ripple appears visually. | TouchRippleShape? |
 | hoverAnimation | The instance of the fade animation for the touch ripple effect when the hover effect is triggered. | TouchRippleAnimation? |
 | focusAnimation | The instance of the fade animation for the touch ripple effect when the focus effect is triggered. | TouchRippleAnimation? |
 | onlyMainButton | The boolean that is whether only the main button is recognized as a gesture when the user that is using mouse device clicks on the widget. | bool? |
