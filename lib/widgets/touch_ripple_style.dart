@@ -152,7 +152,7 @@ class TouchRippleStyle extends InheritedWidget {
   final bool? onlyMainButton;
 
   /// Returns the [TouchRippleStyle] most closely associated with the given
-  /// context, and returns null if there is no [ScrollController] associated
+  /// context, and returns null if there is no [TouchRippleStyle] associated
   /// with the given context.
   static TouchRippleStyle? maybeOf(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<TouchRippleStyle>();
