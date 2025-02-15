@@ -8,7 +8,8 @@ This Flutter package allows developer to customize most of the behaviors and ani
 | Tap        | When the user taps or clicks. | 🟢 | 🔴 |
 | Double Tap | When the user double taps or double clicks. | 🔴 | 🟢 |
 | Long Tap   | When the user long tap or long press. | 🔴 | 🟢 |
-| Drag(V, H) | Not support yet. | 🟡 | 🟡 |
+| Drag Horizontal | When the user dragging to left or right. | 🟡 | 🟡 |
+| Drag Vertical | When the user dragging to top or bottom. | 🟡 | 🟡 |
 
 ## Preview
 The gif image below may appear distorted and choppy due to compression.
@@ -72,6 +73,12 @@ TouchRippleStyle(
 | onLongTap | The callback function is called when the user long presses or long clicks. | TouchRippleContinuableCallback? |
 | onLongTapStart | The callback function is a lifecycle callback for the long-tap event. It is called when a long tap starts, which is useful for initiating actions that require a sustained press. | VoidCallback? |
 | onLongTapEnd | The callback function is a lifecycle callback for the long-tap event. It is called when a long tap ends, providing the advantage of knowing when a series of consecutive long taps has concluded. | VoidCallback? |
+| onDragHorizontal | The callback function is called when the user dragging to left or right. | TouchRippleDragCallback? |
+| onDragHorizontalStart | The callback function is a lifecycle callback for the horizontal drag event. It is called when a horizontal drag starts, which is useful for handling actions that occur at the beginning of the drag. | VoidCallback? |
+| onDragHorizontalEnd | The callback function is a lifecycle callback for the horizontal drag event. It is called when a horizontal drag ends, providing the advantage of knowing when the drag interaction has finished. | VoidCallback? |
+| onDragVertical | The callback function is called when the user dragging to top or bottom. | TouchRippleDragCallback? |
+| onDragVerticalStart | The callback function is a lifecycle callback for the vertical drag event. It is called when a vertical drag starts, which is useful for handling actions that occur at the beginning of the drag. | VoidCallback? |
+| onDragVerticalEnd | The callback function is a lifecycle callback for the vertical drag event. It is called when a vertical drag ends, providing the advantage of knowing when the drag interaction has finished. | VoidCallback? |
 | onFocusStart | The callback function is a lifecycle callback for focus touch ripple events. It is called when a focus touch event starts, allowing for the initiation of actions based on the beginning of the focus event sequence. | VoidCallback? |
 | onFocusEnd | The callback function is a lifecycle callback for focus touch ripple events. It is called when a focus touch event ends, providing the advantage of knowing when a series of focus touch ripple events has concluded. | VoidCallback? |
 | onHoverStart | The callback function called when the cursor begins hovering over the widget. (by [MouseRegion]) This function allows for the initiation of actions based on the hover interaction. This function is not called in touch-based environments yet. | VoidCallback? |
@@ -92,6 +99,7 @@ TouchRippleStyle(
 | tapBehavior | The touch ripple behavior applied to the touch ripple effect for tapped or clicked. | TouchRippleBehavior? |
 | doubleTapBehavior | The touch ripple behavior applied to the touch ripple effect for double tapped or double clicked. | TouchRippleBehavior? |
 | longTapBehavior | The touch ripple behavior applied to the touch ripple effect for long tapped or long pressed and long clicked. | TouchRippleBehavior? |
+| dragBehavior | The touch ripple behavior applied to the touch ripple effect for the horizontal dragging or the vertical dragging. | TouchRippleBehavior? |
 | rejectBehavior | The behavior that defines when a gesture should be rejected, specifying the conditions for rejection. | TouchRippleRejectBehavior? |
 | cancelBehavior | The behavior that defines the touch ripple spread animation when the touch ripple effect is canceled. | TouchRippleCancelBehavior? |
 | overlapBehavior | The behavior of a touch ripple when it overlaps with other ripple effects. (e.g. overlappable, cancel, ignore) | TouchRippleOverlapBehavior? |

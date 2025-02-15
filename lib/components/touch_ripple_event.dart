@@ -35,3 +35,10 @@ typedef TouchRippleContinuableCallback = bool Function(int count);
 /// times the event has occurred consecutively. The returned [bool] specifies
 /// whether the event should continue after the consecutive occurrence.
 typedef TouchRippleConsecutiveCallback = bool Function(Offset offset, int count);
+
+/// Signature for the callback function that is called when the user drags  
+/// horizontally(e.g. left, right) or vertically(e.g. top, bottom) and the
+/// gesture event is accepted.
+///
+/// The [delta] parameter represents the distance dragged by the user.
+typedef TouchRippleDragCallback = void Function(double delta);

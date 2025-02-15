@@ -25,6 +25,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.tapBehavior,
     this.doubleTapBehavior,
     this.longTapBehavior,
+    this.dragBehavior,
     this.rejectBehavior,
     this.cancelBehavior,
     this.overlapBehavior,
@@ -69,6 +70,10 @@ class TouchRippleStyle extends InheritedWidget {
   /// The value defines the touch ripple behavior applied to the touch ripple
   /// effect for long tapped or long pressed and long clicked.
   final TouchRippleBehavior? longTapBehavior;
+
+  /// The value defines touch ripple behavior applied to the touch ripple
+  /// effect for the horizontal dragging or the vertical dragging.
+  final TouchRippleBehavior? dragBehavior;
 
   /// The value defines the duration for which the ripple effect is previewed
   /// even if the gesture is not finalized, allowing the user to see
@@ -167,6 +172,9 @@ class TouchRippleStyle extends InheritedWidget {
         || rippleBlurRadius != oldWidget.rippleBlurRadius
         || rippleBorderRadius != oldWidget.rippleBorderRadius
         || tapBehavior != oldWidget.tapBehavior
+        || doubleTapBehavior != oldWidget.doubleTapBehavior
+        || longTapBehavior != oldWidget.longTapBehavior
+        || dragBehavior != oldWidget.dragBehavior
         || previewDuration != oldWidget.previewDuration
         || tappableDuration != oldWidget.tappableDuration
         || doubleTappableDuration != oldWidget.doubleTappableDuration

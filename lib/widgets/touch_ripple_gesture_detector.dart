@@ -23,6 +23,12 @@ class TouchRippleGestureDetector<T extends dynamic> extends StatefulWidget {
     this.onLongTap,
     this.onLongTapStart,
     this.onLongTapEnd,
+    this.onDragHorizontal,
+    this.onDragHorizontalStart,
+    this.onDragHorizontalEnd,
+    this.onDragVertical,
+    this.onDragVerticalStart,
+    this.onDragVerticalEnd,
     this.onFocusStart,
     this.onFocusEnd,
     this.onHoverStart,
@@ -80,6 +86,32 @@ class TouchRippleGestureDetector<T extends dynamic> extends StatefulWidget {
   /// It is called when a long tap ends, providing the advantage of knowing 
   /// when a series of consecutive long taps has concluded.
   final VoidCallback? onLongTapEnd;
+
+  /// The callback function is called when the user dragging to left or right.
+  final TouchRippleDragCallback? onDragHorizontal;
+
+  /// The callback function is a lifecycle callback for the horizontal drag event.
+  /// It is called when a horizontal drag starts, which is useful for handling
+  /// actions that occur at the beginning of the drag.
+  final VoidCallback? onDragHorizontalStart;
+
+  /// The callback function is a lifecycle callback for the horizontal drag event.
+  /// It is called when a horizontal drag ends, providing the advantage of knowing
+  /// when the drag interaction has finished.
+  final VoidCallback? onDragHorizontalEnd;
+
+  /// The callback function is called when the user dragging to top or bottom.
+  final TouchRippleDragCallback? onDragVertical;
+
+  /// The callback function is a lifecycle callback for the vertical drag event.
+  /// It is called when a vertical drag starts, which is useful for handling
+  /// actions that occur at the beginning of the drag.
+  final VoidCallback? onDragVerticalStart;
+
+  /// The callback function is a lifecycle callback for the vertical drag event.
+  /// It is called when a vertical drag ends, providing the advantage of knowing
+  /// when the drag interaction has finished.
+  final VoidCallback? onDragVerticalEnd;
 
   /// The callback function is a lifecycle callback for focus touch ripple events.
   /// It is called when a focus touch event starts, allowing for the initiation
@@ -194,10 +226,13 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
     final isTapAsyncable = widget.onTapAsync != null;
     final isDoubleTappable = widget.onDoubleTap != null;
     final isLongTappable = widget.onLongTap != null;
+    final isDragableHorizontal = widget.onDragHorizontal != null;
+    final isDragableVertical = widget.onDragVertical != null;
+    final isDraggable = isDragableHorizontal || isDragableVertical;
 
     // If there is a gesture competitor other than itself,
     // the effect cannot be previewed for tap effect.
-    final previewMinDuration = isDoubleTappable || isLongTappable
+    final previewMinDuration = isDoubleTappable || isLongTappable || isDraggable
         ? Duration.zero
         : rippleContext.previewDuration;
 
@@ -360,6 +395,66 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         ..onFocusEnd = onFocusEnd
         ..onDispose = _recognizers.remove;
       });
+    }
+
+    { // Drag Gesture Recognizer
+      TouchRippleSpreadingEffect createTouchEffect(Offset offset) {
+        return TouchRippleSpreadingEffect(
+          context: rippleContext,
+          callback: () {},
+          isRejectable: true,
+          baseOffset: offset,
+          behavior: rippleContext.dragBehavior
+        );
+      }
+
+      if (isDragableHorizontal) {
+        _builders.add(() {
+          late TouchRippleSpreadingEffect activeEffect;
+
+          assert(rippleContext.dragBehavior.onlyMainButton != null);
+          assert(rippleContext.dragBehavior.eventCallBackableMinPercent == 0);
+          return TouchRippleDragGestureRecognizer(
+            context: rippleContext,
+            onlyMainButton: widget.onlyMainButton ?? rippleContext.dragBehavior.onlyMainButton!,
+            axis: Axis.horizontal,
+            onDrag: widget.onDragHorizontal!,
+            onDragStart: (offset) {
+              controller.attach(activeEffect = createTouchEffect(offset)..start());
+              widget.onDragHorizontalStart?.call();
+            },
+            onDragEnd: () {
+              activeEffect.onAccepted();
+              widget.onDragHorizontalEnd?.call();
+            },
+          )
+          ..onDispose = _recognizers.remove;
+        });
+      }
+
+      if (isDragableVertical) {
+        _builders.add(() {
+          late TouchRippleSpreadingEffect activeEffect;
+
+          assert(rippleContext.dragBehavior.onlyMainButton != null);
+          assert(rippleContext.dragBehavior.eventCallBackableMinPercent == 0);
+          return TouchRippleDragGestureRecognizer(
+            context: rippleContext,
+            onlyMainButton: widget.onlyMainButton ?? rippleContext.dragBehavior.onlyMainButton!,
+            axis: Axis.vertical,
+            onDrag: widget.onDragVertical!,
+            onDragStart: (offset) {
+              controller.attach(activeEffect = createTouchEffect(offset)..start());
+              widget.onDragVerticalStart?.call();
+            },
+            onDragEnd: () {
+              activeEffect.onAccepted();
+              widget.onDragVerticalEnd?.call();
+            },
+          )
+          ..onDispose = _recognizers.remove;
+        });
+      }
     }
   }
 

@@ -78,6 +78,10 @@ mixin TouchRippleContext {
   /// effect for long tapped or long pressed and long clicked.
   TouchRippleBehavior get longTapBehavior;
 
+  /// Returns the touch ripple behavior applied to the touch ripple
+  /// effect for the horizontal dragging or the vertical dragging.
+  TouchRippleBehavior get dragBehavior;
+
   /// Returns the behavior that defines when a gesture should be rejected,
   /// specifying the conditions for rejection.
   TouchRippleRejectBehavior get rejectBehavior;

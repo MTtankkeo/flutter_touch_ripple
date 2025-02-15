@@ -71,3 +71,12 @@
 
 ## 2.3.1
 * Modify the default hit behavior of the touch ripple from `HitTestBehavior.translucent` to `HitTestBehavior.opaque`.
+
+## 2.4.0
+* Added `TouchRippleDragGestureRecognizer` class for the drag gesture event about touch ripple.
+
+* Added `onDragHorizontal` property in TouchRipple widget because the horizontal drag gesture event has been introduced, along with lifecycle callback functions such as `onDragHorizontalStart` and `onDragHorizontalEnd`.
+
+* Added `onDragVertical` property in TouchRipple widget because the vertical drag gesture event has been introduced, along with lifecycle callback functions such as `onDragVerticalStart` and `onDragVerticalEnd`.
+
+* Added `dragBehavior` property in TouchRipple widget and TouchRippleStyle.

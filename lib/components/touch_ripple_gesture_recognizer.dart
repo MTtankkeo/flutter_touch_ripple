@@ -30,6 +30,9 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
 
   String get debugLabal;
 
+  /// The boolean that defines whether the gesture is accepted.
+  bool isAccepted = false;
+
   /// The pointer position when the pointer was first detected is defined.
   Offset? _pointerDownOffset;
 
@@ -59,6 +62,7 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
 
   /// Returns whether to reject the gesture based on the given pointer offset.
   bool rejectByOffset(Offset offset) {
+    if (isAccepted) return false;
     if (context.rejectBehavior == TouchRippleRejectBehavior.none) return false;
     if (context.rejectBehavior == TouchRippleRejectBehavior.leave) {
       return !(_renderBox?.hitTest(BoxHitTestResult(), position: offset) ?? false);
@@ -117,6 +121,7 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
 
     // Since the gesture was accepted, call the function below to allow it to be disposed.
     didStopTrackingLastPointer(pointer);
+    isAccepted = true;
   }
 
   @override
@@ -534,5 +539,57 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer w
     delayTimer?.cancel();
     cycleTimer?.cancel();
     acceptTimer?.cancel();
+  }
+}
+
+class TouchRippleDragGestureRecognizer extends TouchRippleGestureRecognizer {
+  TouchRippleDragGestureRecognizer({
+    required super.context,
+    required super.onlyMainButton,
+    required this.axis,
+    required this.onDrag,
+    required this.onDragStart,
+    required this.onDragEnd
+  });
+
+  final Axis axis;
+  final TouchRippleDragCallback onDrag;
+  final TouchRippleCallback? onDragStart;
+  final VoidCallback? onDragEnd;
+
+  @override
+  String get debugLabal => axis == Axis.horizontal ? "drag-horizontal" : "darg-vertical";
+
+  @override
+  void onPointerMove(PointerMoveEvent event) {
+    super.onPointerMove(event);
+
+    assert(_pointerDownOffset != null);
+    assert(_pointerMoveOffset != null);
+    final double delta = axis == Axis.horizontal
+      ? _pointerMoveOffset!.dx - _pointerDownOffset!.dx
+      : _pointerMoveOffset!.dy - _pointerDownOffset!.dy;
+
+    // Accepts the gesture when the user drags horizontally beyond the touch slop threshold.
+    if (delta.abs() >= kTouchSlop && !isAccepted) accept();
+    if (isAccepted) {
+      onDrag.call(delta);
+    }
+  }
+
+  @override
+  void onPointerUp(PointerUpEvent event) {
+    if (isAccepted) {
+      didStopTrackingLastPointer(event.pointer);
+      onDragEnd?.call();
+    } else {
+      reject();
+    }
+  }
+
+  @override
+  void acceptGesture(int pointer) {
+    isAccepted = true;
+    onDragStart?.call(currentPointerOffset);
   }
 }

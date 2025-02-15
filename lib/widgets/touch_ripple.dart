@@ -34,6 +34,12 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.onLongTap,
     this.onLongTapStart,
     this.onLongTapEnd,
+    this.onDragHorizontal,
+    this.onDragHorizontalStart,
+    this.onDragHorizontalEnd,
+    this.onDragVertical,
+    this.onDragVerticalStart,
+    this.onDragVerticalEnd,
     this.onFocusStart,
     this.onFocusEnd,
     this.onHoverStart,
@@ -54,6 +60,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.tapBehavior,
     this.doubleTapBehavior,
     this.longTapBehavior,
+    this.dragBehavior,
     this.rejectBehavior,
     this.cancelBehavior,
     this.overlapBehavior,
@@ -116,6 +123,32 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// It is called when a long tap ends, providing the advantage of knowing 
   /// when a series of consecutive long taps has concluded.
   final VoidCallback? onLongTapEnd;
+
+  /// The callback function is called when the user dragging to left or right.
+  final TouchRippleDragCallback? onDragHorizontal;
+
+  /// The callback function is a lifecycle callback for the horizontal drag event.
+  /// It is called when a horizontal drag starts, which is useful for handling
+  /// actions that occur at the beginning of the drag.
+  final VoidCallback? onDragHorizontalStart;
+
+  /// The callback function is a lifecycle callback for the horizontal drag event.
+  /// It is called when a horizontal drag ends, providing the advantage of knowing
+  /// when the drag interaction has finished.
+  final VoidCallback? onDragHorizontalEnd;
+
+  /// The callback function is called when the user dragging to top or bottom.
+  final TouchRippleDragCallback? onDragVertical;
+
+  /// The callback function is a lifecycle callback for the vertical drag event.
+  /// It is called when a vertical drag starts, which is useful for handling
+  /// actions that occur at the beginning of the drag.
+  final VoidCallback? onDragVerticalStart;
+
+  /// The callback function is a lifecycle callback for the vertical drag event.
+  /// It is called when a vertical drag ends, providing the advantage of knowing
+  /// when the drag interaction has finished.
+  final VoidCallback? onDragVerticalEnd;
 
   /// The callback function is a lifecycle callback for focus touch ripple events.
   /// It is called when a focus touch event starts, allowing for the initiation
@@ -202,6 +235,10 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// The touch ripple behavior applied to the touch ripple effect
   /// for long tapped or long pressed and long clicked.
   final TouchRippleBehavior? longTapBehavior;
+
+  /// The touch ripple behavior applied to the touch ripple effect
+  /// for the horizontal dragging or the vertical dragging.
+  final TouchRippleBehavior? dragBehavior;
 
   /// The behavior that defines when a gesture should be rejected,
   /// specifying the conditions for rejection.
@@ -316,6 +353,12 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       onLongTap: widget.onLongTap,
       onLongTapStart: widget.onLongTapStart,
       onLongTapEnd: widget.onLongTapEnd,
+      onDragHorizontal: widget.onDragHorizontal,
+      onDragHorizontalStart: widget.onDragHorizontalStart,
+      onDragHorizontalEnd: widget.onDragHorizontalEnd,
+      onDragVertical: widget.onDragVertical,
+      onDragVerticalStart: widget.onDragVerticalStart,
+      onDragVerticalEnd: widget.onDragVerticalEnd,
       onFocusStart: widget.onFocusStart,
       onFocusEnd: widget.onFocusEnd,
       onHoverStart: widget.onHoverStart,
@@ -460,6 +503,13 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       ))
       .merge(style?.longTapBehavior)
       .merge(widget.longTapBehavior);
+  }
+
+  @override
+  TouchRippleBehavior get dragBehavior {
+    return tapBehavior
+      .merge(style?.dragBehavior)
+      .merge(widget.dragBehavior);
   }
 
   @override
