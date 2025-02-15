@@ -148,7 +148,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   /// to the defined action and forces the effect to fade out.
   /// In some cases, it cancels the effect altogether.
   void cancel() {
-    // Cannot perform the animation task without all animation-related instances being initialized.
+    // Cannot perform the animation task without all animation-related
+    // instances being initialized.
     if (!isInitialized) return;
 
     _fadeAnimation.reverseDuration = behavior.cancelDuration;
@@ -160,6 +161,20 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       case TouchRippleCancelBehavior.stop: _spreadAnimation.stop(); break;
       case TouchRippleCancelBehavior.reverse: _spreadAnimation.reverse(); break;
     }
+  }
+
+  /// Resumes the touch ripple effect animations with the given behavior.
+  void resumeWith(TouchRippleBehavior behavior) {
+    _fadeCurved.curve = behavior.fadeInCurve!;
+    _fadeCurved.reverseCurve = behavior.fadeOutCurve!;
+    _fadeAnimation.duration = behavior.fadeInDuration;
+    _fadeAnimation.reverseDuration = behavior.fadeOutDuration;
+    _fadeAnimation.stop();
+    _fadeAnimation.forward();
+
+    _spreadAnimation.duration = behavior.spreadDuration;
+    _spreadAnimation.stop();
+    _spreadAnimation.forward();
   }
 
   /// If the gesture could be rejected and is eventually accepted,

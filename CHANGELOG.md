@@ -80,3 +80,6 @@
 * Added `onDragVertical` property in TouchRipple widget because the vertical drag gesture event has been introduced, along with lifecycle callback functions such as `onDragVerticalStart` and `onDragVerticalEnd`.
 
 * Added `dragBehavior` property in TouchRipple widget and TouchRippleStyle.
+
+## 2.4.1
+* Fixed an issue where the previous effect was not reused when rejectable, causing a visual discontinuity.

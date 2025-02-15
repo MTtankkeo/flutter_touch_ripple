@@ -218,6 +218,41 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
     controller.getEffectByKey<TouchRippleSolidEffect>("hover")?.fadeOut();
   }
 
+  /// Starts or resumes a spreading ripple effect based on the given parameters.
+  /// If the previous effect is cancelable, it will be reused for a smooth transition.
+  /// 
+  /// When [isAcceptWhenResumed] is true,
+  /// the reused effect will no longer be cancelable.
+  TouchRippleSpreadingEffect showSpreadEffect({
+    required VoidCallback callback,
+    required bool isRejectable,
+    required Offset baseOffset,
+    required TouchRippleBehavior behavior,
+    bool isAcceptWhenResumed = true
+  }) {
+    final lastEffect = controller.activeEffects.lastOrNull;
+
+    /// Ensures a smooth transition from a rejectable previous effect to a new effect.
+    if (lastEffect is TouchRippleSpreadingEffect && lastEffect.isRejectable) {
+      if (isAcceptWhenResumed) {
+        lastEffect.isRejectable = false;
+      }
+
+      return lastEffect..resumeWith(rippleContext.dragBehavior);
+    }
+
+    final newEffect = TouchRippleSpreadingEffect(
+      context: rippleContext,
+      callback: callback,
+      isRejectable: isRejectable,
+      baseOffset: baseOffset,
+      behavior: behavior
+    )..start();
+
+    controller.attach(newEffect);
+    return newEffect;
+  }
+
   // Initializes gesture recognizer builders.
   initBuilders() {
     _builders.clear();
@@ -228,11 +263,10 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
     final isLongTappable = widget.onLongTap != null;
     final isDragableHorizontal = widget.onDragHorizontal != null;
     final isDragableVertical = widget.onDragVertical != null;
-    final isDraggable = isDragableHorizontal || isDragableVertical;
 
     // If there is a gesture competitor other than itself,
     // the effect cannot be previewed for tap effect.
-    final previewMinDuration = isDoubleTappable || isLongTappable || isDraggable
+    final previewMinDuration = isDoubleTappable || isLongTappable
         ? Duration.zero
         : rippleContext.previewDuration;
 
@@ -247,26 +281,20 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
           previewMinDuration: previewMinDuration,
           acceptableDuration: rippleContext.tappableDuration,
           onTap: (offset) {
-            activeEffect = TouchRippleSpreadingEffect( 
-              context: rippleContext,
+            activeEffect = showSpreadEffect(
               callback: widget.onTap!,
               isRejectable: false,
               baseOffset: offset,
               behavior: rippleContext.tapBehavior
             );
-
-            controller.attach(activeEffect..start());
           },
           onTapRejectable: (offset) {
-            activeEffect = TouchRippleSpreadingEffect(
-              context: rippleContext,
+            activeEffect = showSpreadEffect(
               callback: widget.onTap!,
               isRejectable: true,
               baseOffset: offset,
               behavior: rippleContext.tapBehavior
             );
-
-            controller.attach(activeEffect..start());
           },
           onTapReject: () => activeEffect.onRejected(),
           onTapAccept: () => activeEffect.onAccepted(),
@@ -287,15 +315,12 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         // And the effect instance delegates the invocation of the callback function to delay the
         // lifecycle callback function call based on the `eventCallBackableMinPercent` option.
         void attachEffect(Offset offset) {
-          activeEffect = TouchRippleSpreadingEffect( 
-            context: rippleContext,
+          activeEffect = showSpreadEffect( 
             callback: () => widget.onTapAsyncEnd?.call(result),
             isRejectable: true,
             baseOffset: offset,
             behavior: rippleContext.tapBehavior
           );
-
-          controller.attach(activeEffect..start());
         }
 
         // Starts asynchronous processing about a given callback.
@@ -338,13 +363,12 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
           acceptableDuration: rippleContext.doubleTappableDuration,
           aliveDuration: rippleContext.doubleTapAliveDuration,
           onDoubleTap: (offset, count) {
-            controller.attach(TouchRippleSpreadingEffect(
-              context: rippleContext,
+            showSpreadEffect(
               callback: widget.onDoubleTap!,
               isRejectable: false,
               baseOffset: offset,
               behavior: rippleContext.doubleTapBehavior
-            )..start());
+            );
 
             return widget.onDoubleTapConsecutive?.call(count) ?? false;
           },
@@ -376,15 +400,12 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
           acceptableDuration: rippleContext.longTapBehavior.spreadDuration!,
           onLongTap: widget.onLongTap!,
           onLongTapRejectable: (offset) {
-            activeEffect = TouchRippleSpreadingEffect(
-              context: rippleContext,
+            activeEffect = showSpreadEffect(
               callback: () {},
               isRejectable: true,
               baseOffset: offset,
               behavior: rippleContext.longTapBehavior
             );
-
-            controller.attach(activeEffect..start());
           },
           onLongTapReject: () => activeEffect.onRejected(),
           onLongTapAccept: () => activeEffect.onAccepted(),
@@ -398,13 +419,13 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
     }
 
     { // Drag Gesture Recognizer
-      TouchRippleSpreadingEffect createTouchEffect(Offset offset) {
-        return TouchRippleSpreadingEffect(
-          context: rippleContext,
+      TouchRippleSpreadingEffect createDragEffect(Offset offset) {
+        return showSpreadEffect(
           callback: () {},
           isRejectable: true,
           baseOffset: offset,
-          behavior: rippleContext.dragBehavior
+          behavior: rippleContext.dragBehavior,
+          isAcceptWhenResumed: false
         );
       }
 
@@ -420,7 +441,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
             axis: Axis.horizontal,
             onDrag: widget.onDragHorizontal!,
             onDragStart: (offset) {
-              controller.attach(activeEffect = createTouchEffect(offset)..start());
+              activeEffect = createDragEffect(offset);
               widget.onDragHorizontalStart?.call();
             },
             onDragEnd: () {
@@ -444,7 +465,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
             axis: Axis.vertical,
             onDrag: widget.onDragVertical!,
             onDragStart: (offset) {
-              controller.attach(activeEffect = createTouchEffect(offset)..start());
+              activeEffect = createDragEffect(offset);
               widget.onDragVerticalStart?.call();
             },
             onDragEnd: () {
