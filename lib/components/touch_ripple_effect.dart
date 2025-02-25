@@ -218,7 +218,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     final color = context.rippleColor;
 
     // Return the radius pixels of a blur filter to touch ripple.
-    final blurRadius = context.rippleBlurRadius;
+    final blurRadius = context.rippleBlur.calculateRadius(this, size);
 
     // This defines the additional touch ripple size.
     final distance = Offset(

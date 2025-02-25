@@ -88,7 +88,7 @@ TouchRippleStyle(
 | hoverColor | The background color of a effect when the user hovers. | Color? |
 | focusColor | The background color of the solid effect when a consecutive (e.g. about double-tap and long-tap) event state occurs. | Color? |
 | rippleScale | The scale percentage value of a ripple effect and by default the origin position is center. | double? |
-| rippleBlurRadius | The radius pixels of a blur filter for spread ripple effect. It cannot be negative and as the value increases, the edge of the spread ripple effect becomes blurrier. | double? |
+| rippleBlur | The radius of a blur filter for spread ripple effect. It cannot be negative and as the value increases, the edge of the spread ripple effect becomes blurrier. | TouchRippleBlur? |
 | rippleBorderRadius | The instance of a border radius for a ripple effect. For reference, this option can be replaced with a widget like [ClipRRect] depending on the situation. | BorderRadius? |
 | previewDuration | The duration for which the ripple effect is previewed even if the gesture is not finalized, allowing the user to see the effect while the pointer is down or moving. | Duration? |
 | tappableDuration | The duration after which the gesture is considered rejected if the pointer is still down and no tap is completed. If this duration elapses without a successful gesture, the gesture will be rejected. | Duration? |

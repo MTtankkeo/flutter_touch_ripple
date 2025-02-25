@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_blur.dart';
 
 /// The mixin provides necessary information for gesture behaviors
 /// and other rendering processes about the touch ripple effects.
@@ -27,10 +28,10 @@ mixin TouchRippleContext {
   /// the origin position is center.
   double get rippleScale;
 
-  /// Returns the radius pixels of a blur filter for spread ripple effect. It cannot
-  /// be negative and as the value increases, the edge of the spread ripple effect
+  /// Returns the radius of a blur filter for spread ripple effect. It cannot be
+  /// negative and as the value increases, the edge of the spread ripple effect
   /// becomes blurrier.
-  double get rippleBlurRadius;
+  TouchRippleBlur get rippleBlur;
 
   /// Returns the instance of a border radius for a ripple effect. For reference,
   /// this option can be replaced with a widget like ClipRRect depending on

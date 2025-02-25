@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_blur.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
@@ -14,7 +15,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.hoverColor,
     this.focusColor,
     this.rippleScale,
-    this.rippleBlurRadius,
+    this.rippleBlur,
     this.rippleBorderRadius,
     this.previewDuration,
     this.tappableDuration,
@@ -53,8 +54,8 @@ class TouchRippleStyle extends InheritedWidget {
   /// The value defines the scale percentage value of a ripple effect.
   final double? rippleScale;
 
-  /// The value defines the radius pixels of a blur filter to touch ripple.
-  final double? rippleBlurRadius;
+  /// The value defines the radius of a blur filter to touch ripple.
+  final TouchRippleBlur? rippleBlur;
 
   /// The value defines the instance of a border radius for a ripple effect.
   final BorderRadius? rippleBorderRadius;
@@ -169,7 +170,7 @@ class TouchRippleStyle extends InheritedWidget {
         || hoverColor != oldWidget.hoverColor
         || focusColor != oldWidget.focusColor
         || rippleScale != oldWidget.rippleScale
-        || rippleBlurRadius != oldWidget.rippleBlurRadius
+        || rippleBlur != oldWidget.rippleBlur
         || rippleBorderRadius != oldWidget.rippleBorderRadius
         || tapBehavior != oldWidget.tapBehavior
         || doubleTapBehavior != oldWidget.doubleTapBehavior

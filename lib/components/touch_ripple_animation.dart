@@ -1,5 +1,7 @@
 import 'package:flutter/animation.dart';
 
+/// This data class defines animation settings (e.g., fade-in, fade-out)  
+/// for the touch ripple effect that is including duration and curve.
 class TouchRippleAnimation {
   const TouchRippleAnimation({
     this.fadeInDuration,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_blur.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
@@ -49,7 +50,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.hoverColor,
     this.focusColor,
     this.rippleScale,
-    this.rippleBlurRadius,
+    this.rippleBlur,
     this.rippleBorderRadius,
     this.previewDuration,
     this.tappableDuration,
@@ -187,9 +188,9 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// the origin position is center.
   final double? rippleScale;
 
-  /// The radius pixels of a blur filter for spread ripple effect. It cannot be negative
-  /// and as the value increases, the edge of the spread ripple effect becomes blurrier.
-  final double? rippleBlurRadius;
+  /// The radius of a blur filter for spread ripple effect. It cannot be negative and
+  /// as the value increases, the edge of the spread ripple effect becomes blurrier.
+  final TouchRippleBlur? rippleBlur;
 
   /// The instance of a border radius for a ripple effect. For reference, this option
   /// can be replaced with a widget like [ClipRRect] depending on the situation.
@@ -406,10 +407,10 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
   }
 
   @override
-  double get rippleBlurRadius {
-    return widget.rippleBlurRadius
-        ?? style?.rippleBlurRadius
-        ?? 10;
+  TouchRippleBlur get rippleBlur {
+    return widget.rippleBlur
+        ?? style?.rippleBlur
+        ?? MaterialTouchRippleBlur.percent(0.05, maxValue: 10);
   }
 
   @override
