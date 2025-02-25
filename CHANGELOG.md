@@ -86,5 +86,7 @@
 
 ## 2.5.0
 - Fixed about the blur radius of the touch ripple effect.
+
 - Added `TouchRippleBlur` to define the blur radius of the touch ripple effect dynamically.
+
 - Added `MaterialTouchRippleBlur`, which provides both fixed and percentage-based blur radius options.
