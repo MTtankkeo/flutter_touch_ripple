@@ -507,9 +507,12 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
 
     // The gesture recognizer builders needs to be rebuilt
     // when a given callback function is different or null.
-    if (widget.onTap != oldWidget.onTap ||
-        widget.onDoubleTap != oldWidget.onDoubleTap ||
-        widget.onLongTap != oldWidget.onLongTap) {
+    if (widget.onTap != oldWidget.onTap
+     || widget.onTapAsync != oldWidget.onTapAsync
+     || widget.onDoubleTap != oldWidget.onDoubleTap
+     || widget.onLongTap != oldWidget.onLongTap
+     || widget.onDragVertical != oldWidget.onDragVertical
+     || widget.onDragHorizontal != oldWidget.onDragHorizontal) {
       initBuilders();
     }
   }
