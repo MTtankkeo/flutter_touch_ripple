@@ -50,6 +50,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.hoverColor,
     this.focusColor,
     this.rippleScale,
+    this.ripplePadding,
     this.rippleBlur,
     this.rippleBorderRadius,
     this.previewDuration,
@@ -187,6 +188,10 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// The scale percentage value of a ripple effect and by default
   /// the origin position is center.
   final double? rippleScale;
+
+  /// The value of the padding of the ripple effect. In other words, it defines
+  /// how much larger it can be to the outside than its the intrinsic size.
+  final double? ripplePadding;
 
   /// The radius of a blur filter for spread ripple effect. It cannot be negative and
   /// as the value increases, the edge of the spread ripple effect becomes blurrier.
@@ -404,6 +409,13 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
     return widget.rippleScale
         ?? style?.rippleScale
         ?? 1;
+  }
+
+  @override
+  double get ripplePadding {
+    return widget.ripplePadding
+        ?? style?.ripplePadding
+        ?? 0;
   }
 
   @override

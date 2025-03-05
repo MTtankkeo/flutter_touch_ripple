@@ -498,7 +498,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
     super.initState();
 
     // Initializes initial gesture recognizer builders.
-    initBuilders();
+    WidgetsBinding.instance.addPostFrameCallback((_) => initBuilders());
   }
 
   @override

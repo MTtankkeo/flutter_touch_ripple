@@ -90,3 +90,8 @@
 - Added `TouchRippleBlur` to define the blur radius of the touch ripple effect dynamically.
 
 - Added `MaterialTouchRippleBlur`, which provides both fixed and percentage-based blur radius options.
+
+## 2.6.0
+- Fixed an issue by delaying the definition of `GestureRecognizerBuilder` in the `TouchRippleGestureDetector` widget to the next frame after the build, rather than before the build, to increase flexibility and reduce potential exceptions.
+
+- Added `ripplePadding` property that is the value of the padding of the ripple effect in TouchRipple widget and TouchRippleStyle, TouchRippleContext. In other words, it defines how much larger it can be to the outside than its the intrinsic size.

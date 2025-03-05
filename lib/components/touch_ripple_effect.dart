@@ -226,7 +226,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       sizeToOffset(size).dy * centerToRatio.dy,
     ).distance + (blurRadius * 2);
 
-    final paintSize = (centerDistance + distance) * spreadPercent;
+    final paintSize = (centerDistance + distance + context.ripplePadding) * spreadPercent;
     final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());
     final paint = Paint()
       ..color = paintColor

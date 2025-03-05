@@ -103,10 +103,16 @@ class TouchRipplePainter extends CustomPainter {
     // Returns a Rect instance corresponding to the current canvas size
     // and calculates it based on the center.
     Rect sizeRectOf(Size size) {
-      final scaledSize = size * controller.context.rippleScale;
-      final offset = (sizeToOffset(size) - sizeToOffset(scaledSize)) / 2;
+      Size rippleSize = size;
+      rippleSize *= controller.context.rippleScale;
+      rippleSize = Size(
+        rippleSize.width + controller.context.ripplePadding,
+        rippleSize.height + controller.context.ripplePadding
+      );
 
-      return Rect.fromLTWH(offset.dx, offset.dy, scaledSize.width, scaledSize.height);
+      final offset = (sizeToOffset(size) - sizeToOffset(rippleSize)) / 2;
+
+      return Rect.fromLTWH(offset.dx, offset.dy, rippleSize.width, rippleSize.height);
     }
 
     if (clippingType == TouchRippleShape.normal) {
@@ -123,8 +129,9 @@ class TouchRipplePainter extends CustomPainter {
         rippleSize = Offset(size.width, size.height).distance;
       }
 
-      // The post processing for the ripple scale.
+      // The post processing for the ripple scale and padding.
       rippleSize *= controller.context.rippleScale;
+      rippleSize += controller.context.ripplePadding;
 
       final dx = (size.width - rippleSize) / 2;
       final dy = (size.height - rippleSize) / 2;

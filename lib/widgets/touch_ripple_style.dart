@@ -15,6 +15,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.hoverColor,
     this.focusColor,
     this.rippleScale,
+    this.ripplePadding,
     this.rippleBlur,
     this.rippleBorderRadius,
     this.previewDuration,
@@ -53,6 +54,11 @@ class TouchRippleStyle extends InheritedWidget {
 
   /// The value defines the scale percentage value of a ripple effect.
   final double? rippleScale;
+
+  /// The value that defines the padding of the ripple effect. In other words,
+  /// it defines how much larger it can be to the outside than its
+  /// the intrinsic size.
+  final double? ripplePadding;
 
   /// The value defines the radius of a blur filter to touch ripple.
   final TouchRippleBlur? rippleBlur;
@@ -170,6 +176,7 @@ class TouchRippleStyle extends InheritedWidget {
         || hoverColor != oldWidget.hoverColor
         || focusColor != oldWidget.focusColor
         || rippleScale != oldWidget.rippleScale
+        || ripplePadding != oldWidget.ripplePadding
         || rippleBlur != oldWidget.rippleBlur
         || rippleBorderRadius != oldWidget.rippleBorderRadius
         || tapBehavior != oldWidget.tapBehavior

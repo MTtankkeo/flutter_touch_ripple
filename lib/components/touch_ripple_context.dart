@@ -28,6 +28,11 @@ mixin TouchRippleContext {
   /// the origin position is center.
   double get rippleScale;
 
+  /// Returns the value of the padding of the ripple effect. In other words,
+  /// it defines how much larger it can be to the outside than its
+  /// the intrinsic size.
+  double get ripplePadding;
+
   /// Returns the radius of a blur filter for spread ripple effect. It cannot be
   /// negative and as the value increases, the edge of the spread ripple effect
   /// becomes blurrier.
