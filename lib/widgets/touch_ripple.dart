@@ -512,7 +512,8 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
         spreadDuration: Duration(milliseconds: 1000),
         spreadCurve: Curves.linear,
         fadeInDuration: Duration(milliseconds: 1000),
-        fadeInCurve: Curves.linear
+        fadeInCurve: Curves.linear,
+        eventCallBackableMinPercent: 1,
       ))
       .merge(style?.longTapBehavior)
       .merge(widget.longTapBehavior);

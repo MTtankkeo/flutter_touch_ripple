@@ -390,7 +390,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         late TouchRippleSpreadingEffect activeEffect;
 
         assert(rippleContext.longTapBehavior.onlyMainButton != null);
-        assert(rippleContext.longTapBehavior.eventCallBackableMinPercent == 0);
+        assert(rippleContext.longTapBehavior.eventCallBackableMinPercent == 1);
         return TouchRippleLongTapGestureRecognizer(
           context: rippleContext,
           onlyMainButton: widget.onlyMainButton ?? rippleContext.longTapBehavior.onlyMainButton!,

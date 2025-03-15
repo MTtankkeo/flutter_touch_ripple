@@ -95,3 +95,6 @@
 - Fixed an issue by delaying the definition of `GestureRecognizerBuilder` in the `TouchRippleGestureDetector` widget to the next frame after the build, rather than before the build, to increase flexibility and reduce potential exceptions.
 
 - Added `ripplePadding` property that is the value of the padding of the ripple effect in TouchRipple widget and TouchRippleStyle, TouchRippleContext. In other words, it defines how much larger it can be to the outside than its the intrinsic size.
+
+## 2.6.1
+- Fixed an issue with the assertion exception related to `eventCallBackableMinPercent` in longTapBehavior.
