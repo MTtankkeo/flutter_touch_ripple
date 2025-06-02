@@ -17,6 +17,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.rippleScale,
     this.ripplePadding,
     this.rippleBlur,
+    this.sparkleRippleBlur,
     this.rippleBorderRadius,
     this.previewDuration,
     this.tappableDuration,
@@ -39,6 +40,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.hoverAnimation,
     this.useHoverEffect,
     this.useFocusEffect,
+    this.useSparkleShader,
     this.onlyMainButton
   });
 
@@ -62,6 +64,10 @@ class TouchRippleStyle extends InheritedWidget {
 
   /// The value defines the radius of a blur filter to touch ripple.
   final TouchRippleBlur? rippleBlur;
+
+  /// The value that defines the blur radius for the sparkle ripple effect.  
+  /// Android 12 uses 1.0 as the default, while this package uses 0.5.
+  final double? sparkleRippleBlur;
 
   /// The value defines the instance of a border radius for a ripple effect.
   final BorderRadius? rippleBorderRadius;
@@ -159,6 +165,10 @@ class TouchRippleStyle extends InheritedWidget {
   /// consecutive events like double-tap and long-tap or others.
   final bool? useFocusEffect;
 
+  /// The value defines whether using the Material ink sparkle for touch
+  /// ripple effect. Refer related to [InkSparkle] class to details.
+  final bool? useSparkleShader;
+
   /// The value defines the boolean that is whether only the main button is recognized
   /// as a gesture when the user that is using mouse device clicks on the widget.
   final bool? onlyMainButton;
@@ -178,6 +188,7 @@ class TouchRippleStyle extends InheritedWidget {
         || rippleScale != oldWidget.rippleScale
         || ripplePadding != oldWidget.ripplePadding
         || rippleBlur != oldWidget.rippleBlur
+        || sparkleRippleBlur != oldWidget.sparkleRippleBlur
         || rippleBorderRadius != oldWidget.rippleBorderRadius
         || tapBehavior != oldWidget.tapBehavior
         || doubleTapBehavior != oldWidget.doubleTapBehavior
@@ -200,6 +211,7 @@ class TouchRippleStyle extends InheritedWidget {
         || focusAnimation != oldWidget.focusAnimation
         || useHoverEffect != oldWidget.useHoverEffect
         || useFocusEffect != oldWidget.useFocusEffect
+        || useSparkleShader != oldWidget.useSparkleShader
         || onlyMainButton != oldWidget.onlyMainButton;
   }
 }

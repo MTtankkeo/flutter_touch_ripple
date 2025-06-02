@@ -90,6 +90,7 @@ TouchRippleStyle(
 | rippleScale | The scale percentage value of a ripple effect and by default the origin position is center. | double? |
 | ripplePadding | The value of the padding of the ripple effect. In other words, it defines how much larger it can be to the outside than its the intrinsic size. | double? |
 | rippleBlur | The radius of a blur filter for spread ripple effect. It cannot be negative and as the value increases, the edge of the spread ripple effect becomes blurrier. | TouchRippleBlur? |
+| sparkleRippleBlur | The blur radius for the sparkle ripple effect. Android 12 uses 1.0 as the default, while this package uses 0.5. | double? |
 | rippleBorderRadius | The instance of a border radius for a ripple effect. For reference, this option can be replaced with a widget like [ClipRRect] depending on the situation. | BorderRadius? |
 | previewDuration | The duration for which the ripple effect is previewed even if the gesture is not finalized, allowing the user to see the effect while the pointer is down or moving. | Duration? |
 | tappableDuration | The duration after which the gesture is considered rejected if the pointer is still down and no tap is completed. If this duration elapses without a successful gesture, the gesture will be rejected. | Duration? |
@@ -113,6 +114,7 @@ TouchRippleStyle(
 | onlyMainButton | The boolean that is whether only the main button is recognized as a gesture when the user that is using mouse device clicks on the widget. | bool? |
 | useHoverEffect | Whether the hover effect is enabled for touch ripple animations. If true, a solid hover effect is applied when the user hovers. | bool? |
 | useFocusEffect | Whether the focus effect is enabled for touch ripple animations. If true, a solid focus color effect is applied for consecutive events like double-tap and long-tap or others. | bool? |
+| useSparkleShader | Whether using the Material ink sparkle for touch ripple effect. Refer related to [InkSparkle] class to details. | bool? |
 | controller | The controller defines and manages states, listeners, a context and other values related to touch ripple, ensuring that each state exists uniquely within the controller. | TouchRippleController? |
 | child | The widget that is target to apply touch ripple related effects. | Widget |
 

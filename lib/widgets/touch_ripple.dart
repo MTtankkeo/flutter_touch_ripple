@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_blur.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
@@ -52,6 +51,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.rippleScale,
     this.ripplePadding,
     this.rippleBlur,
+    this.sparkleRippleBlur,
     this.rippleBorderRadius,
     this.previewDuration,
     this.tappableDuration,
@@ -74,6 +74,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.focusAnimation,
     this.useHoverEffect,
     this.useFocusEffect,
+    this.useSparkleShader,
     this.onlyMainButton,
     this.controller,
     required this.child
@@ -197,6 +198,10 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// as the value increases, the edge of the spread ripple effect becomes blurrier.
   final TouchRippleBlur? rippleBlur;
 
+  /// The blur radius for the sparkle ripple effect. Android 12
+  /// uses 1.0 as the default, while this package uses 0.5.
+  final double? sparkleRippleBlur;
+
   /// The instance of a border radius for a ripple effect. For reference, this option
   /// can be replaced with a widget like [ClipRRect] depending on the situation.
   final BorderRadius? rippleBorderRadius;
@@ -294,6 +299,10 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// If true, a solid focus color effect is applied for consecutive
   /// events like double-tap and long-tap or others.
   final bool? useFocusEffect;
+
+  /// Whether using the Material ink sparkle for touch ripple effect.
+  /// Refer related to [InkSparkle] class to details.
+  final bool? useSparkleShader;
 
   /// The controller defines and manages states, listeners, a context and
   /// other values related to touch ripple, ensuring that each state
@@ -423,6 +432,13 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
     return widget.rippleBlur
         ?? style?.rippleBlur
         ?? MaterialTouchRippleBlur.percent(0.05, maxValue: 10);
+  }
+
+  @override
+  double get sparkleRippleBlur {
+    return widget.sparkleRippleBlur
+        ?? style?.sparkleRippleBlur
+        ?? 0.5;
   }
 
   @override
@@ -603,6 +619,13 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
   bool get useFocusEffect {
     return widget.useFocusEffect
         ?? style?.useFocusEffect
+        ?? true;
+  }
+
+  @override
+  bool get useSparkleShader {
+    return widget.useSparkleShader
+        ?? style?.useSparkleShader
         ?? true;
   }
 }

@@ -1,4 +1,8 @@
 87include: package:flutter_lints/flutter.yam
+analyzer:
+  errors:
+    deprecated_member_use: ignore
+    invalid_use_of_protected_member: ignore
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

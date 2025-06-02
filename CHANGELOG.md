@@ -98,3 +98,13 @@
 
 ## 2.6.1
 - Fixed an issue with the assertion exception related to `eventCallBackableMinPercent` in longTapBehavior.
+
+## 2.7.0
+- Fixed an issue where the `ripplePadding` was calculated differently from Flutter’s standard behavior. (Previously, the size was calculated as size + padding.)
+
+- Added related features to enable the same visual effect as Flutter’s InkSparkle and Android’s Sparkle Ripple.
+
+- Added support for enabling the sparkle ripple effect similar to Flutter InkSparkle by introducing the `useSparkleShader`.
+
+- Added `sparkleRippleBlur` to adjust the blur radius of the sparkle ripple effect.
+  - The default value is 0.5, whereas Android 12 uses 1.0.

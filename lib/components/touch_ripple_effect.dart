@@ -1,9 +1,10 @@
-// ignore_for_file: invalid_use_of_protected_member
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_shader.dart';
 
 abstract class TouchRippleEffect extends Listenable {
   /// Called when after the touch ripple effect has fully completed
@@ -101,6 +102,8 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   late final AnimationController _fadeAnimation;
   late final CurvedAnimation _fadeCurved;
 
+  ui.FragmentShader? _sparkleShader;
+
   /// Returns animation progress value of spread animation.
   double get spreadPercent {
     if (!isInitialized) return 0;
@@ -138,7 +141,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     return Offset(size.width, size.height);
   }
 
-  start() {
+  void start() {
     // Cannot perform the animation task without all animation-related instances being initialized.
     if (!isInitialized) return;
     _spreadAnimation.forward();
@@ -190,7 +193,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   void onRejected() => cancel();
 
   @override
-  paint(TouchRippleContext context, Canvas canvas, Size size) {
+  void paint(TouchRippleContext context, Canvas canvas, Size size) {
     // Returns how far the given offset is from the centre of the canvas size,
     // defined as a percentage (0~1), relative to the canvas size.
     Offset centerToRatioOf(Offset offset) {
@@ -226,11 +229,37 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       sizeToOffset(size).dy * centerToRatio.dy,
     ).distance + (blurRadius * 2);
 
-    final paintSize = (centerDistance + distance + context.ripplePadding) * spreadPercent;
+    final radius = centerDistance + distance;
+    final paintSize = (radius + context.ripplePadding * 2) * spreadPercent;
     final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());
     final paint = Paint()
       ..color = paintColor
       ..style = PaintingStyle.fill;
+
+    if (context.useSparkleShader) {
+      if (!TouchRippleShader.initCalled) {
+        TouchRippleShader.initializeShader();
+      }
+
+      if (TouchRippleShader.isInitialized) {
+        paint.shader = _sparkleShader ??= TouchRippleShader.program.fragmentShader();
+
+        TouchRippleShader.updateFragmentShader(
+          shader: _sparkleShader!,
+          color: context.rippleColor,
+          alpha: 1.0,
+          rippleScale: spreadPercent,
+          rippleAlpha: fadePercent,
+          center: baseOffset,
+          radius: radius,
+          blurRatio: context.sparkleRippleBlur,
+          size: size
+        );
+
+        canvas.drawCircle(baseOffset, radius, paint);
+        return;
+      }
+    }
 
     if (blurRadius != 0) {
       paint.maskFilter = MaskFilter.blur(BlurStyle.normal, blurRadius);
@@ -248,6 +277,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       _spreadCurved.dispose();
       _fadeAnimation.dispose();
       _fadeCurved.dispose();
+      _sparkleShader?.dispose();
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_blur.dart';
@@ -37,6 +37,10 @@ mixin TouchRippleContext {
   /// negative and as the value increases, the edge of the spread ripple effect
   /// becomes blurrier.
   TouchRippleBlur get rippleBlur;
+
+  /// Returns the blur radius for the sparkle ripple effect.  
+  /// Android 12 uses 1.0 as the default, while this package uses 0.5.
+  double get sparkleRippleBlur;
 
   /// Returns the instance of a border radius for a ripple effect. For reference,
   /// this option can be replaced with a widget like ClipRRect depending on
@@ -128,6 +132,10 @@ mixin TouchRippleContext {
   /// If true, a solid focus color effect is applied for consecutive events
   /// like double-tap and long-tap or others.
   bool get useFocusEffect;
+
+  /// Returns whether using the Material ink sparkle for touch ripple effect.
+  /// Refer related to [InkSparkle] class to details.
+  bool get useSparkleShader;
 }
 
 /// The enumeration defines when a gesture should be rejected,
