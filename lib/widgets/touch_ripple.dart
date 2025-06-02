@@ -626,6 +626,6 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
   bool get useSparkleShader {
     return widget.useSparkleShader
         ?? style?.useSparkleShader
-        ?? true;
+        ?? false;
   }
 }
