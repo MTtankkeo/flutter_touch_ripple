@@ -5,6 +5,7 @@ import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_shader.dart';
+import 'package:flutter_touch_ripple/extensions/color.dart';
 
 abstract class TouchRippleEffect extends Listenable {
   /// Called when after the touch ripple effect has fully completed
@@ -186,7 +187,11 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
     assert(isInitialized, "The animation instances has not yet been initialized.");
     assert(isRejectable, "The gesture has already been defined as accepted.");
     isRejectable = false;
+
+    // ignore: invalid_use_of_protected_member
     _spreadAnimation.notifyListeners();
+
+    // ignore: invalid_use_of_protected_member
     _spreadAnimation.notifyStatusListeners(_spreadAnimation.status);
   }
 
@@ -231,7 +236,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
     final radius = centerDistance + distance + context.ripplePadding * 2;
     final paintSize = radius * spreadPercent;
-    final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());
+    final paintColor = color.fade(fadePercent);
     final paint = Paint()
       ..color = paintColor
       ..style = PaintingStyle.fill;
@@ -351,7 +356,7 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
 
   @override
   void paint(TouchRippleContext context, Canvas canvas, Size size) {
-    final paintColor = color.withAlpha(((color.alpha) * fadePercent).toInt());
+    final paintColor = color.fade(fadePercent);
     final paint = Paint()
       ..color = paintColor
       ..style = PaintingStyle.fill;

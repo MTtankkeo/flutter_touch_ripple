@@ -21,7 +21,7 @@ class RootApp extends StatelessWidget {
               child: Text("Hello, World!", style: TextStyle(fontSize: 32)),
             ),
           ),
-        )
+        ),
       ),
     );
   }

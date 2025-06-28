@@ -8,7 +8,6 @@ export "./widgets/touch_ripple_gesture_detector.dart";
 // Provides components
 export "./components/touch_ripple_context.dart";
 export "./components/touch_ripple_controller.dart";
-export "./components/touch_ripple_color.dart";
 export "./components/touch_ripple_event.dart";
 export "./components/touch_ripple_effect.dart";
 export "./components/touch_ripple_behavior.dart";

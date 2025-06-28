@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_animation.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_blur.dart';
+import 'package:flutter_touch_ripple/extensions/color.dart';
 import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 
@@ -403,14 +404,14 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
   Color get hoverColor {
     return widget.hoverColor
         ?? style?.hoverColor
-        ?? TouchRippleColor.withAlphaOf(rippleColor, 0.5);
+        ?? rippleColor.fade(0.5);
   }
 
   @override
   Color get focusColor {
     return widget.focusColor
         ?? style?.focusColor
-        ?? TouchRippleColor.withAlphaOf(rippleColor, 0.5);
+        ?? rippleColor.fade(0.5);
   }
 
   @override

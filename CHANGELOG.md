@@ -108,3 +108,6 @@
 
 - Added `sparkleRippleBlur` to adjust the blur radius of the sparkle ripple effect.
   - The default value is 0.5, whereas Android 12 uses 1.0.
+
+## 2.7.2
+- Refactored code to follow Dart formatting conventions.

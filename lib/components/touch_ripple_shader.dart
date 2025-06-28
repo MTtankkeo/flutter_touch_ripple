@@ -44,10 +44,10 @@ class TouchRippleShader {
 
     shader
       // uColor
-      ..setFloat(0, color.red / 255.0)
-      ..setFloat(1, color.green / 255.0)
-      ..setFloat(2, color.blue / 255.0)
-      ..setFloat(3, color.alpha / 255.0)
+      ..setFloat(0, color.r)
+      ..setFloat(1, color.g)
+      ..setFloat(2, color.b)
+      ..setFloat(3, color.a)
       // Composite 1 (u_alpha, u_sparkle_alpha, u_blur, u_radius_scale)
       ..setFloat(4, rippleAlpha)
       ..setFloat(5, alpha)
