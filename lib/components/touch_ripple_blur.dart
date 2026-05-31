@@ -13,19 +13,19 @@ abstract class TouchRippleBlur {
 
 class MaterialTouchRippleBlur extends TouchRippleBlur {
   const MaterialTouchRippleBlur.fixed(this.value)
-    : isPercent = false,
-      minValue = -double.infinity,
-      maxValue = double.infinity;
+      : isPercent = false,
+        minValue = -double.infinity,
+        maxValue = double.infinity;
 
-  const MaterialTouchRippleBlur.percent(this.value, {
+  const MaterialTouchRippleBlur.percent(
+    this.value, {
     this.minValue = -double.infinity,
-    this.maxValue = double.infinity
+    this.maxValue = double.infinity,
   }) : isPercent = true;
 
   final double value;
   final double minValue;
   final double maxValue;
-
   final bool isPercent;
 
   @override

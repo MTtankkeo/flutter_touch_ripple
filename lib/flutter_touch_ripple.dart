@@ -1,4 +1,4 @@
-library flutter_touch_ripple;
+library;
 
 // Provides widgets
 export "./widgets/touch_ripple.dart";

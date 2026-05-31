@@ -64,26 +64,26 @@ class TouchRippleGestureDetector<T extends dynamic> extends StatefulWidget {
   /// should continue after the initial occurrence.
   final TouchRippleContinuableCallback? onDoubleTapConsecutive;
 
-  /// The callback function is a lifecycle callback for the double-tap event. 
-  /// It is called when a double tap starts, which is useful for handling 
+  /// The callback function is a lifecycle callback for the double-tap event.
+  /// It is called when a double tap starts, which is useful for handling
   /// actions that occur during successive double taps.
   final VoidCallback? onDoubleTapStart;
 
-  /// The callback function is a lifecycle callback for the double-tap event. 
-  /// It is called when a double tap ends, providing the advantage of knowing 
+  /// The callback function is a lifecycle callback for the double-tap event.
+  /// It is called when a double tap ends, providing the advantage of knowing
   /// when a series of consecutive double taps has finished.
   final VoidCallback? onDoubleTapEnd;
 
   /// The callback function is called when the user long presses or long clicks.
   final TouchRippleContinuableCallback? onLongTap;
 
-  /// The callback function is a lifecycle callback for the long-tap event. 
-  /// It is called when a long tap starts, which is useful for initiating 
+  /// The callback function is a lifecycle callback for the long-tap event.
+  /// It is called when a long tap starts, which is useful for initiating
   /// actions that require a sustained press.
   final VoidCallback? onLongTapStart;
 
-  /// The callback function is a lifecycle callback for the long-tap event. 
-  /// It is called when a long tap ends, providing the advantage of knowing 
+  /// The callback function is a lifecycle callback for the long-tap event.
+  /// It is called when a long tap ends, providing the advantage of knowing
   /// when a series of consecutive long taps has concluded.
   final VoidCallback? onLongTapEnd;
 
@@ -150,10 +150,12 @@ class TouchRippleGestureDetector<T extends dynamic> extends StatefulWidget {
   final Widget child;
 
   @override
-  State<TouchRippleGestureDetector> createState() => _TouchRippleGestureDetectorState<T>();
+  State<TouchRippleGestureDetector> createState() =>
+      _TouchRippleGestureDetectorState<T>();
 }
 
-class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetector<T>> {
+class _TouchRippleGestureDetectorState<T>
+    extends State<TouchRippleGestureDetector<T>> {
   /// The list defines instances of a builder function that creates GestureRecognizer objects.
   /// Instances of [GestureRecognizer] should be added and removed according to the lifecycle
   /// of the gesture detector.
@@ -220,7 +222,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
 
   /// Starts or resumes a spreading ripple effect based on the given parameters.
   /// If the previous effect is cancelable, it will be reused for a smooth transition.
-  /// 
+  ///
   /// When [isAcceptWhenResumed] is true,
   /// the reused effect will no longer be cancelable.
   TouchRippleSpreadingEffect showSpreadEffect({
@@ -228,7 +230,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
     required bool isRejectable,
     required Offset baseOffset,
     required TouchRippleBehavior behavior,
-    bool isAcceptWhenResumed = true
+    bool isAcceptWhenResumed = true,
   }) {
     final lastEffect = controller.activeEffects.lastOrNull;
 
@@ -246,7 +248,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
       callback: callback,
       isRejectable: isRejectable,
       baseOffset: baseOffset,
-      behavior: behavior
+      behavior: behavior,
     )..start();
 
     controller.attach(newEffect);
@@ -277,30 +279,29 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         assert(rippleContext.tapBehavior.onlyMainButton != null);
         return TouchRippleTapGestureRecognizer(
           context: rippleContext,
-          onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
+          onlyMainButton: widget.onlyMainButton ??
+              rippleContext.tapBehavior.onlyMainButton!,
           previewMinDuration: previewMinDuration,
           acceptableDuration: rippleContext.tappableDuration,
           onTap: (offset) {
             activeEffect = showSpreadEffect(
-              callback: widget.onTap!,
-              isRejectable: false,
-              baseOffset: offset,
-              behavior: rippleContext.tapBehavior
-            );
+                callback: widget.onTap!,
+                isRejectable: false,
+                baseOffset: offset,
+                behavior: rippleContext.tapBehavior);
           },
           onTapRejectable: (offset) {
             activeEffect = showSpreadEffect(
-              callback: widget.onTap!,
-              isRejectable: true,
-              baseOffset: offset,
-              behavior: rippleContext.tapBehavior
-            );
+                callback: widget.onTap!,
+                isRejectable: true,
+                baseOffset: offset,
+                behavior: rippleContext.tapBehavior);
           },
           onTapReject: () => activeEffect.onRejected(),
           onTapAccept: () => activeEffect.onAccepted(),
         )
-        // Called when this gesture recognizer disposed.
-        ..onDispose = _recognizers.remove;
+          // Called when this gesture recognizer disposed.
+          ..onDispose = _recognizers.remove;
       });
     }
 
@@ -315,20 +316,21 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         // And the effect instance delegates the invocation of the callback function to delay the
         // lifecycle callback function call based on the `eventCallBackableMinPercent` option.
         void attachEffect(Offset offset) {
-          activeEffect = showSpreadEffect( 
+          activeEffect = showSpreadEffect(
             callback: () => widget.onTapAsyncEnd?.call(result),
             isRejectable: true,
             baseOffset: offset,
-            behavior: rippleContext.tapBehavior
+            behavior: rippleContext.tapBehavior,
           );
         }
 
         // Starts asynchronous processing about a given callback.
         void performAsync() {
-          final instance = widget.onTapAsync!()..then((_result) {
-            result = _result;
-            activeEffect.onAccepted();
-          });
+          final instance = widget.onTapAsync!()
+            ..then((_result) {
+              result = _result;
+              activeEffect.onAccepted();
+            });
 
           widget.onTapAsyncStart?.call(instance);
         }
@@ -336,7 +338,8 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         assert(rippleContext.tapBehavior.onlyMainButton != null);
         return TouchRippleTapGestureRecognizer(
           context: rippleContext,
-          onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
+          onlyMainButton: widget.onlyMainButton ??
+              rippleContext.tapBehavior.onlyMainButton!,
           previewMinDuration: previewMinDuration,
           acceptableDuration: rippleContext.tappableDuration,
           onTap: (offset) {
@@ -347,37 +350,40 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
           onTapReject: () => activeEffect.onRejected(),
           onTapAccept: performAsync,
         )
-        // Called when this gesture recognizer disposed.
-        ..onDispose = _recognizers.remove;
+          // Called when this gesture recognizer disposed.
+          ..onDispose = _recognizers.remove;
       });
     }
 
     if (isDoubleTappable) {
       _builders.add(() {
         assert(rippleContext.doubleTapBehavior.onlyMainButton != null);
-        assert(widget.onDoubleTapStart != null ? widget.onDoubleTapConsecutive != null : true);
-        assert(widget.onDoubleTapEnd != null ? widget.onDoubleTapConsecutive != null : true);
+        assert(widget.onDoubleTapStart != null
+            ? widget.onDoubleTapConsecutive != null
+            : true);
+        assert(widget.onDoubleTapEnd != null
+            ? widget.onDoubleTapConsecutive != null
+            : true);
         return TouchRippleDoubleTapGestureRecognizer(
-          context: rippleContext,
-          onlyMainButton: widget.onlyMainButton ?? rippleContext.doubleTapBehavior.onlyMainButton!,
-          acceptableDuration: rippleContext.doubleTappableDuration,
-          aliveDuration: rippleContext.doubleTapAliveDuration,
-          onDoubleTap: (offset, count) {
-            showSpreadEffect(
-              callback: widget.onDoubleTap!,
-              isRejectable: false,
-              baseOffset: offset,
-              behavior: rippleContext.doubleTapBehavior
-            );
+            context: rippleContext,
+            onlyMainButton: widget.onlyMainButton ??
+                rippleContext.doubleTapBehavior.onlyMainButton!,
+            acceptableDuration: rippleContext.doubleTappableDuration,
+            aliveDuration: rippleContext.doubleTapAliveDuration,
+            onDoubleTap: (offset, count) {
+              showSpreadEffect(
+                  callback: widget.onDoubleTap!,
+                  isRejectable: false,
+                  baseOffset: offset,
+                  behavior: rippleContext.doubleTapBehavior);
 
-            return widget.onDoubleTapConsecutive?.call(count) ?? false;
-          },
-          onDoubleTapStart: widget.onDoubleTapStart,
-          onDoubleTapEnd: widget.onDoubleTapEnd
-        )
-        ..onFocusStart = onFocusStart
-        ..onFocusEnd = onFocusEnd
-        ..onDispose = _recognizers.remove;
+              return widget.onDoubleTapConsecutive?.call(count) ?? false;
+            },
+            onDoubleTapStart: widget.onDoubleTapStart,
+            onDoubleTapEnd: widget.onDoubleTapEnd)
+          ..onFocusStart = onFocusStart
+          ..onFocusEnd = onFocusEnd
+          ..onDispose = _recognizers.remove;
       });
     } else {
       assert(widget.onDoubleTapConsecutive == null);
@@ -392,40 +398,40 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
         assert(rippleContext.longTapBehavior.onlyMainButton != null);
         assert(rippleContext.longTapBehavior.eventCallBackableMinPercent == 1);
         return TouchRippleLongTapGestureRecognizer(
-          context: rippleContext,
-          onlyMainButton: widget.onlyMainButton ?? rippleContext.longTapBehavior.onlyMainButton!,
-          delayDuration: rippleContext.longTappableDuration,
-          cycleDuration: rippleContext.longTapCycleDuration,
-          focusTiming: rippleContext.focusTiming,
-          acceptableDuration: rippleContext.longTapBehavior.spreadDuration!,
-          onLongTap: widget.onLongTap!,
-          onLongTapRejectable: (offset) {
-            activeEffect = showSpreadEffect(
-              callback: () {},
-              isRejectable: true,
-              baseOffset: offset,
-              behavior: rippleContext.longTapBehavior
-            );
-          },
-          onLongTapReject: () => activeEffect.onRejected(),
-          onLongTapAccept: () => activeEffect.onAccepted(),
-          onLongTapStart: widget.onLongTapStart,
-          onLongTapEnd: widget.onLongTapEnd
-        )
-        ..onFocusStart = onFocusStart
-        ..onFocusEnd = onFocusEnd
-        ..onDispose = _recognizers.remove;
+            context: rippleContext,
+            onlyMainButton: widget.onlyMainButton ??
+                rippleContext.longTapBehavior.onlyMainButton!,
+            delayDuration: rippleContext.longTappableDuration,
+            cycleDuration: rippleContext.longTapCycleDuration,
+            focusTiming: rippleContext.focusTiming,
+            acceptableDuration: rippleContext.longTapBehavior.spreadDuration!,
+            onLongTap: widget.onLongTap!,
+            onLongTapRejectable: (offset) {
+              activeEffect = showSpreadEffect(
+                  callback: () {},
+                  isRejectable: true,
+                  baseOffset: offset,
+                  behavior: rippleContext.longTapBehavior);
+            },
+            onLongTapReject: () => activeEffect.onRejected(),
+            onLongTapAccept: () => activeEffect.onAccepted(),
+            onLongTapStart: widget.onLongTapStart,
+            onLongTapEnd: widget.onLongTapEnd)
+          ..onFocusStart = onFocusStart
+          ..onFocusEnd = onFocusEnd
+          ..onDispose = _recognizers.remove;
       });
     }
 
-    { // Drag Gesture Recognizer
+    {
+      // Drag Gesture Recognizer
       TouchRippleSpreadingEffect createDragEffect(Offset offset) {
         return showSpreadEffect(
           callback: () {},
           isRejectable: true,
           baseOffset: offset,
           behavior: rippleContext.dragBehavior,
-          isAcceptWhenResumed: false
+          isAcceptWhenResumed: false,
         );
       }
 
@@ -437,7 +443,8 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
           assert(rippleContext.dragBehavior.eventCallBackableMinPercent == 0);
           return TouchRippleDragGestureRecognizer(
             context: rippleContext,
-            onlyMainButton: widget.onlyMainButton ?? rippleContext.dragBehavior.onlyMainButton!,
+            onlyMainButton: widget.onlyMainButton ??
+                rippleContext.dragBehavior.onlyMainButton!,
             axis: Axis.horizontal,
             onDrag: widget.onDragHorizontal!,
             onDragStart: (offset) {
@@ -448,8 +455,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
               activeEffect.onAccepted();
               widget.onDragHorizontalEnd?.call();
             },
-          )
-          ..onDispose = _recognizers.remove;
+          )..onDispose = _recognizers.remove;
         });
       }
 
@@ -461,7 +467,8 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
           assert(rippleContext.dragBehavior.eventCallBackableMinPercent == 0);
           return TouchRippleDragGestureRecognizer(
             context: rippleContext,
-            onlyMainButton: widget.onlyMainButton ?? rippleContext.dragBehavior.onlyMainButton!,
+            onlyMainButton: widget.onlyMainButton ??
+                rippleContext.dragBehavior.onlyMainButton!,
             axis: Axis.vertical,
             onDrag: widget.onDragVertical!,
             onDragStart: (offset) {
@@ -472,8 +479,7 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
               activeEffect.onAccepted();
               widget.onDragVerticalEnd?.call();
             },
-          )
-          ..onDispose = _recognizers.remove;
+          )..onDispose = _recognizers.remove;
         });
       }
     }
@@ -507,12 +513,12 @@ class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetect
 
     // The gesture recognizer builders needs to be rebuilt
     // when a given callback function is different or null.
-    if (widget.onTap != oldWidget.onTap
-     || widget.onTapAsync != oldWidget.onTapAsync
-     || widget.onDoubleTap != oldWidget.onDoubleTap
-     || widget.onLongTap != oldWidget.onLongTap
-     || widget.onDragVertical != oldWidget.onDragVertical
-     || widget.onDragHorizontal != oldWidget.onDragHorizontal) {
+    if (widget.onTap != oldWidget.onTap ||
+        widget.onTapAsync != oldWidget.onTapAsync ||
+        widget.onDoubleTap != oldWidget.onDoubleTap ||
+        widget.onLongTap != oldWidget.onLongTap ||
+        widget.onDragVertical != oldWidget.onDragVertical ||
+        widget.onDragHorizontal != oldWidget.onDragHorizontal) {
       initBuilders();
     }
   }

@@ -111,3 +111,10 @@
 
 ## 2.7.2
 - Refactored code to follow Dart formatting conventions.
+
+## 2.7.3
+- Fixed an issue related to [issues/2](https://github.com/MTtankkeo/flutter_touch_ripple/issues/2) for the 'TypeError: Fatal Null check operator used on a null value' by adding a mounted check before accessing the context.
+
+- Fixed missing type annotations to improve package health score.
+
+- Applied `dart format` to enhance code formatting and maintainability.

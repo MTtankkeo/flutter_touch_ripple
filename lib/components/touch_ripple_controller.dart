@@ -8,8 +8,8 @@ import 'package:flutter_touch_ripple/flutter_touch_ripple.dart';
 typedef TouchRippleListener = VoidCallback;
 
 /// The class defines and manages states, listeners, a context and other values related
-/// to touch ripple, ensuring that each state exists uniquely within the controller. 
-/// 
+/// to touch ripple, ensuring that each state exists uniquely within the controller.
+///
 /// See Also, An instance of this class can be referenced and accessed
 /// externally to attach or detach states or related values.
 class TouchRippleController extends Listenable {
@@ -21,12 +21,12 @@ class TouchRippleController extends Listenable {
   /// The list defines the instances of the [TouchRippleEffect].
   final _states = <TouchRippleEffect>[];
 
-  /// The hash map defines a mapping of touch ripple effects by their keys 
-  /// to allow referencing specific instances of [TouchRippleEffect] that 
+  /// The hash map defines a mapping of touch ripple effects by their keys
+  /// to allow referencing specific instances of [TouchRippleEffect] that
   /// are not disposed of when their states change.
   final _stateMap = HashMap<String, TouchRippleEffect>();
 
-  /// Returns all the current touch ripple effects that are attached 
+  /// Returns all the current touch ripple effects that are attached
   /// and active to this touch ripple controller as a list.
   List<TouchRippleEffect> get activeEffects {
     final statesFromMap = _stateMap.entries.map((entry) => entry.value);
@@ -35,10 +35,14 @@ class TouchRippleController extends Listenable {
 
   /// Delegates the task of adding a touch ripple effect to this controller
   /// to ensure it can be reliably detached and disposed later./
-  attach(TouchRippleEffect effect) {
-    if (context.overlapBehavior == TouchRippleOverlapBehavior.ignore && _states.isNotEmpty) return;
+  void attach(TouchRippleEffect effect) {
+    if (context.overlapBehavior == TouchRippleOverlapBehavior.ignore &&
+        _states.isNotEmpty) return;
     if (context.overlapBehavior == TouchRippleOverlapBehavior.cancel) {
-      _states.whereType<TouchRippleSpreadingEffect>().toList().forEach((effect) => effect.cancel());
+      _states
+          .whereType<TouchRippleSpreadingEffect>()
+          .toList()
+          .forEach((effect) => effect.cancel());
     }
 
     effect.addListener(notifyListeners);
@@ -51,14 +55,18 @@ class TouchRippleController extends Listenable {
 
   /// Delegates the task of detaching and disposing of a touch ripple effect
   /// to ensure consistency with [attach] function.
-  detach(TouchRippleEffect effect) {
-    assert(_states.contains(effect), "Already not exists a given ripple effect.");
+  void detach(TouchRippleEffect effect) {
+    assert(
+      _states.contains(effect),
+      "Already not exists a given ripple effect.",
+    );
+
     _states.remove(effect..removeListener(notifyListeners));
   }
 
   /// Delegates the task of adding a touch ripple effect to this controller
   /// to ensure it can be reliably detached and disposed late by a given key.
-  attachByKey(String key, TouchRippleEffect effect) {
+  void attachByKey(String key, TouchRippleEffect effect) {
     assert(!_stateMap.containsKey(key), "Already exists a given ripple effect");
     _stateMap[key] = effect
       ..addListener(notifyListeners)
@@ -67,8 +75,12 @@ class TouchRippleController extends Listenable {
 
   /// Delegates the task of detaching and disposing of a touch ripple effect
   /// to ensure consistency with [attachByKey] function by a given key.
-  detachByKey(String key) {
-    assert(_stateMap.containsKey(key), "Already not exists a given ripple effect.");
+  void detachByKey(String key) {
+    assert(
+      _stateMap.containsKey(key),
+      "Already not exists a given ripple effect.",
+    );
+
     _stateMap.remove(key)?..removeListener(notifyListeners);
   }
 
@@ -80,7 +92,7 @@ class TouchRippleController extends Listenable {
   /// Delegates all states and context from a given controller to itself and removes
   /// all states from the given controller, ensuring that each state exists only
   /// once in the controller.
-  delegateFrom(TouchRippleController other) {
+  void delegateFrom(TouchRippleController other) {
     _states.clear();
     _states.addAll(other._states..clear());
     _stateMap.clear();
@@ -96,7 +108,11 @@ class TouchRippleController extends Listenable {
 
   @override
   void removeListener(VoidCallback listener) {
-    assert(_listeners.contains(listener), "Already not exists a given listener.");
+    assert(
+      _listeners.contains(listener),
+      "Already not exists a given listener.",
+    );
+
     _listeners.remove(listener);
   }
 
@@ -104,7 +120,7 @@ class TouchRippleController extends Listenable {
   void notifyListeners() => _listeners.forEach((l) => l.call());
 
   /// Disposes all instances related the controller(e.g. [TouchRippleEffect]).
-  dispose() {
+  void dispose() {
     _states.toList().forEach((state) => state.dispose());
     _stateMap.forEach((_, state) => state.dispose());
     _stateMap.clear();

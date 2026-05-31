@@ -5,11 +5,13 @@ import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_event.dart';
 
 /// Signature for the callback function that is called when a [GestureRecognizer] disposed.
-typedef GestureRecognizerDisposeCallback = void Function(GestureRecognizer instance);
+typedef GestureRecognizerDisposeCallback = void Function(
+    GestureRecognizer instance);
 
 /// The abstract class that defines the touch ripple gesture base behavior,
 /// which is a basic and essential behavior.
-abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer {
+abstract class TouchRippleGestureRecognizer
+    extends OneSequenceGestureRecognizer {
   TouchRippleGestureRecognizer({
     required this.context,
     required this.onlyMainButton,
@@ -40,13 +42,17 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
   Offset? _pointerMoveOffset;
 
   /// Returns the current referenceable pointer offset.
-  Offset get currentPointerOffset => _pointerMoveOffset ?? (_pointerDownOffset ?? Offset.zero);
+  Offset get currentPointerOffset =>
+      _pointerMoveOffset ?? (_pointerDownOffset ?? Offset.zero);
 
   Offset get originOffset {
     switch (context.origin) {
-      case TouchRippleOrigin.pointer_down: return _pointerDownOffset!;
-      case TouchRippleOrigin.pointer_move: return currentPointerOffset;
-      case TouchRippleOrigin.center: return Offset(size.width / 2, size.height / 2);
+      case TouchRippleOrigin.pointer_down:
+        return _pointerDownOffset!;
+      case TouchRippleOrigin.pointer_move:
+        return currentPointerOffset;
+      case TouchRippleOrigin.center:
+        return Offset(size.width / 2, size.height / 2);
     }
   }
 
@@ -65,12 +71,13 @@ abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer
     if (isAccepted) return false;
     if (context.rejectBehavior == TouchRippleRejectBehavior.none) return false;
     if (context.rejectBehavior == TouchRippleRejectBehavior.leave) {
-      return !(_renderBox?.hitTest(BoxHitTestResult(), position: offset) ?? false);
+      return !(_renderBox?.hitTest(BoxHitTestResult(), position: offset) ??
+          false);
     }
 
     // is TouchRippleCancalBehavior.touchSlop
-    return pointerMoveDistance.dx.abs() > kTouchSlop
-        || pointerMoveDistance.dy.abs() > kTouchSlop;
+    return pointerMoveDistance.dx.abs() > kTouchSlop ||
+        pointerMoveDistance.dy.abs() > kTouchSlop;
   }
 
   /// Defines the values needed to process the gesture and
@@ -219,7 +226,7 @@ mixin FocusableGestureRecognizerMixin on OneSequenceGestureRecognizer {
 /// The gesture recognizer that tracks holding gestures, defined as when a pointer
 /// is pressed but not yet released. It resolves the gesture if the pointer
 /// is lifted.
-/// 
+///
 /// Primarily used to prevent a tap gesture from being immediately
 /// recognized on pointer down when there are no competing gestures.
 class HoldingGestureRecognizer extends OneSequenceGestureRecognizer {
@@ -308,9 +315,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
 }
 
 class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
-    with HoldableGestureRecognizerMixin,
-         FocusableGestureRecognizerMixin {
-
+    with HoldableGestureRecognizerMixin, FocusableGestureRecognizerMixin {
   TouchRippleDoubleTapGestureRecognizer({
     required super.context,
     required super.onlyMainButton,
@@ -318,7 +323,7 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
     required this.aliveDuration,
     required this.onDoubleTap,
     required this.onDoubleTapStart,
-    required this.onDoubleTapEnd
+    required this.onDoubleTapEnd,
   });
 
   @override
@@ -365,8 +370,15 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
     super.onPointerUp(event);
 
     if (++tapCount >= 2) {
-      assert(_rejectTimer != null, "In the correct, double taps cannot occur without the reject timer is not exists.");
-      assert(_rejectTimer!.isActive || isFocusActive, "In the correct, double taps cannot occur without the reject timer is active.");
+      assert(
+        _rejectTimer != null,
+        "In the correct, double taps cannot occur without the reject timer is not exists.",
+      );
+      assert(
+        _rejectTimer!.isActive || isFocusActive,
+        "In the correct, double taps cannot occur without the reject timer is active.",
+      );
+
       _rejectTimer?.cancel();
 
       if (onDoubleTap(originOffset, count++)) {
@@ -404,7 +416,8 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
   }
 }
 
-class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer with FocusableGestureRecognizerMixin {
+class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer
+    with FocusableGestureRecognizerMixin {
   TouchRippleLongTapGestureRecognizer({
     required super.context,
     required super.onlyMainButton,
@@ -549,7 +562,7 @@ class TouchRippleDragGestureRecognizer extends TouchRippleGestureRecognizer {
     required this.axis,
     required this.onDrag,
     required this.onDragStart,
-    required this.onDragEnd
+    required this.onDragEnd,
   });
 
   final Axis axis;
@@ -558,7 +571,8 @@ class TouchRippleDragGestureRecognizer extends TouchRippleGestureRecognizer {
   final VoidCallback? onDragEnd;
 
   @override
-  String get debugLabal => axis == Axis.horizontal ? "drag-horizontal" : "darg-vertical";
+  String get debugLabal =>
+      axis == Axis.horizontal ? "drag-horizontal" : "darg-vertical";
 
   @override
   void onPointerMove(PointerMoveEvent event) {
@@ -567,8 +581,8 @@ class TouchRippleDragGestureRecognizer extends TouchRippleGestureRecognizer {
     assert(_pointerDownOffset != null);
     assert(_pointerMoveOffset != null);
     final double delta = axis == Axis.horizontal
-      ? _pointerMoveOffset!.dx - _pointerDownOffset!.dx
-      : _pointerMoveOffset!.dy - _pointerDownOffset!.dy;
+        ? _pointerMoveOffset!.dx - _pointerDownOffset!.dx
+        : _pointerMoveOffset!.dy - _pointerDownOffset!.dy;
 
     // Accepts the gesture when the user drags horizontally beyond the touch slop threshold.
     if (delta.abs() >= kTouchSlop && !isAccepted) accept();

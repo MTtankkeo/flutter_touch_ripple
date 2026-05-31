@@ -41,7 +41,7 @@ class TouchRippleStyle extends InheritedWidget {
     this.useHoverEffect,
     this.useFocusEffect,
     this.useSparkleShader,
-    this.onlyMainButton
+    this.onlyMainButton,
   });
 
   /// The value defines the background color of a spread ripple effect.
@@ -65,7 +65,7 @@ class TouchRippleStyle extends InheritedWidget {
   /// The value defines the radius of a blur filter to touch ripple.
   final TouchRippleBlur? rippleBlur;
 
-  /// The value that defines the blur radius for the sparkle ripple effect.  
+  /// The value that defines the blur radius for the sparkle ripple effect.
   /// Android 12 uses 1.0 as the default, while this package uses 0.5.
   final double? sparkleRippleBlur;
 
@@ -182,36 +182,36 @@ class TouchRippleStyle extends InheritedWidget {
 
   @override
   bool updateShouldNotify(TouchRippleStyle oldWidget) {
-    return rippleColor != oldWidget.rippleColor
-        || hoverColor != oldWidget.hoverColor
-        || focusColor != oldWidget.focusColor
-        || rippleScale != oldWidget.rippleScale
-        || ripplePadding != oldWidget.ripplePadding
-        || rippleBlur != oldWidget.rippleBlur
-        || sparkleRippleBlur != oldWidget.sparkleRippleBlur
-        || rippleBorderRadius != oldWidget.rippleBorderRadius
-        || tapBehavior != oldWidget.tapBehavior
-        || doubleTapBehavior != oldWidget.doubleTapBehavior
-        || longTapBehavior != oldWidget.longTapBehavior
-        || dragBehavior != oldWidget.dragBehavior
-        || previewDuration != oldWidget.previewDuration
-        || tappableDuration != oldWidget.tappableDuration
-        || doubleTappableDuration != oldWidget.doubleTappableDuration
-        || doubleTapAliveDuration != oldWidget.doubleTapAliveDuration
-        || longTappableDuration != oldWidget.longTappableDuration
-        || longTapCycleDuration != oldWidget.longTapCycleDuration
-        || rejectBehavior != oldWidget.rejectBehavior
-        || cancelBehavior != oldWidget.cancelBehavior
-        || overlapBehavior != oldWidget.overlapBehavior
-        || renderOrderType != oldWidget.renderOrderType
-        || focusTiming != oldWidget.focusTiming
-        || origin != oldWidget.origin
-        || shape != oldWidget.shape
-        || hoverAnimation != oldWidget.hoverAnimation
-        || focusAnimation != oldWidget.focusAnimation
-        || useHoverEffect != oldWidget.useHoverEffect
-        || useFocusEffect != oldWidget.useFocusEffect
-        || useSparkleShader != oldWidget.useSparkleShader
-        || onlyMainButton != oldWidget.onlyMainButton;
+    return rippleColor != oldWidget.rippleColor ||
+        hoverColor != oldWidget.hoverColor ||
+        focusColor != oldWidget.focusColor ||
+        rippleScale != oldWidget.rippleScale ||
+        ripplePadding != oldWidget.ripplePadding ||
+        rippleBlur != oldWidget.rippleBlur ||
+        sparkleRippleBlur != oldWidget.sparkleRippleBlur ||
+        rippleBorderRadius != oldWidget.rippleBorderRadius ||
+        tapBehavior != oldWidget.tapBehavior ||
+        doubleTapBehavior != oldWidget.doubleTapBehavior ||
+        longTapBehavior != oldWidget.longTapBehavior ||
+        dragBehavior != oldWidget.dragBehavior ||
+        previewDuration != oldWidget.previewDuration ||
+        tappableDuration != oldWidget.tappableDuration ||
+        doubleTappableDuration != oldWidget.doubleTappableDuration ||
+        doubleTapAliveDuration != oldWidget.doubleTapAliveDuration ||
+        longTappableDuration != oldWidget.longTappableDuration ||
+        longTapCycleDuration != oldWidget.longTapCycleDuration ||
+        rejectBehavior != oldWidget.rejectBehavior ||
+        cancelBehavior != oldWidget.cancelBehavior ||
+        overlapBehavior != oldWidget.overlapBehavior ||
+        renderOrderType != oldWidget.renderOrderType ||
+        focusTiming != oldWidget.focusTiming ||
+        origin != oldWidget.origin ||
+        shape != oldWidget.shape ||
+        hoverAnimation != oldWidget.hoverAnimation ||
+        focusAnimation != oldWidget.focusAnimation ||
+        useHoverEffect != oldWidget.useHoverEffect ||
+        useFocusEffect != oldWidget.useFocusEffect ||
+        useSparkleShader != oldWidget.useSparkleShader ||
+        onlyMainButton != oldWidget.onlyMainButton;
   }
 }

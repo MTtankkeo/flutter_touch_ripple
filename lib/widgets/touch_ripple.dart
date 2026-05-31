@@ -9,10 +9,10 @@ import 'package:flutter_touch_ripple/widgets/touch_ripple_render.dart';
 /// This widget, inspired by Google Material's ripple effect, visualizes
 /// various gestures such as tap(and async), double tap, and long press through
 /// ripple effects.
-/// 
+///
 /// please refer to [GitHub](https://github.com/MTtankkeo/flutter_touch_ripple)
 /// when you want to know more about it.
-/// 
+///
 /// ### How to apply ripple effect?
 /// ```dart
 /// TouchRipple(
@@ -78,7 +78,7 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
     this.useSparkleShader,
     this.onlyMainButton,
     this.controller,
-    required this.child
+    required this.child,
   }) : assert(rippleScale == null || rippleScale != 0);
 
   /// The callback function is called when the user taps or clicks.
@@ -105,26 +105,26 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
   /// should continue after the initial occurrence.
   final TouchRippleContinuableCallback? onDoubleTapConsecutive;
 
-  /// The callback function is a lifecycle callback for the double-tap event. 
-  /// It is called when a double tap starts, which is useful for handling 
+  /// The callback function is a lifecycle callback for the double-tap event.
+  /// It is called when a double tap starts, which is useful for handling
   /// actions that occur during successive double taps.
   final VoidCallback? onDoubleTapStart;
 
-  /// The callback function is a lifecycle callback for the double-tap event. 
-  /// It is called when a double tap ends, providing the advantage of knowing 
+  /// The callback function is a lifecycle callback for the double-tap event.
+  /// It is called when a double tap ends, providing the advantage of knowing
   /// when a series of consecutive double taps has finished.
   final VoidCallback? onDoubleTapEnd;
 
   /// The callback function is called when the user long presses or long clicks.
   final TouchRippleContinuableCallback? onLongTap;
 
-  /// The callback function is a lifecycle callback for the long-tap event. 
-  /// It is called when a long tap starts, which is useful for initiating 
+  /// The callback function is a lifecycle callback for the long-tap event.
+  /// It is called when a long tap starts, which is useful for initiating
   /// actions that require a sustained press.
   final VoidCallback? onLongTapStart;
 
-  /// The callback function is a lifecycle callback for the long-tap event. 
-  /// It is called when a long tap ends, providing the advantage of knowing 
+  /// The callback function is a lifecycle callback for the long-tap event.
+  /// It is called when a long tap ends, providing the advantage of knowing
   /// when a series of consecutive long taps has concluded.
   final VoidCallback? onLongTapEnd;
 
@@ -320,14 +320,17 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
 /// The widget state implements [TouchRippleContext], allowing it to merge various option
 /// in priority order to provide the appropriate style, behavior, and information necessary
 /// for rendering the touch ripple effect.
-class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext, TickerProviderStateMixin {
+class _TouchRippleState<T> extends State<TouchRipple<T>>
+    with TouchRippleContext, TickerProviderStateMixin {
   /// The value defines a unique instance of [TouchRippleController]
   /// to manage the state of the touch ripple in this widget.
-  late TouchRippleController _controller = widget.controller ?? TouchRippleController();
+  late TouchRippleController _controller =
+      widget.controller ?? TouchRippleController();
 
   /// Returns the instance of [TouchRippleStyle] inherited widget,
   /// and if it does not exist, returns null.
-  TouchRippleStyle? get style => TouchRippleStyle.maybeOf(context);
+  TouchRippleStyle? get style =>
+      mounted ? TouchRippleStyle.maybeOf(context) : null;
 
   @override
   void initState() {
@@ -345,17 +348,17 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
   void didUpdateWidget(TouchRipple<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.controller != null && oldWidget.controller != widget.controller) {
+    if (oldWidget.controller != null &&
+        oldWidget.controller != widget.controller) {
       _controller = widget.controller!..delegateFrom(_controller);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final _renderOrderType =
-         widget.renderOrderType
-      ?? style?.renderOrderType
-      ?? TouchRippleRenderOrderType.foreground;
+    final _renderOrderType = widget.renderOrderType ??
+        style?.renderOrderType ??
+        TouchRippleRenderOrderType.foreground;
 
     return TouchRippleGestureDetector<T>(
       onTap: widget.onTap,
@@ -385,7 +388,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       child: TouchRippleRender(
         controller: _controller,
         orderType: _renderOrderType,
-        child: widget.child
+        child: widget.child,
       ),
     );
   }
@@ -395,100 +398,88 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
 
   @override
   Color get rippleColor {
-    return widget.rippleColor
-        ?? style?.rippleColor
-        ?? const Color.fromRGBO(0, 0, 0, 0.1);
+    return widget.rippleColor ??
+        style?.rippleColor ??
+        const Color.fromRGBO(0, 0, 0, 0.1);
   }
 
   @override
   Color get hoverColor {
-    return widget.hoverColor
-        ?? style?.hoverColor
-        ?? rippleColor.fade(0.5);
+    return widget.hoverColor ?? style?.hoverColor ?? rippleColor.fade(0.5);
   }
 
   @override
   Color get focusColor {
-    return widget.focusColor
-        ?? style?.focusColor
-        ?? rippleColor.fade(0.5);
+    return widget.focusColor ?? style?.focusColor ?? rippleColor.fade(0.5);
   }
 
   @override
   double get rippleScale {
-    return widget.rippleScale
-        ?? style?.rippleScale
-        ?? 1;
+    return widget.rippleScale ?? style?.rippleScale ?? 1;
   }
 
   @override
   double get ripplePadding {
-    return widget.ripplePadding
-        ?? style?.ripplePadding
-        ?? 0;
+    return widget.ripplePadding ?? style?.ripplePadding ?? 0;
   }
 
   @override
   TouchRippleBlur get rippleBlur {
-    return widget.rippleBlur
-        ?? style?.rippleBlur
-        ?? MaterialTouchRippleBlur.percent(0.05, maxValue: 10);
+    return widget.rippleBlur ??
+        style?.rippleBlur ??
+        MaterialTouchRippleBlur.percent(0.05, maxValue: 10);
   }
 
   @override
   double get sparkleRippleBlur {
-    return widget.sparkleRippleBlur
-        ?? style?.sparkleRippleBlur
-        ?? 0.5;
+    return widget.sparkleRippleBlur ?? style?.sparkleRippleBlur ?? 0.5;
   }
 
   @override
   BorderRadius get rippleBorderRadius {
-    return widget.rippleBorderRadius
-        ?? style?.rippleBorderRadius
-        ?? BorderRadius.zero;
+    return widget.rippleBorderRadius ??
+        style?.rippleBorderRadius ??
+        BorderRadius.zero;
   }
 
   @override
   Duration get previewDuration {
-    return widget.previewDuration
-        ?? style?.previewDuration
-        ?? Duration(milliseconds: 100);
+    return widget.previewDuration ??
+        style?.previewDuration ??
+        Duration(milliseconds: 100);
   }
 
   @override
   Duration get tappableDuration {
-    return widget.tappableDuration
-        ?? style?.tappableDuration
-        ?? Duration.zero;
+    return widget.tappableDuration ?? style?.tappableDuration ?? Duration.zero;
   }
 
   @override
   Duration get doubleTappableDuration {
-    return widget.doubleTappableDuration
-        ?? style?.doubleTappableDuration
-        ?? Duration(milliseconds: 200);
+    return widget.doubleTappableDuration ??
+        style?.doubleTappableDuration ??
+        Duration(milliseconds: 200);
   }
 
   @override
   Duration get doubleTapAliveDuration {
-    return widget.doubleTapAliveDuration
-        ?? style?.doubleTapAliveDuration
-        ?? Duration(milliseconds: 1000);
+    return widget.doubleTapAliveDuration ??
+        style?.doubleTapAliveDuration ??
+        Duration(milliseconds: 1000);
   }
 
   @override
   Duration get longTappableDuration {
-    return widget.longTappableDuration
-        ?? style?.longTappableDuration
-        ?? Duration(milliseconds: 200);
+    return widget.longTappableDuration ??
+        style?.longTappableDuration ??
+        Duration(milliseconds: 200);
   }
 
   @override
   Duration get longTapCycleDuration {
-    return widget.longTapCycleDuration
-        ?? style?.longTapCycleDuration
-        ?? Duration(milliseconds: 500);
+    return widget.longTapCycleDuration ??
+        style?.longTapCycleDuration ??
+        Duration(milliseconds: 500);
   }
 
   @override
@@ -507,61 +498,57 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       fadeLowerPercent: 0,
       fadeUpperPercent: 1,
       eventCallBackableMinPercent: 0,
-      onlyMainButton: true
-    )
-    .merge(style?.tapBehavior)
-    .merge(widget.tapBehavior);
+      onlyMainButton: true,
+    ).merge(style?.tapBehavior).merge(widget.tapBehavior);
   }
 
   @override
   TouchRippleBehavior get doubleTapBehavior {
     return tapBehavior
-      .merge(style?.doubleTapBehavior)
-      .merge(widget.doubleTapBehavior);
+        .merge(style?.doubleTapBehavior)
+        .merge(widget.doubleTapBehavior);
   }
 
   @override
   TouchRippleBehavior get longTapBehavior {
     return tapBehavior
-      .merge(const TouchRippleBehavior(
-        lowerPercent: 0,
-        upperPercent: 1,
-        spreadDuration: Duration(milliseconds: 1000),
-        spreadCurve: Curves.linear,
-        fadeInDuration: Duration(milliseconds: 1000),
-        fadeInCurve: Curves.linear,
-        eventCallBackableMinPercent: 1,
-      ))
-      .merge(style?.longTapBehavior)
-      .merge(widget.longTapBehavior);
+        .merge(const TouchRippleBehavior(
+          lowerPercent: 0,
+          upperPercent: 1,
+          spreadDuration: Duration(milliseconds: 1000),
+          spreadCurve: Curves.linear,
+          fadeInDuration: Duration(milliseconds: 1000),
+          fadeInCurve: Curves.linear,
+          eventCallBackableMinPercent: 1,
+        ))
+        .merge(style?.longTapBehavior)
+        .merge(widget.longTapBehavior);
   }
 
   @override
   TouchRippleBehavior get dragBehavior {
-    return tapBehavior
-      .merge(style?.dragBehavior)
-      .merge(widget.dragBehavior);
+    return tapBehavior.merge(style?.dragBehavior).merge(widget.dragBehavior);
   }
 
   @override
   TouchRippleRejectBehavior get rejectBehavior {
-    return widget.rejectBehavior
-        ?? style?.rejectBehavior
-        ?? TouchRippleRejectBehavior.leave;
+    return widget.rejectBehavior ??
+        style?.rejectBehavior ??
+        TouchRippleRejectBehavior.leave;
   }
 
   @override
   TouchRippleCancelBehavior get cancelBehavior {
-    return widget.cancelBehavior
-        ?? style?.cancelBehavior
-        ?? TouchRippleCancelBehavior.none;
+    return widget.cancelBehavior ??
+        style?.cancelBehavior ??
+        TouchRippleCancelBehavior.none;
   }
 
   @override
   TouchRippleOverlapBehavior get overlapBehavior {
-    return widget.overlapBehavior
-        ?? style?.overlapBehavior
-        ?? TouchRippleOverlapBehavior.overlappable;
+    return widget.overlapBehavior ??
+        style?.overlapBehavior ??
+        TouchRippleOverlapBehavior.overlappable;
   }
 
   @override
@@ -570,10 +557,8 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       fadeInDuration: Duration(milliseconds: 150),
       fadeInCurve: Curves.easeOut,
       fadeOutDuration: Duration(milliseconds: 150),
-      fadeOutCurve: Curves.easeIn
-    )
-    .merge(style?.hoverAnimation)
-    .merge(widget.hoverAnimation);
+      fadeOutCurve: Curves.easeIn,
+    ).merge(style?.hoverAnimation).merge(widget.hoverAnimation);
   }
 
   @override
@@ -582,51 +567,39 @@ class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext
       fadeInDuration: Duration(milliseconds: 300),
       fadeInCurve: Curves.easeOut,
       fadeOutDuration: Duration(milliseconds: 300),
-      fadeOutCurve: Curves.easeIn
-    )
-    .merge(style?.focusAnimation)
-    .merge(widget.focusAnimation);
+      fadeOutCurve: Curves.easeIn,
+    ).merge(style?.focusAnimation).merge(widget.focusAnimation);
   }
 
   @override
   TouchRippleFocusTiming get focusTiming {
-    return widget.focusTiming
-        ?? style?.focusTiming
-        ?? TouchRippleFocusTiming.rejectable;
+    return widget.focusTiming ??
+        style?.focusTiming ??
+        TouchRippleFocusTiming.rejectable;
   }
 
   @override
   TouchRippleOrigin get origin {
-    return widget.origin
-        ?? style?.origin
-        ?? TouchRippleOrigin.pointer_move;
+    return widget.origin ?? style?.origin ?? TouchRippleOrigin.pointer_move;
   }
 
   @override
   TouchRippleShape get shape {
-    return widget.shape
-        ?? style?.shape
-        ?? TouchRippleShape.normal;
+    return widget.shape ?? style?.shape ?? TouchRippleShape.normal;
   }
 
   @override
   bool get useHoverEffect {
-    return widget.useHoverEffect
-        ?? style?.useHoverEffect
-        ?? true;
+    return widget.useHoverEffect ?? style?.useHoverEffect ?? true;
   }
 
   @override
   bool get useFocusEffect {
-    return widget.useFocusEffect
-        ?? style?.useFocusEffect
-        ?? true;
+    return widget.useFocusEffect ?? style?.useFocusEffect ?? true;
   }
 
   @override
   bool get useSparkleShader {
-    return widget.useSparkleShader
-        ?? style?.useSparkleShader
-        ?? false;
+    return widget.useSparkleShader ?? style?.useSparkleShader ?? false;
   }
 }

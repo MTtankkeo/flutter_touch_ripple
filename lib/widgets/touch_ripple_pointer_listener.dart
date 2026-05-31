@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-/// This widget declared to handle and prevent gesture propagation  
-/// to parent widgets when a child widget triggers a gesture  
-/// using the [Listener] widget.  
+/// This widget declared to handle and prevent gesture propagation
+/// to parent widgets when a child widget triggers a gesture
+/// using the [Listener] widget.
 class TouchRipplePointerListener extends StatefulWidget {
   const TouchRipplePointerListener({
     super.key,
@@ -27,35 +27,43 @@ class TouchRipplePointerListener extends StatefulWidget {
   }
 
   @override
-  State<TouchRipplePointerListener> createState() => TouchRipplePointerListenerState();
+  State<TouchRipplePointerListener> createState() =>
+      TouchRipplePointerListenerState();
 }
 
-class TouchRipplePointerListenerState extends State<TouchRipplePointerListener> {
-  /// Indicates whether all events are canceled or  
-  /// event-related functions cannot be invoked.  
-  ///  
+class TouchRipplePointerListenerState
+    extends State<TouchRipplePointerListener> {
+  /// Indicates whether all events are canceled or
+  /// event-related functions cannot be invoked.
+  ///
   /// - Declared to cancel the trigger of a parent widget when
   ///   a child widget is triggered and a [TouchRippleListener]
-  ///   exists as its descendant.  
+  ///   exists as its descendant.
   bool isCanceled = false;
 
   /// Handles the pointer events and define multiple actions.
   void _handlePointer(PointerEvent event) {
-    if(event is PointerDownEvent) {
+    if (event is PointerDownEvent) {
       // Notify to ancestor widget to listener cancelling.
-      (TouchRipplePointerListener.of(context) as TouchRipplePointerListenerState?)?..cancel();
+      (TouchRipplePointerListener.of(context)
+          as TouchRipplePointerListenerState?)
+        ?..cancel();
 
-      if(!isCanceled) widget.onPointerDown?.call(event);
-    } else if(event is PointerMoveEvent) {
-      if(isCanceled) return;
+      if (!isCanceled) widget.onPointerDown?.call(event);
+    } else if (event is PointerMoveEvent) {
+      if (isCanceled) return;
 
       widget.onPointerMove?.call(event);
-    } else { // as PointerUpEvent, PointerCancelEvent
-      if(isCanceled) { isCanceled = false; return; }
-      
-        event is PointerUpEvent
-      ? widget.onPointerUp?.call(event)
-      : widget.onPointerCancel?.call(event as PointerCancelEvent);
+    } else {
+      // as PointerUpEvent, PointerCancelEvent
+      if (isCanceled) {
+        isCanceled = false;
+        return;
+      }
+
+      event is PointerUpEvent
+          ? widget.onPointerUp?.call(event)
+          : widget.onPointerCancel?.call(event as PointerCancelEvent);
     }
   }
 

@@ -38,7 +38,7 @@ mixin TouchRippleContext {
   /// becomes blurrier.
   TouchRippleBlur get rippleBlur;
 
-  /// Returns the blur radius for the sparkle ripple effect.  
+  /// Returns the blur radius for the sparkle ripple effect.
   /// Android 12 uses 1.0 as the default, while this package uses 0.5.
   double get sparkleRippleBlur;
 
@@ -160,9 +160,11 @@ enum TouchRippleRejectBehavior {
 enum TouchRippleCancelBehavior {
   /// Sets the behavior to perform no action when the effect is canceled.
   none,
+
   /// Sets the behavior to stop the spread animation of the touch ripple
   /// effect when the effect is canceled.
   stop,
+
   /// Sets the behavior to reverse the spread animation of the touch ripple
   /// effect when the effect is canceled.
   reverse,
@@ -192,7 +194,7 @@ enum TouchRippleFocusTiming {
   rejectable,
 
   /// Sets the focus event to start when multiple ripple effects occur in rapid
-  /// succession. This setting prevents the focus from being triggered prematurely 
+  /// succession. This setting prevents the focus from being triggered prematurely
   /// when in a rejectable state.
   consecutive,
 }
@@ -218,11 +220,11 @@ enum TouchRippleShape {
   /// by the widget layout.
   normal,
 
-  /// Sets the shape to a circle that remains within the bounds of 
+  /// Sets the shape to a circle that remains within the bounds of
   /// the widget layout.
   inner_circle,
 
-  /// Sets the shape to a circle that extends beyond the bounds of 
+  /// Sets the shape to a circle that extends beyond the bounds of
   /// the widget layout.
   outer_circle,
 }

@@ -14,7 +14,8 @@ class TouchRippleShader {
 
   static void initializeShader() {
     if (!initCalled) {
-      ui.FragmentProgram.fromAsset('shaders/ink_sparkle.frag').then((ui.FragmentProgram loaded) {
+      ui.FragmentProgram.fromAsset('shaders/ink_sparkle.frag')
+          .then((ui.FragmentProgram loaded) {
         program = loaded;
         isInitialized = true;
       });
@@ -67,14 +68,32 @@ class TouchRippleShader {
       // uNoisePhase
       ..setFloat(15, noisePhase / 1000.0)
       // uCircle1
-      ..setFloat(16, turbulenceScale * 0.5 + (turbulencePhase * 0.01 * math.cos(turbulenceScale * 0.55)))
-      ..setFloat(17, turbulenceScale * 0.5 + (turbulencePhase * 0.01 * math.sin(turbulenceScale * 0.55)))
+      ..setFloat(
+          16,
+          turbulenceScale * 0.5 +
+              (turbulencePhase * 0.01 * math.cos(turbulenceScale * 0.55)))
+      ..setFloat(
+          17,
+          turbulenceScale * 0.5 +
+              (turbulencePhase * 0.01 * math.sin(turbulenceScale * 0.55)))
       // uCircle2
-      ..setFloat(18, turbulenceScale * 0.2 + (turbulencePhase * -0.0066 * math.cos(turbulenceScale * 0.45)))
-      ..setFloat(19, turbulenceScale * 0.2 + (turbulencePhase * -0.0066 * math.sin(turbulenceScale * 0.45)))
+      ..setFloat(
+          18,
+          turbulenceScale * 0.2 +
+              (turbulencePhase * -0.0066 * math.cos(turbulenceScale * 0.45)))
+      ..setFloat(
+          19,
+          turbulenceScale * 0.2 +
+              (turbulencePhase * -0.0066 * math.sin(turbulenceScale * 0.45)))
       // uCircle3
-      ..setFloat(20, turbulenceScale + (turbulencePhase * -0.0066 * math.cos(turbulenceScale * 0.35)))
-      ..setFloat(21, turbulenceScale + (turbulencePhase * -0.0066 * math.sin(turbulenceScale * 0.35)))
+      ..setFloat(
+          20,
+          turbulenceScale +
+              (turbulencePhase * -0.0066 * math.cos(turbulenceScale * 0.35)))
+      ..setFloat(
+          21,
+          turbulenceScale +
+              (turbulencePhase * -0.0066 * math.sin(turbulenceScale * 0.35)))
       // uRotation1
       ..setFloat(22, math.cos(rotation1))
       ..setFloat(23, math.sin(rotation1))
