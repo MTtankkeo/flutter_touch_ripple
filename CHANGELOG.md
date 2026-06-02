@@ -118,3 +118,14 @@
 - Fixed missing type annotations to improve package health score.
 
 - Applied `dart format` to enhance code formatting and maintainability.
+
+## 2.8.0
+- Renamed enum values to follow Dart lower camel case conventions.
+  - `TouchRippleOrigin.pointer_down` -> `TouchRippleOrigin.pointerDown`
+  - `TouchRippleOrigin.pointer_move` -> `TouchRippleOrigin.pointerMove`
+  - `TouchRippleShape.inner_circle` -> `TouchRippleShape.innerCircle`
+  - `TouchRippleShape.outer_circle` -> `TouchRippleShape.outerCircle`
+
+- Fixed an issue where animation listeners were not removed correctly from `TouchRippleSpreadingEffect`.
+
+- Updated lint configuration by adding `flutter_lints`.

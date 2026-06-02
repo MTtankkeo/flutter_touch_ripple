@@ -203,10 +203,10 @@ enum TouchRippleFocusTiming {
 /// specifying the origin of the ripple based on the user interaction.
 enum TouchRippleOrigin {
   /// Sets the effect to originate from the point where the pointer-down.
-  pointer_down,
+  pointerDown,
 
   /// Sets the effect to originate from the point where the pointer-move.
-  pointer_move,
+  pointerMove,
 
   /// Sets the effect to originate from the center of the widget, regardless
   /// of the pointer's position.
@@ -222,9 +222,9 @@ enum TouchRippleShape {
 
   /// Sets the shape to a circle that remains within the bounds of
   /// the widget layout.
-  inner_circle,
+  innerCircle,
 
   /// Sets the shape to a circle that extends beyond the bounds of
   /// the widget layout.
-  outer_circle,
+  outerCircle,
 }

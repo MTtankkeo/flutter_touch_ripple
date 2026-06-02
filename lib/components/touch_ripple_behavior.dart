@@ -22,21 +22,12 @@ class TouchRippleBehavior {
     this.fadeUpperPercent,
     this.eventCallBackableMinPercent,
     this.onlyMainButton,
-  })  : assert(lowerPercent != null
-            ? lowerPercent >= 0 && lowerPercent <= 1
-            : true),
-        assert(upperPercent != null
-            ? upperPercent >= 0 && upperPercent <= 1
-            : true),
-        assert(fadeLowerPercent != null
-            ? fadeLowerPercent >= 0 && fadeLowerPercent <= 1
-            : true),
-        assert(fadeUpperPercent != null
-            ? fadeUpperPercent >= 0 && fadeUpperPercent <= 1
-            : true),
+  })  : assert(lowerPercent != null ? lowerPercent >= 0 && lowerPercent <= 1 : true),
+        assert(upperPercent != null ? upperPercent >= 0 && upperPercent <= 1 : true),
+        assert(fadeLowerPercent != null ? fadeLowerPercent >= 0 && fadeLowerPercent <= 1 : true),
+        assert(fadeUpperPercent != null ? fadeUpperPercent >= 0 && fadeUpperPercent <= 1 : true),
         assert(eventCallBackableMinPercent != null
-            ? eventCallBackableMinPercent >= 0 &&
-                eventCallBackableMinPercent <= 1
+            ? eventCallBackableMinPercent >= 0 && eventCallBackableMinPercent <= 1
             : true);
 
   /// The duration of a touch ripple spreading animation.
@@ -103,8 +94,7 @@ class TouchRippleBehavior {
       upperPercent: other.upperPercent ?? upperPercent,
       fadeLowerPercent: other.fadeLowerPercent ?? fadeLowerPercent,
       fadeUpperPercent: other.fadeUpperPercent ?? fadeUpperPercent,
-      eventCallBackableMinPercent:
-          other.eventCallBackableMinPercent ?? eventCallBackableMinPercent,
+      eventCallBackableMinPercent: other.eventCallBackableMinPercent ?? eventCallBackableMinPercent,
       onlyMainButton: other.onlyMainButton ?? onlyMainButton,
     );
   }

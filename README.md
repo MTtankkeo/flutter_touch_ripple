@@ -191,15 +191,15 @@ The enumeration defines the starting point of a spread ripple effect, specifying
 
 | Name | Description |
 | ---- | ----------- |
-| pointer_down | Sets the effect to originate from the point where the pointer-down. |
-| pointer_move | Sets the effect to originate from the point where the pointer-move. |
+| pointerDown | Sets the effect to originate from the point where the pointer-down. |
+| pointerMove | Sets the effect to originate from the point where the pointer-move. |
 | center | Sets the effect to originate from the center of the widget, regardless of the pointer's position. |
 
-### When TouchRippleOrigin.pointer_down
-![pointer_down](https://github.com/user-attachments/assets/1a21cf5a-f3b1-4b55-9835-605ac52d8399)
+### When TouchRippleOrigin.pointerDown
+![pointerDown](https://github.com/user-attachments/assets/1a21cf5a-f3b1-4b55-9835-605ac52d8399)
 
-### When TouchRippleOrigin.pointer_move
-![pointer_move](https://github.com/user-attachments/assets/13d1a2b9-a25f-431b-b01e-e5a0ebac117d)
+### When TouchRippleOrigin.pointerMove
+![pointerMove](https://github.com/user-attachments/assets/13d1a2b9-a25f-431b-b01e-e5a0ebac117d)
 
 ### When TouchRippleOrigin.center
 ![center](https://github.com/user-attachments/assets/3f8e07b4-afa6-48cb-b0ae-82a4d5b857fc)
@@ -210,17 +210,17 @@ The enumeration defines the shape of the ripple effect based on the widget layou
 | Name | Description |
 | ---- | ----------- |
 | normal | Sets the shape to a square that corresponds to the area occupied by the widget layout. |
-| inner_circle | Sets the shape to a circle that remains within the bounds of the widget layout. |
-| outer_circle | Sets the shape to a circle that extends beyond the bounds of the widget layout. |
+| innerCircle | Sets the shape to a circle that remains within the bounds of the widget layout. |
+| outerCircle | Sets the shape to a circle that extends beyond the bounds of the widget layout. |
 
 ### When TouchRippleShape.normal
 ![normal](https://github.com/user-attachments/assets/0abdf92a-296d-4f40-b0e2-1149d19f1502)
 
-### When TouchRippleShape.inner_circle
-![inner_circle](https://github.com/user-attachments/assets/2d90b2c1-9a76-4a07-abff-739031b438e5)
+### When TouchRippleShape.innerCircle
+![innerCircle](https://github.com/user-attachments/assets/2d90b2c1-9a76-4a07-abff-739031b438e5)
 
-### When TouchRippleShape.outer_circle
-![outer_circle](https://github.com/user-attachments/assets/a00a15f9-4846-4c5d-887c-79637d6ac21d)
+### When TouchRippleShape.outerCircle
+![outerCircle](https://github.com/user-attachments/assets/a00a15f9-4846-4c5d-887c-79637d6ac21d)
 
 ## The Properties of TouchRippleRenderOrderType
 The enumeration specifies the rendering order of the touch ripple effect, determining whether it should appear in the foreground or background.

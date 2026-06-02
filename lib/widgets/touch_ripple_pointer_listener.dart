@@ -27,12 +27,10 @@ class TouchRipplePointerListener extends StatefulWidget {
   }
 
   @override
-  State<TouchRipplePointerListener> createState() =>
-      TouchRipplePointerListenerState();
+  State<TouchRipplePointerListener> createState() => TouchRipplePointerListenerState();
 }
 
-class TouchRipplePointerListenerState
-    extends State<TouchRipplePointerListener> {
+class TouchRipplePointerListenerState extends State<TouchRipplePointerListener> {
   /// Indicates whether all events are canceled or
   /// event-related functions cannot be invoked.
   ///
@@ -45,9 +43,7 @@ class TouchRipplePointerListenerState
   void _handlePointer(PointerEvent event) {
     if (event is PointerDownEvent) {
       // Notify to ancestor widget to listener cancelling.
-      (TouchRipplePointerListener.of(context)
-          as TouchRipplePointerListenerState?)
-        ?..cancel();
+      (TouchRipplePointerListener.of(context) as TouchRipplePointerListenerState?)?.cancel();
 
       if (!isCanceled) widget.onPointerDown?.call(event);
     } else if (event is PointerMoveEvent) {

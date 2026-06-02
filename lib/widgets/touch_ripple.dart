@@ -320,17 +320,14 @@ class TouchRipple<T extends dynamic> extends StatefulWidget {
 /// The widget state implements [TouchRippleContext], allowing it to merge various option
 /// in priority order to provide the appropriate style, behavior, and information necessary
 /// for rendering the touch ripple effect.
-class _TouchRippleState<T> extends State<TouchRipple<T>>
-    with TouchRippleContext, TickerProviderStateMixin {
+class _TouchRippleState<T> extends State<TouchRipple<T>> with TouchRippleContext, TickerProviderStateMixin {
   /// The value defines a unique instance of [TouchRippleController]
   /// to manage the state of the touch ripple in this widget.
-  late TouchRippleController _controller =
-      widget.controller ?? TouchRippleController();
+  late TouchRippleController _controller = widget.controller ?? TouchRippleController();
 
   /// Returns the instance of [TouchRippleStyle] inherited widget,
   /// and if it does not exist, returns null.
-  TouchRippleStyle? get style =>
-      mounted ? TouchRippleStyle.maybeOf(context) : null;
+  TouchRippleStyle? get style => mounted ? TouchRippleStyle.maybeOf(context) : null;
 
   @override
   void initState() {
@@ -348,17 +345,14 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
   void didUpdateWidget(TouchRipple<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.controller != null &&
-        oldWidget.controller != widget.controller) {
+    if (oldWidget.controller != null && oldWidget.controller != widget.controller) {
       _controller = widget.controller!..delegateFrom(_controller);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final _renderOrderType = widget.renderOrderType ??
-        style?.renderOrderType ??
-        TouchRippleRenderOrderType.foreground;
+    final renderOrderType = widget.renderOrderType ?? style?.renderOrderType ?? TouchRippleRenderOrderType.foreground;
 
     return TouchRippleGestureDetector<T>(
       onTap: widget.onTap,
@@ -387,7 +381,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
       controller: _controller,
       child: TouchRippleRender(
         controller: _controller,
-        orderType: _renderOrderType,
+        orderType: renderOrderType,
         child: widget.child,
       ),
     );
@@ -398,9 +392,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
 
   @override
   Color get rippleColor {
-    return widget.rippleColor ??
-        style?.rippleColor ??
-        const Color.fromRGBO(0, 0, 0, 0.1);
+    return widget.rippleColor ?? style?.rippleColor ?? const Color.fromRGBO(0, 0, 0, 0.1);
   }
 
   @override
@@ -425,9 +417,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
 
   @override
   TouchRippleBlur get rippleBlur {
-    return widget.rippleBlur ??
-        style?.rippleBlur ??
-        MaterialTouchRippleBlur.percent(0.05, maxValue: 10);
+    return widget.rippleBlur ?? style?.rippleBlur ?? MaterialTouchRippleBlur.percent(0.05, maxValue: 10);
   }
 
   @override
@@ -437,16 +427,12 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
 
   @override
   BorderRadius get rippleBorderRadius {
-    return widget.rippleBorderRadius ??
-        style?.rippleBorderRadius ??
-        BorderRadius.zero;
+    return widget.rippleBorderRadius ?? style?.rippleBorderRadius ?? BorderRadius.zero;
   }
 
   @override
   Duration get previewDuration {
-    return widget.previewDuration ??
-        style?.previewDuration ??
-        Duration(milliseconds: 100);
+    return widget.previewDuration ?? style?.previewDuration ?? Duration(milliseconds: 100);
   }
 
   @override
@@ -456,30 +442,22 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
 
   @override
   Duration get doubleTappableDuration {
-    return widget.doubleTappableDuration ??
-        style?.doubleTappableDuration ??
-        Duration(milliseconds: 200);
+    return widget.doubleTappableDuration ?? style?.doubleTappableDuration ?? Duration(milliseconds: 200);
   }
 
   @override
   Duration get doubleTapAliveDuration {
-    return widget.doubleTapAliveDuration ??
-        style?.doubleTapAliveDuration ??
-        Duration(milliseconds: 1000);
+    return widget.doubleTapAliveDuration ?? style?.doubleTapAliveDuration ?? Duration(milliseconds: 1000);
   }
 
   @override
   Duration get longTappableDuration {
-    return widget.longTappableDuration ??
-        style?.longTappableDuration ??
-        Duration(milliseconds: 200);
+    return widget.longTappableDuration ?? style?.longTappableDuration ?? Duration(milliseconds: 200);
   }
 
   @override
   Duration get longTapCycleDuration {
-    return widget.longTapCycleDuration ??
-        style?.longTapCycleDuration ??
-        Duration(milliseconds: 500);
+    return widget.longTapCycleDuration ?? style?.longTapCycleDuration ?? Duration(milliseconds: 500);
   }
 
   @override
@@ -504,9 +482,7 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
 
   @override
   TouchRippleBehavior get doubleTapBehavior {
-    return tapBehavior
-        .merge(style?.doubleTapBehavior)
-        .merge(widget.doubleTapBehavior);
+    return tapBehavior.merge(style?.doubleTapBehavior).merge(widget.doubleTapBehavior);
   }
 
   @override
@@ -532,23 +508,17 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
 
   @override
   TouchRippleRejectBehavior get rejectBehavior {
-    return widget.rejectBehavior ??
-        style?.rejectBehavior ??
-        TouchRippleRejectBehavior.leave;
+    return widget.rejectBehavior ?? style?.rejectBehavior ?? TouchRippleRejectBehavior.leave;
   }
 
   @override
   TouchRippleCancelBehavior get cancelBehavior {
-    return widget.cancelBehavior ??
-        style?.cancelBehavior ??
-        TouchRippleCancelBehavior.none;
+    return widget.cancelBehavior ?? style?.cancelBehavior ?? TouchRippleCancelBehavior.none;
   }
 
   @override
   TouchRippleOverlapBehavior get overlapBehavior {
-    return widget.overlapBehavior ??
-        style?.overlapBehavior ??
-        TouchRippleOverlapBehavior.overlappable;
+    return widget.overlapBehavior ?? style?.overlapBehavior ?? TouchRippleOverlapBehavior.overlappable;
   }
 
   @override
@@ -573,14 +543,12 @@ class _TouchRippleState<T> extends State<TouchRipple<T>>
 
   @override
   TouchRippleFocusTiming get focusTiming {
-    return widget.focusTiming ??
-        style?.focusTiming ??
-        TouchRippleFocusTiming.rejectable;
+    return widget.focusTiming ?? style?.focusTiming ?? TouchRippleFocusTiming.rejectable;
   }
 
   @override
   TouchRippleOrigin get origin {
-    return widget.origin ?? style?.origin ?? TouchRippleOrigin.pointer_move;
+    return widget.origin ?? style?.origin ?? TouchRippleOrigin.pointerMove;
   }
 
   @override

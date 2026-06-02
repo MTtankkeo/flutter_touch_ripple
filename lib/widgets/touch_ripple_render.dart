@@ -105,13 +105,14 @@ class TouchRipplePainter extends CustomPainter {
     Rect sizeRectOf(Size size) {
       Size rippleSize = size;
       rippleSize *= controller.context.rippleScale;
-      rippleSize = Size(rippleSize.width + controller.context.ripplePadding * 2,
-          rippleSize.height + controller.context.ripplePadding * 2);
+      rippleSize = Size(
+        rippleSize.width + controller.context.ripplePadding * 2,
+        rippleSize.height + controller.context.ripplePadding * 2,
+      );
 
       final offset = (sizeToOffset(size) - sizeToOffset(rippleSize)) / 2;
 
-      return Rect.fromLTWH(
-          offset.dx, offset.dy, rippleSize.width, rippleSize.height);
+      return Rect.fromLTWH(offset.dx, offset.dy, rippleSize.width, rippleSize.height);
     }
 
     if (clippingType == TouchRippleShape.normal) {
@@ -122,7 +123,7 @@ class TouchRipplePainter extends CustomPainter {
     } else {
       late double rippleSize;
 
-      if (clippingType == TouchRippleShape.inner_circle) {
+      if (clippingType == TouchRippleShape.innerCircle) {
         rippleSize = max(size.width, size.height);
       } else {
         rippleSize = Offset(size.width, size.height).distance;
@@ -136,8 +137,7 @@ class TouchRipplePainter extends CustomPainter {
       final dy = (size.height - rippleSize) / 2;
 
       canvas.clipRRect(
-        BorderRadius.circular(1e10)
-            .toRRect(Rect.fromLTWH(dx, dy, rippleSize, rippleSize)),
+        BorderRadius.circular(1e10).toRRect(Rect.fromLTWH(dx, dy, rippleSize, rippleSize)),
       );
     }
 

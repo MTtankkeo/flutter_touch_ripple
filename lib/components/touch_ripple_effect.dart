@@ -23,11 +23,7 @@ abstract class TouchRippleEffect extends Listenable {
   /// Calling this function resolves errors and memory leaks that may occur
   /// when the widget has been disposed but the effect-related instances remain.
   void dispose() {
-    assert(
-      onDispose != null,
-      "Should be notifying disposed to the touch ripple controller.",
-    );
-
+    assert(onDispose != null, "Should be notifying disposed to the touch ripple controller.");
     onDispose?.call();
   }
 
@@ -49,27 +45,17 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       duration: behavior.spreadDuration!,
     );
 
-    _spreadCurved =
-        CurvedAnimation(parent: _spreadAnimation, curve: behavior.spreadCurve!);
+    _spreadCurved = CurvedAnimation(parent: _spreadAnimation, curve: behavior.spreadCurve!);
 
     // Calls the event callback function when the current animation
     // progress can call the event callback function.
     void checkEventCallBack() {
-      assert(
-        behavior.lowerPercent != null,
-        "Lower percent of touch ripple behavior was not initialized.",
-      );
-      assert(
-        behavior.upperPercent != null,
-        "Upper percent of touch ripple behavior was not initialized.",
-      );
-
+      assert(behavior.lowerPercent != null, "Lower percent of touch ripple behavior was not initialized.");
+      assert(behavior.upperPercent != null, "Upper percent of touch ripple behavior was not initialized.");
       final lowerPercent = behavior.lowerPercent ?? 0;
 
-      if (this.isRejectable) return;
-      if (this.isAttached &&
-          spreadPercent >=
-              (behavior.eventCallBackableMinPercent ?? lowerPercent)) {
+      if (isRejectable) return;
+      if (isAttached && spreadPercent >= (behavior.eventCallBackableMinPercent ?? lowerPercent)) {
         callback.call();
         // Deregisters the listener as there is no longer a need to know
         // when to invoke the event callback function.
@@ -143,22 +129,16 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
 
   @override
   void addListener(VoidCallback listener) {
-    assert(
-      isInitialized,
-      "The animation instances has not yet been initialized.",
-    );
+    assert(isInitialized, "The animation instances has not yet been initialized.");
     _spreadAnimation.addListener(listener);
     _fadeAnimation.addListener(listener);
   }
 
   @override
   void removeListener(VoidCallback listener) {
-    assert(
-      isInitialized,
-      "The animation instances has not yet been initialized.",
-    );
-    _spreadAnimation.addListener(listener);
-    _fadeAnimation.addListener(listener);
+    assert(isInitialized, "The animation instances has not yet been initialized.");
+    _spreadAnimation.removeListener(listener);
+    _fadeAnimation.removeListener(listener);
   }
 
   /// Converts the size to an offset and returns it.
@@ -213,11 +193,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
   /// If the gesture could be rejected and is eventually accepted,
   /// please call the corresponding function.
   void onAccepted() {
-    assert(
-      isInitialized,
-      "The animation instances has not yet been initialized.",
-    );
-
+    assert(isInitialized, "The animation instances has not yet been initialized.");
     assert(isRejectable, "The gesture has already been defined as accepted.");
     isRejectable = false;
 
@@ -281,8 +257,7 @@ class TouchRippleSpreadingEffect extends TouchRippleEffect {
       }
 
       if (TouchRippleShader.isInitialized) {
-        paint.shader =
-            _sparkleShader ??= TouchRippleShader.program.fragmentShader();
+        paint.shader = _sparkleShader ??= TouchRippleShader.program.fragmentShader();
 
         TouchRippleShader.updateFragmentShader(
           shader: _sparkleShader!,
@@ -335,9 +310,10 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
     );
 
     _fadeCurved = CurvedAnimation(
-        parent: _fadeAnimation,
-        curve: animation.fadeInCurve!,
-        reverseCurve: animation.fadeOutCurve);
+      parent: _fadeAnimation,
+      curve: animation.fadeInCurve!,
+      reverseCurve: animation.fadeOutCurve,
+    );
 
     _fadeCurved.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) onDispose?.call();
@@ -362,21 +338,13 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
 
   @override
   void addListener(VoidCallback listener) {
-    assert(
-      isInitialized,
-      "The animation instances has not yet been initialized.",
-    );
-
+    assert(isInitialized, "The animation instances has not yet been initialized.");
     _fadeAnimation.addListener(listener);
   }
 
   @override
   void removeListener(VoidCallback listener) {
-    assert(
-      isInitialized,
-      "The animation instances has not yet been initialized.",
-    );
-
+    assert(isInitialized, "The animation instances has not yet been initialized.");
     _fadeAnimation.removeListener(listener);
   }
 
@@ -388,11 +356,11 @@ class TouchRippleSolidEffect extends TouchRippleEffect {
     }
   }
 
-  fadeIn() {
+  void fadeIn() {
     if (isInitialized) _fadeAnimation.forward();
   }
 
-  fadeOut() {
+  void fadeOut() {
     if (isInitialized) _fadeAnimation.reverse();
   }
 

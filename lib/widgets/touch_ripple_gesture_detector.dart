@@ -150,12 +150,10 @@ class TouchRippleGestureDetector<T extends dynamic> extends StatefulWidget {
   final Widget child;
 
   @override
-  State<TouchRippleGestureDetector> createState() =>
-      _TouchRippleGestureDetectorState<T>();
+  State<TouchRippleGestureDetector> createState() => _TouchRippleGestureDetectorState<T>();
 }
 
-class _TouchRippleGestureDetectorState<T>
-    extends State<TouchRippleGestureDetector<T>> {
+class _TouchRippleGestureDetectorState<T> extends State<TouchRippleGestureDetector<T>> {
   /// The list defines instances of a builder function that creates GestureRecognizer objects.
   /// Instances of [GestureRecognizer] should be added and removed according to the lifecycle
   /// of the gesture detector.
@@ -173,7 +171,7 @@ class _TouchRippleGestureDetectorState<T>
   TouchRippleContext get rippleContext => controller.context;
 
   /// Called when the focus is started by the gesture recognizers.
-  onFocusStart() {
+  void onFocusStart() {
     widget.onFocusStart?.call();
 
     var effect = controller.getEffectByKey<TouchRippleSolidEffect>("focus");
@@ -191,13 +189,13 @@ class _TouchRippleGestureDetectorState<T>
   }
 
   /// Called when the focus is ended by the gesture recognizers that are focus active.
-  onFocusEnd() {
+  void onFocusEnd() {
     widget.onFocusEnd?.call();
     controller.getEffectByKey<TouchRippleSolidEffect>("focus")?.fadeOut();
   }
 
   /// Called when the hover is started by [MouseRegion] widget.
-  onHoverStart() {
+  void onHoverStart() {
     widget.onHoverStart?.call();
 
     var effect = controller.getEffectByKey<TouchRippleSolidEffect>("hover");
@@ -215,7 +213,7 @@ class _TouchRippleGestureDetectorState<T>
   }
 
   /// Called when the hover is ended by [MouseRegion] widget.
-  onHoverEnd() {
+  void onHoverEnd() {
     widget.onHoverEnd?.call();
     controller.getEffectByKey<TouchRippleSolidEffect>("hover")?.fadeOut();
   }
@@ -256,7 +254,7 @@ class _TouchRippleGestureDetectorState<T>
   }
 
   // Initializes gesture recognizer builders.
-  initBuilders() {
+  void initBuilders() {
     _builders.clear();
 
     final isTappable = widget.onTap != null;
@@ -268,9 +266,7 @@ class _TouchRippleGestureDetectorState<T>
 
     // If there is a gesture competitor other than itself,
     // the effect cannot be previewed for tap effect.
-    final previewMinDuration = isDoubleTappable || isLongTappable
-        ? Duration.zero
-        : rippleContext.previewDuration;
+    final previewMinDuration = isDoubleTappable || isLongTappable ? Duration.zero : rippleContext.previewDuration;
 
     if (isTappable) {
       _builders.add(() {
@@ -279,23 +275,24 @@ class _TouchRippleGestureDetectorState<T>
         assert(rippleContext.tapBehavior.onlyMainButton != null);
         return TouchRippleTapGestureRecognizer(
           context: rippleContext,
-          onlyMainButton: widget.onlyMainButton ??
-              rippleContext.tapBehavior.onlyMainButton!,
+          onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
           previewMinDuration: previewMinDuration,
           acceptableDuration: rippleContext.tappableDuration,
           onTap: (offset) {
             activeEffect = showSpreadEffect(
-                callback: widget.onTap!,
-                isRejectable: false,
-                baseOffset: offset,
-                behavior: rippleContext.tapBehavior);
+              callback: widget.onTap!,
+              isRejectable: false,
+              baseOffset: offset,
+              behavior: rippleContext.tapBehavior,
+            );
           },
           onTapRejectable: (offset) {
             activeEffect = showSpreadEffect(
-                callback: widget.onTap!,
-                isRejectable: true,
-                baseOffset: offset,
-                behavior: rippleContext.tapBehavior);
+              callback: widget.onTap!,
+              isRejectable: true,
+              baseOffset: offset,
+              behavior: rippleContext.tapBehavior,
+            );
           },
           onTapReject: () => activeEffect.onRejected(),
           onTapAccept: () => activeEffect.onAccepted(),
@@ -327,8 +324,8 @@ class _TouchRippleGestureDetectorState<T>
         // Starts asynchronous processing about a given callback.
         void performAsync() {
           final instance = widget.onTapAsync!()
-            ..then((_result) {
-              result = _result;
+            ..then((newResult) {
+              result = newResult;
               activeEffect.onAccepted();
             });
 
@@ -338,8 +335,7 @@ class _TouchRippleGestureDetectorState<T>
         assert(rippleContext.tapBehavior.onlyMainButton != null);
         return TouchRippleTapGestureRecognizer(
           context: rippleContext,
-          onlyMainButton: widget.onlyMainButton ??
-              rippleContext.tapBehavior.onlyMainButton!,
+          onlyMainButton: widget.onlyMainButton ?? rippleContext.tapBehavior.onlyMainButton!,
           previewMinDuration: previewMinDuration,
           acceptableDuration: rippleContext.tappableDuration,
           onTap: (offset) {
@@ -358,24 +354,20 @@ class _TouchRippleGestureDetectorState<T>
     if (isDoubleTappable) {
       _builders.add(() {
         assert(rippleContext.doubleTapBehavior.onlyMainButton != null);
-        assert(widget.onDoubleTapStart != null
-            ? widget.onDoubleTapConsecutive != null
-            : true);
-        assert(widget.onDoubleTapEnd != null
-            ? widget.onDoubleTapConsecutive != null
-            : true);
+        assert(widget.onDoubleTapStart != null ? widget.onDoubleTapConsecutive != null : true);
+        assert(widget.onDoubleTapEnd != null ? widget.onDoubleTapConsecutive != null : true);
         return TouchRippleDoubleTapGestureRecognizer(
             context: rippleContext,
-            onlyMainButton: widget.onlyMainButton ??
-                rippleContext.doubleTapBehavior.onlyMainButton!,
+            onlyMainButton: widget.onlyMainButton ?? rippleContext.doubleTapBehavior.onlyMainButton!,
             acceptableDuration: rippleContext.doubleTappableDuration,
             aliveDuration: rippleContext.doubleTapAliveDuration,
             onDoubleTap: (offset, count) {
               showSpreadEffect(
-                  callback: widget.onDoubleTap!,
-                  isRejectable: false,
-                  baseOffset: offset,
-                  behavior: rippleContext.doubleTapBehavior);
+                callback: widget.onDoubleTap!,
+                isRejectable: false,
+                baseOffset: offset,
+                behavior: rippleContext.doubleTapBehavior,
+              );
 
               return widget.onDoubleTapConsecutive?.call(count) ?? false;
             },
@@ -399,8 +391,7 @@ class _TouchRippleGestureDetectorState<T>
         assert(rippleContext.longTapBehavior.eventCallBackableMinPercent == 1);
         return TouchRippleLongTapGestureRecognizer(
             context: rippleContext,
-            onlyMainButton: widget.onlyMainButton ??
-                rippleContext.longTapBehavior.onlyMainButton!,
+            onlyMainButton: widget.onlyMainButton ?? rippleContext.longTapBehavior.onlyMainButton!,
             delayDuration: rippleContext.longTappableDuration,
             cycleDuration: rippleContext.longTapCycleDuration,
             focusTiming: rippleContext.focusTiming,
@@ -408,10 +399,11 @@ class _TouchRippleGestureDetectorState<T>
             onLongTap: widget.onLongTap!,
             onLongTapRejectable: (offset) {
               activeEffect = showSpreadEffect(
-                  callback: () {},
-                  isRejectable: true,
-                  baseOffset: offset,
-                  behavior: rippleContext.longTapBehavior);
+                callback: () {},
+                isRejectable: true,
+                baseOffset: offset,
+                behavior: rippleContext.longTapBehavior,
+              );
             },
             onLongTapReject: () => activeEffect.onRejected(),
             onLongTapAccept: () => activeEffect.onAccepted(),
@@ -443,8 +435,7 @@ class _TouchRippleGestureDetectorState<T>
           assert(rippleContext.dragBehavior.eventCallBackableMinPercent == 0);
           return TouchRippleDragGestureRecognizer(
             context: rippleContext,
-            onlyMainButton: widget.onlyMainButton ??
-                rippleContext.dragBehavior.onlyMainButton!,
+            onlyMainButton: widget.onlyMainButton ?? rippleContext.dragBehavior.onlyMainButton!,
             axis: Axis.horizontal,
             onDrag: widget.onDragHorizontal!,
             onDragStart: (offset) {
@@ -467,8 +458,7 @@ class _TouchRippleGestureDetectorState<T>
           assert(rippleContext.dragBehavior.eventCallBackableMinPercent == 0);
           return TouchRippleDragGestureRecognizer(
             context: rippleContext,
-            onlyMainButton: widget.onlyMainButton ??
-                rippleContext.dragBehavior.onlyMainButton!,
+            onlyMainButton: widget.onlyMainButton ?? rippleContext.dragBehavior.onlyMainButton!,
             axis: Axis.vertical,
             onDrag: widget.onDragVertical!,
             onDragStart: (offset) {
@@ -485,7 +475,7 @@ class _TouchRippleGestureDetectorState<T>
     }
   }
 
-  _handlePointerDown(PointerDownEvent event) {
+  void _handlePointerDown(PointerDownEvent event) {
     // Recreates the necessary gesture recognizer to forward to
     // a new lifecycle when no gesture recognizer has been assigned.
     if (_recognizers.length <= 1) {

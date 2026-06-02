@@ -15,7 +15,7 @@ class RootApp extends StatelessWidget {
         body: Center(
           child: TouchRipple(
             // Called when the user taps or clicks.
-            onTap: () => print("Hello, Tap!"),
+            onTap: () => debugPrint("Hello, Tap!"),
             child: const Padding(
               padding: EdgeInsets.all(20),
               child: Text("Hello, World!", style: TextStyle(fontSize: 32)),

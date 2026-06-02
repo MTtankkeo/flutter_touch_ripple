@@ -34,10 +34,7 @@ typedef TouchRippleContinuableCallback = bool Function(int count);
 /// the widget coordinate system, and the [count] parameter indicates how many
 /// times the event has occurred consecutively. The returned [bool] specifies
 /// whether the event should continue after the consecutive occurrence.
-typedef TouchRippleConsecutiveCallback = bool Function(
-  Offset offset,
-  int count,
-);
+typedef TouchRippleConsecutiveCallback = bool Function(Offset offset, int count);
 
 /// Signature for the callback function that is called when the user drags
 /// horizontally(e.g. left, right) or vertically(e.g. top, bottom) and the

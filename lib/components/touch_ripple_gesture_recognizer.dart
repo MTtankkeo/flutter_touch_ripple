@@ -5,13 +5,11 @@ import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_event.dart';
 
 /// Signature for the callback function that is called when a [GestureRecognizer] disposed.
-typedef GestureRecognizerDisposeCallback = void Function(
-    GestureRecognizer instance);
+typedef GestureRecognizerDisposeCallback = void Function(GestureRecognizer instance);
 
 /// The abstract class that defines the touch ripple gesture base behavior,
 /// which is a basic and essential behavior.
-abstract class TouchRippleGestureRecognizer
-    extends OneSequenceGestureRecognizer {
+abstract class TouchRippleGestureRecognizer extends OneSequenceGestureRecognizer {
   TouchRippleGestureRecognizer({
     required this.context,
     required this.onlyMainButton,
@@ -42,14 +40,13 @@ abstract class TouchRippleGestureRecognizer
   Offset? _pointerMoveOffset;
 
   /// Returns the current referenceable pointer offset.
-  Offset get currentPointerOffset =>
-      _pointerMoveOffset ?? (_pointerDownOffset ?? Offset.zero);
+  Offset get currentPointerOffset => _pointerMoveOffset ?? (_pointerDownOffset ?? Offset.zero);
 
   Offset get originOffset {
     switch (context.origin) {
-      case TouchRippleOrigin.pointer_down:
+      case TouchRippleOrigin.pointerDown:
         return _pointerDownOffset!;
-      case TouchRippleOrigin.pointer_move:
+      case TouchRippleOrigin.pointerMove:
         return currentPointerOffset;
       case TouchRippleOrigin.center:
         return Offset(size.width / 2, size.height / 2);
@@ -57,8 +54,7 @@ abstract class TouchRippleGestureRecognizer
   }
 
   /// Returns the distance the pointer has moved since it was detected.
-  Offset get pointerMoveDistance =>
-      (_pointerDownOffset ?? Offset.zero) - (_pointerMoveOffset ?? Offset.zero);
+  Offset get pointerMoveDistance => (_pointerDownOffset ?? Offset.zero) - (_pointerMoveOffset ?? Offset.zero);
 
   /// Returns the render box corresponding to the initialized build context.
   RenderBox? get _renderBox => context.context.findRenderObject() as RenderBox?;
@@ -71,13 +67,11 @@ abstract class TouchRippleGestureRecognizer
     if (isAccepted) return false;
     if (context.rejectBehavior == TouchRippleRejectBehavior.none) return false;
     if (context.rejectBehavior == TouchRippleRejectBehavior.leave) {
-      return !(_renderBox?.hitTest(BoxHitTestResult(), position: offset) ??
-          false);
+      return !(_renderBox?.hitTest(BoxHitTestResult(), position: offset) ?? false);
     }
 
     // is TouchRippleCancalBehavior.touchSlop
-    return pointerMoveDistance.dx.abs() > kTouchSlop ||
-        pointerMoveDistance.dy.abs() > kTouchSlop;
+    return pointerMoveDistance.dx.abs() > kTouchSlop || pointerMoveDistance.dy.abs() > kTouchSlop;
   }
 
   /// Defines the values needed to process the gesture and
@@ -110,7 +104,7 @@ abstract class TouchRippleGestureRecognizer
 
   @override
   void didStopTrackingLastPointer(int pointer) {
-    this.dispose();
+    dispose();
     onDispose?.call(this);
   }
 
@@ -246,6 +240,7 @@ class HoldingGestureRecognizer extends OneSequenceGestureRecognizer {
   }
 }
 
+/// The gesture recognizer that tracks tap gestures.
 class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   TouchRippleTapGestureRecognizer({
     required super.context,
@@ -314,6 +309,7 @@ class TouchRippleTapGestureRecognizer extends TouchRippleGestureRecognizer {
   }
 }
 
+/// The gesture recognizer that tracks double-tap gestures.
 class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
     with HoldableGestureRecognizerMixin, FocusableGestureRecognizerMixin {
   TouchRippleDoubleTapGestureRecognizer({
@@ -362,7 +358,7 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
   void onPointerDown(PointerDownEvent event) {
     /// Holds the added pointer to prevent the gesture from being automatically
     /// accepted in specific or all situations, even when there are no competitors.
-    this.hold();
+    hold();
   }
 
   @override
@@ -392,7 +388,7 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
         return;
       }
 
-      this.accept();
+      accept();
     } else {
       _rejectTimer ??= Timer(acceptableDuration, reject);
     }
@@ -416,8 +412,8 @@ class TouchRippleDoubleTapGestureRecognizer extends TouchRippleGestureRecognizer
   }
 }
 
-class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer
-    with FocusableGestureRecognizerMixin {
+/// The gesture recognizer that tracks long holding gestures.
+class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer with FocusableGestureRecognizerMixin {
   TouchRippleLongTapGestureRecognizer({
     required super.context,
     required super.onlyMainButton,
@@ -555,6 +551,7 @@ class TouchRippleLongTapGestureRecognizer extends TouchRippleGestureRecognizer
   }
 }
 
+/// The gesture recognizer that tracks dragging gestures.
 class TouchRippleDragGestureRecognizer extends TouchRippleGestureRecognizer {
   TouchRippleDragGestureRecognizer({
     required super.context,
@@ -571,8 +568,7 @@ class TouchRippleDragGestureRecognizer extends TouchRippleGestureRecognizer {
   final VoidCallback? onDragEnd;
 
   @override
-  String get debugLabal =>
-      axis == Axis.horizontal ? "drag-horizontal" : "darg-vertical";
+  String get debugLabal => axis == Axis.horizontal ? "drag-horizontal" : "darg-vertical";
 
   @override
   void onPointerMove(PointerMoveEvent event) {
